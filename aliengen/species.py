@@ -179,7 +179,11 @@ class Species():
         self._gen_locomotion_secondary()
         self._gen_locomotion_flags()
         self._gen_size_class()
-        self._gen_size()
+        self._gen_size_volume()
+        self._gen_size_mass()
+        self._gen_size_weight()
+        self._gen_stat_st()
+        self._gen_stat_move()
         self._gen_bodyplan()
         self._gen_skin()
         self._gen_breathing()
@@ -208,7 +212,11 @@ class Species():
         self._gen_locomotion_secondary()
         self._gen_locomotion_flags()
         self._gen_size_class()
-        self._gen_size()
+        self._gen_size_volume()
+        self._gen_size_mass()
+        self._gen_size_weight()
+        self._gen_stat_st()
+        self._gen_stat_move()
         self._gen_bodyplan()
         self._gen_skin()
         self._gen_breathing()
@@ -484,6 +492,7 @@ class Species():
 
         self.locomotion = loco
 
+    # Alien Creation III: GURPS Space pg. 149
     def _gen_locomotion_secondary(self):
 
         primary = self.locomotion[0]
@@ -510,6 +519,7 @@ class Species():
 
         self.locomotion = loco
 
+    # Alien Creation III: GURPS Space pg. 149
     def _gen_locomotion_flags(self):
 
         is_fly = False
@@ -522,7 +532,6 @@ class Species():
         self._is_flying = is_fly
 
     # Alien Creation IV: GURPS Space pg. 151
-    # TODO: Have someone check this for logical errors against the book
     def _gen_size_class(self):
 
         size = ""
@@ -572,26 +581,21 @@ class Species():
 
         self.size_class = size
 
-    # TODO: Separate into functions for
-    #   size class, volume+move, mass+weight+st
-    #   can you even separate volume + mass or do plasma/magnetic screw it up?
-    def _gen_size(self):
+    # Alien Creation IV: GURPS Space pg. 151
+    def _gen_size_volume(self):
 
-        size_volume = 0
-        size_mass = 0
-        size_weight = 0
-        stat_st = 0
+        volume = 0
 
         roll = dice.rolldie_zero(1, 6)
         if self.size_class == "Small":
-            size_volume = tables.size_volume_small[roll]
+            volume = tables.size_volume_small[roll]
         elif self.size_class == "Human-Scale":
-            size_volume = tables.size_volume_human[roll]
+            volume = tables.size_volume_human[roll]
         elif self.size_class == "Large":
             roll = dice.rolldie_zero(1, 5)
-            size_volume = tables.size_volume_large[roll]
+            volume = tables.size_volume_large[roll]
         elif self.size_class == "Huge":
-            size_volume = dice.rolldie(2, 6) * 10
+            volume = dice.rolldie(2, 6) * 10
 
         if self.planet.gravity < 0.15:
             mult = 4.6
@@ -628,35 +632,47 @@ class Species():
         if not ((self.habitat_type == "Water"
                  and "Winged Flight" not in self.locomotion)
                 or "Bouyant Flight" in self.locomotion):
-            size_volume *= mult
+            volume *= mult
 
-        size_mass = ((size_volume / 2) ** 3) * 200
+        if self.chemical_basis == "Magnetic":
+            volume /= 1000
 
-        if (self.chemical_basis == "Silicon/Sulfuric Acid"
-                or self.chemical_basis == "Silicon/Liquid Sulfur"
-                or self.chemical_basis == "Silicon/Liquid Rock"):
-            size_mass *= 2
-        elif self.chemical_basis == "Magnetic":
-            size_volume /= 1000
-        elif (self.chemical_basis == "Hydrogen-Based"
-              or self.chemical_basis == "Plasma"):
-            size_mass /= 10
+        self.size_volume = volume
+
+    # Alien Creation IV: GURPS Space pg. 151
+    def _gen_size_mass(self):
+
+        mass = 0
+        volume = self.size_volume
+
+        if self.chemical_basis == "Magnetic":
+            volume *= 1000
+
+        mass = ((self.size_volume / 2) ** 3) * 200
+
+        if self.chemical_basis in ("Silicon/Sulfuric Acid",
+                                   "Silicon/Liquid Sulfur",
+                                   "Silicon/Liquid Rock"):
+            mass *= 2
+        elif self.chemical_basis in ("Hydrogen-Based", "Plasma"):
+            mass /= 10
         if self.habitat == "Space-Dwelling":
-            size_mass /= 5
-        if self.chemical_basis == "Plasma":
-            size_volume *= 1000
+            mass /= 5
 
-        size_weight = size_mass * self.planet.gravity
+        self.size_mass = mass
 
-        stat_st = max(1, round(2 * (size_mass ** (1./3.))))
-        stat_move_walk = (((size_volume / 2) * self.planet.gravity) ** (1./2.))
-        stat_move_walk *= 5
+    # Alien Creation IV: GURPS Space pg. 151
+    def _gen_size_weight(self):
+        self.size_weight = self.size_mass * self.planet.gravity
 
-        self.size_volume = size_volume
-        self.size_mass = size_mass
-        self.size_weight = size_weight
-        self.stat_st = stat_st
-        self.stat_move_walk = stat_move_walk
+    # Alien Creation IV: GURPS Space pg. 151
+    def _gen_stat_st(self):
+        self.stat_st = max(1, round(2 * (self.size_mass ** (1./3.))))
+
+    # Alien Anatomy - Mobility - Walking: GURPS Space pg. 146
+    def _gen_stat_move(self):
+        walk = (((self.size_volume / 2) * self.planet.gravity) ** (1./2.)) * 5
+        self.stat_move_walk = walk
 
     # TODO: Separate into functions for
     #   symmetry, limbs, tails, manipulators, skeleton, wingspan

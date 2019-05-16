@@ -66,6 +66,9 @@ Features
     - size support for huge creatures?
     - import planet info from starsystem-gen: 
         https://github.com/tschoppi/starsystem-gen
+    - go through text and implement advantages/disadvantages noted
+        where this is possible; some examples below
+        - slithering creatures get "No Legs (Slithering)" pg 146
 
 Possible Bugs
     - LOGIC ERROR: "carnivore" subtype won't catch "combined" trophic level
