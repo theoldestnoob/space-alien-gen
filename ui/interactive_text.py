@@ -28,8 +28,10 @@ def textui():
     print("Input Species Parameters:")
     chembas = input("Chemical Basis: ")
     habtype = input("Habitat Type: ")
+    habitat = input("Habitat: ")
     inspec.chemical_basis = chembas
     inspec.habitat_type = habtype
+    inspec.habitat = habitat
 
     print("")
     print("Repeatedly Generating Species:")
