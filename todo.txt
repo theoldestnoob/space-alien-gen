@@ -18,6 +18,7 @@ Program Structure
         - variables = command line
         - webserver option = webserver
         - gui option = gui
+    - change "<" to "<=" in most places to make dice rolls more readable
 
 Data Structure
     - separate senses object/module

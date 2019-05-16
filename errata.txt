@@ -54,6 +54,12 @@ Errata / Deviations:
         
 - Alien Creation IV (GURPS Space pg. 151):
 
+    Size Category - Modifiers for gravity
+        does not specify modifier for gravities between 0.4G and 0.5G
+        I apply +2 if gravity < 0.5, +1 if 0.5 <= gravity <= 0.75
+        I think this is the intended behavior, if we don't assume we're
+        generating gravity in tidy steps 
+
     Size and Mass text - mass and weight used inconsistently
         I have chosen to interpret "weight" as mass 
         and call the gravity-adjusted number weight

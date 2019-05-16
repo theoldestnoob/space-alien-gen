@@ -36,7 +36,7 @@ def textui():
     print("")
     print("Repeatedly Generating Species:")
     print("")
-    for _ in range(500):
+    for _ in range(50):
         outspec = copy.deepcopy(inspec)
         outspec.generate()
         '''outspec.output_text_basic()
