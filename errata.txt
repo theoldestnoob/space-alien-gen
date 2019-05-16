@@ -1,0 +1,237 @@
+Errata / Deviations:
+
+- Alien Creation II (GURPS Space pg. 143): 
+
+    Ordinary Animals table lists Grazing/Browsing Herbivore, 
+    Sapient Organisms table lists only Grazing Herbivore
+        I have used Grazing/Browsing Herbivore for both
+        
+    Inconsistent naming for some habitats between text and tables
+        I have used the versions in tables where there is a conflict
+        
+    I have named "Other" Autotroph "Exotic Autotroph"
+    	
+    *Separate tables for Ordinary and Sapient animals, 
+     but Intelligence + Sapience rolled in Alien Creation IX 
+     (GURPS Space pg. 168)
+    *Possible resolution: Sapient table in Alien Creation III allows for 
+        /possibility/ of sapience.
+    *    Input whether Nonsapient, Possible Sapient, or Definitely Sapient
+    *    Nonsapient: roll on tables for Ordinary Animal, 
+            roll on Animal Intelligence table, 
+            never produce sapient beings
+    *    Possible: roll on tables for Sapient Animal, 
+            roll of 13+ on Animal Intelligence table produce sapient beings
+    *    Sapient: roll on tables for Sapient Animal, 
+            skip Animal Intelligence table
+    *    Rereading the tables makes it seem like this is intended behavior...
+    
+- Alien Creation III (GURPS Space pg. 149):
+
+    Secondary Locomotion - Winged Flight Table has no results for a roll of 2
+    	I have used Climbing for 2 as well
+
+    Secondary Locomotion - Winged Flight Table has "slithering or sliding"
+        I have removed "or sliding" to make further calculations easier
+
+    Secondary Locomotion - Winged Flight Table has * for Slithering
+        This can be reached from a land-habitat creature, for which there is
+        no "Slithering" secondary locomotion table, so I ignore it if
+        the habitat type is land
+
+    Primary Locomotion Table lists "Lagoon", 
+    Alien Creation II table contains "Tropical Lagoon"
+        I have used "Tropical Lagoon"
+        
+    Primary Locomotion Table Lists "Lake/Salt-Water Sea", 
+    Alien Creation II tables contains "Fresh-Water Lakes"
+        I have used "Fresh-Water Lakes"
+        
+    Primary Locomotion Table - Mountain indicates a secondary locomotion 
+    possibility for "Walking", there is no such table
+        I reroll on the Primary Locomotion Table - Mountain with no "Immobile"
+        I do not roll for a tertiary regardless of what I get for a secondary
+        
+- Alien Creation IV (GURPS Space pg. 151):
+
+    Size and Mass text - mass and weight used inconsistently
+        I have chosen to interpret "weight" as mass 
+        and call the gravity-adjusted number weight
+        
+    Whole section - Size not clearly defined. Height? Length of longest axis? 
+    Some measure of Volume?
+        I have called it volume but I'm not really happy about it
+        I think it might be length on longest axis, after thinking about it
+        
+    I have chosen to ignore the "Weight" column on the size tables, 
+    and calculate as given in the text
+        This simplifies the code greatly when attempting 
+        to apply the "Gravity Effects" multipliers
+        The whole process becomes very confusing if you try to apply 
+        the text to the tables
+        I suspect the tables are for a quick-and-dirty determination 
+        when you aren't worrying about gravity
+        
+    Gravity table uses a set of discrete values which 
+    actual gravity value can be between
+        I have chosen to set the range for each value to be halfway 
+        between the value and the next one
+        
+    Strength calculation can be a non-integer and does not specify minimum
+    	I have chosen to round to nearest number and choose 
+    	the maximum of 1 and the calculation result
+    	
+    Move (Walking) calculation comes from Gurps Space pg. 146, Walking
+    	Rounding rules are not clear from the text 
+    	I have left it unrounded and truncated at two decimal places
+    	
+    Move (Digging) calculation is in Gurps Basic pg. 350
+    	Not yet included in this software
+    	
+- Alien Creation V (GURPS Space pg. 154):
+
+	I represent sides, segments, and limbs all as separate numbers
+		this does not necessarily fully indicate 
+		e.g. limbs per side per segment
+		
+	Tail Features in the Tails table do not have all words capitalized
+	  I have done so
+	  
+	If Tail Features rolls "Combination" and both combination rolls 
+	come up the same, I just drop one
+		The text does not indicate if this should be done 
+		or if I should reroll until two uniques
+		
+	Manipulators - Modifiers "+2 if Brachiator", 
+	but Brachiator is not present in earlier tables
+	
+- Alien Creation VI (GURPS Space pg. 157):
+
+	Skin - Scales Table Modifier "Tunneling" does not exist on other tables
+		I apply the modifier if the species has "Digging" locomotion 
+		
+	Breathing - "Aerial or land-dwelling organisms" is not defined elsewhere
+		I consider a creature aerial 
+    		if its locomotion contains "Winged Flight" or "Bouyant Flight"
+    		and if its locomotion does not contain "Swimming"
+		I consider a creature land-dwelling 
+    		if its habitat type is not "Water"
+			and if its locomotion does not contain "Swimming"
+			
+	Breathing - Space-Dwelling is not addressed
+		I add a special "Doesn't Breathe (Space-Dwelling)" breathing, 
+		because it's silly otherwise
+
+    Breathing - Modifier "+2 if walking is primary or secondary locomotion"
+        I add +2 if walking is included in locomotion at all (even tertiary)
+
+	Breathing - Modifier "+2 if flying or climbing is secondary locomotion"
+		Flying or Climbing can not be secondary locomotion types according to 
+		Alien Creation III rules (pg. 149)
+		I add +2 if flying or climbing is included in locomotion at all
+		
+- Alien Creation VII (GURPS Space pg. 161)
+
+	Sexes - I don't check if the "roll twice" result gets the same result twice
+	
+	Strategy - earlier tables do not differentiate between 
+	"Spawning" and "Pollinating"
+		if gestation is "Spawning/Pollinating" 
+		I apply the "Spwaning" multiplier to the offspring per litter
+		
+	Strategy - I include the range involved in my output, 
+	I do not roll the given die and insert it
+		I did that at first and I didn't like the look of it
+		I apply the same "Spawning" multiplier to the 
+		low and high bounds of the litter size
+		
+- Alien Creation VIII (GURPS Space pg. 164)
+
+	Hearing - roll 11 indicates "Subsonic Hearing if Large"
+		I also include Subsonic Hearing if size category is "Huge"
+		
+	Taste/Smell - it is not clear how to treat aquatic organisms' smell sense
+		Do they just not smell? 
+		If they roll high, do they have normal smell and acute taste?
+		
+	Special Senses - the table would allow for 
+	e.g. Discriminatory Hearing on a deaf creature
+		I do not allow special senses 
+		if the related normal sense is too low (e.g. Blindness or Deafness)
+		360 vision requires > Blindness
+		Discriminatory Hearing requires > Hard of Hearing
+		Peripheral Vision requires > Blindness
+		Night Vision requires > Blindness
+		Ultravision I allow with Blindness, 
+    		I interpret it as they can only see in UV
+		Detect (Heat) I allow with Blindness, 
+    		I interpret it as they can only detect IR
+		Other special senses I do not judge are tied to one of the basic senses
+		
+	Communication Channels - it is not clear to me how some of the 
+	special senses could be communication channels
+		I only allow Ultravision, Detect (Heat), Detect (Electric Fields), 
+		and Scanning Sense (Radar) to be communication channels, 
+		not the straight modifiers for the normal senses (e.g. 360 vision) 
+		
+	Communication Channels - I do not do combined communication channels
+		because that would be a huge pain to deal with
+	Communication Channels - it is not clear how to treat secondary 
+    	communication channels with the same communication channel roll
+	Communication Channels - due to the above two issues, if two or more 
+    	comm channel rolls are equal
+		I pick the one with the highest roll on its sense table
+		if the sense table rolls are equal, I pick one at random
+		
+- Alien Creation IX (GURPS Space pg. 168)
+	Social Organization - Pair-Bonded Mating organisms 
+	can roll Solitary Social Organization
+		I have left this as-is 
+		
+	Social Organization - Modifier "-1 if large size", 
+    	I also include -1 Modifier if "Huge" size
+    	
+	Social Organization - 9-10 (Small Group) and 11 (Medium Group) 
+		it is unclear what the purpose of the Troop, Pack, Herd breakdown is
+			Small = 2d6 = 2 - 12, 
+			Medium = 4d6 = 4 - 24, 
+			Large = 1d6 * 10 = 10 - 60
+		from text: Troop = 4 - 10, Pack = 6 - 20, Herd = 10 - 100+
+		I have chosen to ignore the top line and just put Troop/Pack/Herd 
+		+ numerical range from text
+		
+- Alien Creation X (GURPS Space pg. 169)
+    Several - Modifier "if pair-bonded"
+        I assume this refers to the social organization and not to mating
+        behavior, since it is frequently paired with "solitary"
+
+    Curiosity - Modifier "-1 for Blind or Nearly Blind species"
+        I have interpreted "Blind" to mean species has "Blindness"
+        and "Nearly Blind" to mean species has "Blindness (Can sense light...)"
+        
+    Egoism - Modifier "+1 for harem (males only)"
+        I can't think of a good way to handle this, so I ignore it for now
+    
+    Suspicion - Modifier "+1 for Blind or Nearly Blind species"
+        I have interpreted "Blind" to mean species has "Blindness"
+        and "Nearly Blind" to mean species has "Blindness (Can sense light...)"
+    
+    Suspicion - Modifier "-1 for large"
+        I have also included a -1 modifier for "Huge" size class
+    
+    Playfulness - Modifier "-3 if Cannot Learn"
+        I check for if the IQ stat is < 2
+        this covers both Cannot Learn and Mindless
+        although it's debatable if Mindless creatures should have 
+        any personality at all
+        
+    Suspicion - +2 "becomes Careful quirk if Curiosity is -3"
+        I change it to Careful quirk if Curiosity < -2
+    
+    
+    
+    
+    
+    
+    
+    

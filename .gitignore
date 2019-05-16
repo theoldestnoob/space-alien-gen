@@ -1,0 +1,4 @@
+# .gitignore
+.spyproject
+__pycache__
+old

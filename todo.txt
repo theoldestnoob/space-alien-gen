@@ -1,0 +1,92 @@
+ToDo:
+
+- TODO comments in the code
+
+Program Structure
+    - Break up some of the longer Creation functions to make them less unwieldy
+    	I'm looking at you, Alien Creation V
+    - see if it's possible to clean up some of the big combined conditionals 
+        to make them more readable
+    - Break up generation functions to minimum logical blocks
+    - Add higher-level generation function that only calls
+        sub-generation functions for empty variables
+    - clean up planetinfo.py to remove unncessary getter functions
+    - update planetinfo.py to generate truly random planets with reroll
+    - update planetinfo.py to add ability to generate only default attributes
+    - main program that calls ui script depending on options
+        - no option = interactive text
+        - variables = command line
+        - webserver option = webserver
+        - gui option = gui
+
+Data Structure
+    - separate senses object/module
+    - separate personality object/module
+    - generate list of advantages/disadvantages separately from descriptors
+    - flags for "land-dwelling" and "aerial"?
+
+Best Practices
+    - !!!WRITE TESTS!!!
+    - !!!DOCUMENT!!!!
+    - update to PEP8 and PEP20 style and best practices
+    - clean up classes to better conform with Python best practices
+    - clean up script names + directory structure
+
+GitHub
+    - write README.md
+    - figure out how to only upload some of the things
+    - upload to github
+    - import todo.txt into GitHub issues bugtracking
+    - get someone else to download and run it to make sure it works
+
+Features
+    - User Interface
+    	- interactive text
+    	- command line
+    	- web
+    	- gui
+        - allow user to input specific planet info
+        - allow user to input species attributes
+            instead of randomly generating all of them
+        - multiple output formats
+            - basic text dump
+            - csv dump
+        	- separate descriptors, stats, advantages/disadvantages
+    - Include Move (Digging) stat (GURPS Space pg. 147, GURPS Basic pg. 350)
+    - Include Wing Span calculation for winged flyers
+    - Include Lifespan calculation from pg. 159
+    - optional features other than RAW - make sure to keep RAW compatibility
+        - better support for Gas Giant, Space-Dwelling, Planetary Interior, 
+            Magnetic, Exotic species?
+            these are present in some tables but not others, 
+            so the system won't roll them properly
+            I have included them where I see them in the rules, 
+            but they are pretty much just dead code right now
+    - size support for huge creatures?
+    - import planet info from starsystem-gen: 
+        https://github.com/tschoppi/starsystem-gen
+
+Possible Bugs
+    - LOGIC ERROR: "carnivore" subtype won't catch "combined" trophic level
+    	update all instances to account for Combined
+    	is_carnivore function or variable?
+    - sanity check some combos 
+        (Large Mobile Deep-Ocean Vent Decomposers, Immobile Chasing Predators, 
+        Cannibalistic Herbivores, "Mating-only no pair bond" pair-bonded, wtf?)
+    - LOGIC ERROR: go through and make all "aquatic" checks 
+        not just "habitat = water" 
+    	(also include only locomotion = swimming?)
+    	is_aquatic function or variable?
+    - Check Winged Flight Secondary Locomotion calculation 
+    	seems like I'm getting a lot of Winged Flight with 
+    	no second or third locomotion methods
+    - add check and warning if planets will not support any life 
+        in the current system
+        this case currently drops through to chemical basis = Exotica
+
+
+
+
+	 
+
+	 
