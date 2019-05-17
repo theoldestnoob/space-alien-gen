@@ -187,6 +187,7 @@ class Species():
         self._gen_body_symmetry()
         self._gen_body_sides()
         self._gen_body_limbs()
+        self._gen_body_tail()
         self._gen_bodyplan()
         self._gen_skin()
         self._gen_breathing()
@@ -223,6 +224,7 @@ class Species():
         self._gen_body_symmetry()
         self._gen_body_sides()
         self._gen_body_limbs()
+        self._gen_body_tail()
         self._gen_bodyplan()
         self._gen_skin()
         self._gen_breathing()
@@ -748,42 +750,39 @@ class Species():
         self.body_segments = segments
         self.body_limbs = limbs
 
+    # Alien Creation V: GURPS Space pg. 154
+    def _gen_body_tail(self):
+
+        tail = []
+
+        roll = dice.rolldie(1, 6)
+        if "Swimming" in self.locomotion:
+            roll += 1
+
+        if (self.body_symmetry != "Spherical"
+                and roll >= 5):
+            roll = dice.rolldie_zero(2, 6)
+            tail.append(tables.body_tail_features[roll])
+            while "Combination" in tail:
+                tail.clear()
+                roll1 = dice.rolldie_zero(1, 6) + 5
+                roll2 = dice.rolldie_zero(1, 6) + 5
+                tail.append(tables.body_tail_features[roll1])
+                tail.append(tables.body_tail_features[roll2])
+                tail = list(dict.fromkeys(tail))
+
+        self.body_tail = tail
+
     # TODO: Separate into functions for
-    #   tails, manipulators, skeleton, wingspan
+    #   manipulators, skeleton, wingspan
     def _gen_bodyplan(self):
 
-        tail = "No Tail"
-        tail_a = ""
-        tail_b = ""
         manipulators = ""
         manip_sets = 0
         manip_badgrip = 0
         manip_normaldx = 0
         manip_highdx = 0
         skeleton = ""
-
-        # Tails
-        roll = dice.rolldie(1, 6)
-        if "Swimming" in self.locomotion:
-            roll += 1
-        if (self.body_symmetry != "Spherical"
-                and roll > 4):
-            roll = dice.rolldie_zero(2, 6)
-            tail_a = tables.body_tail_features[roll]
-            if tail_a == "Combination":
-                roll = dice.rolldie(1, 6) + 3
-                tail_a = tables.body_tail_features[roll]
-                roll = dice.rolldie(1, 6) + 3
-                tail_b = tables.body_tail_features[roll]
-                if tail_a == tail_b:
-                    tail_b = ""
-                if ((tail_a == "Barbed Striker "
-                     or tail_b == "Barbed Striker ")
-                        and (tail_a == "Striker "
-                             or tail_b == "Striker ")):
-                    tail_a = "Barbed and Blunt Striker "
-                    tail_b = ""
-            tail = "{}{}Tail".format(tail_a, tail_b)
 
         # Manipulators
         if self.sapient is True:
@@ -884,7 +883,6 @@ class Species():
 
         # TODO: Wingspan calculation
 
-        self.body_tail = tail
         self.body_manip = manipulators
         self.body_skel = skeleton
 
