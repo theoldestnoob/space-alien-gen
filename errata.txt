@@ -100,6 +100,11 @@ Errata / Deviations:
 		this does not necessarily fully indicate 
 		e.g. limbs per side per segment
 		
+    It is possible to get "walking" creatures with no limbs
+        I don't know how that would work, but I have left it in as there is
+        not really any way to interpret it otherwise without deviating from
+        the procedure in the book by adding my own modifiers or special cases
+		
 	Tail Features in the Tails table do not have all words capitalized
 	  I have done so
 	  

@@ -185,6 +185,8 @@ class Species():
         self._gen_stat_st()
         self._gen_stat_move()
         self._gen_body_symmetry()
+        self._gen_body_sides()
+        self._gen_body_limbs()
         self._gen_bodyplan()
         self._gen_skin()
         self._gen_breathing()
@@ -219,6 +221,8 @@ class Species():
         self._gen_stat_st()
         self._gen_stat_move()
         self._gen_body_symmetry()
+        self._gen_body_sides()
+        self._gen_body_limbs()
         self._gen_bodyplan()
         self._gen_skin()
         self._gen_breathing()
@@ -690,12 +694,64 @@ class Species():
 
         self.body_symmetry = symmetry
 
-    # TODO: Separate into functions for
-    #   limbs, tails, manipulators, skeleton, wingspan
-    def _gen_bodyplan(self):
+    # Alien Creation V: GURPS Space pg. 154
+    def _gen_body_sides(self):
+
         sides = 0
+
+        if self.body_symmetry == "Bilateral":
+            sides = 2
+        elif self.body_symmetry == "Trilateral":
+            sides = 3
+        elif self.body_symmetry == "Radial":
+            sides = dice.rolldie(1, 6) + 3
+        elif self.body_symmetry == "Spherical":
+            roll = dice.rolldie_zero(1, 6)
+            sides = (4, 6, 6, 8, 12, 20)[roll]
+
+        self.body_sides = sides
+
+    # Alien Creation V: GURPS Space pg. 154
+    def _gen_body_limbs(self):
+
         segments = 0
         limbs = 0
+
+        if self.body_symmetry == "Spherical":
+            limbs = self.body_sides
+        elif self.body_symmetry == "Asymmetric":
+            limbs = dice.rolldie(2, 6) - 2
+        else:
+            roll = dice.rolldie(1, 6)
+
+            if self.body_symmetry == "Trilateral":
+                roll -= 1
+            elif self.body_symmetry == "Radial":
+                roll -= 2
+
+            if roll == 2:
+                segments = 1
+                limbs = self.body_sides
+            elif roll == 3:
+                segments = 2
+                limbs = self.body_sides * 2
+            elif roll == 4:
+                segments = dice.rolldie(1, 6)
+                limbs = segments * self.body_sides
+            elif roll == 5:
+                segments = dice.rolldie(2, 6)
+                limbs = segments * self.body_sides
+            elif roll == 6:
+                segments = dice.rolldie(3, 6)
+                limbs = segments * self.body_sides
+
+        self.body_segments = segments
+        self.body_limbs = limbs
+
+    # TODO: Separate into functions for
+    #   tails, manipulators, skeleton, wingspan
+    def _gen_bodyplan(self):
+
         tail = "No Tail"
         tail_a = ""
         tail_b = ""
@@ -705,54 +761,6 @@ class Species():
         manip_normaldx = 0
         manip_highdx = 0
         skeleton = ""
-
-        # Number of Limbs
-        if self.body_symmetry == "Bilateral":
-            sides = 2
-        elif self.body_symmetry == "Trilateral":
-            sides = 3
-        elif self.body_symmetry == "Radial":
-            sides = dice.rolldie(1, 6) + 3
-        elif self.body_symmetry == "Spherical":
-            roll = dice.rolldie(1, 6)
-            if roll == 1:
-                sides = 4
-            elif roll < 4:
-                sides = 6
-            elif roll == 4:
-                sides = 8
-            elif roll == 5:
-                sides = 12
-            elif roll == 6:
-                sides = 20
-
-        if self.body_symmetry == "Spherical":
-            limbs = sides
-        elif self.body_symmetry == "Asymmetric":
-            limbs = dice.rolldie(2, 6) - 2
-        else:
-            roll = dice.rolldie(1, 6)
-            if self.body_symmetry == "Trilateral":
-                roll -= 1
-            elif self.body_symmetry == "Radial":
-                roll -= 2
-            if roll < 2:
-                limbs = 0
-            elif roll < 3:
-                segments = 1
-                limbs = sides
-            elif roll < 4:
-                segments = 2
-                limbs = sides * 2
-            elif roll < 5:
-                segments = dice.rolldie(1, 6)
-                limbs = segments * sides
-            elif roll < 6:
-                segments = dice.rolldie(2, 6)
-                limbs = segments * sides
-            elif roll < 7:
-                segments = dice.rolldie(3, 6)
-                limbs = segments * sides
 
         # Tails
         roll = dice.rolldie(1, 6)
@@ -782,11 +790,11 @@ class Species():
             roll = dice.rolldie(1, 6) + 6
         else:
             roll = dice.rolldie(2, 6)
-        if limbs == 2:
+        if self.body_limbs == 2:
             roll -= 1
-        if limbs > 6:
+        if self.body_limbs > 6:
             roll += 2
-        elif limbs > 4:
+        elif self.body_limbs > 4:
             roll += 1
         if "Winged Flight" in self.locomotion:
             roll -= 1
@@ -800,7 +808,7 @@ class Species():
         if "Gathering Herbivore" in self.trophic_level:
             roll += 1
 
-        if (roll < 7 or limbs == 0):
+        if (roll < 7 or self.body_limbs == 0):
             manipulators = "No Manipulators"
         elif roll < 8:
             manip_sets = 1
@@ -812,8 +820,8 @@ class Species():
             manip_normaldx = 1
         elif roll < 11:
             manip_sets = 2
-            if manip_sets > limbs:
-                manip_sets = limbs
+            if manip_sets > self.body_limbs:
+                manip_sets = self.body_limbs
             for _ in range(manip_sets):
                 roll = dice.rolldie(1, 6)
                 if roll < 5:
@@ -822,8 +830,8 @@ class Species():
                     manip_normaldx = manip_normaldx + 1
         elif roll < 12:
             manip_sets = dice.rolldie(1, 6)
-            if manip_sets > limbs:
-                manip_sets = limbs
+            if manip_sets > self.body_limbs:
+                manip_sets = self.body_limbs
             for _ in range(manip_sets):
                 roll = dice.rolldie(1, 6)
                 if roll < 5:
@@ -832,8 +840,8 @@ class Species():
                     manip_normaldx = manip_normaldx + 1
         else:
             manip_sets = 2
-            if manip_sets > limbs:
-                manip_sets = limbs
+            if manip_sets > self.body_limbs:
+                manip_sets = self.body_limbs
             for _ in range(manip_sets):
                 roll = dice.rolldie(1, 6)
                 if roll < 5:
@@ -876,9 +884,6 @@ class Species():
 
         # TODO: Wingspan calculation
 
-        self.body_sides = sides
-        self.body_segments = segments
-        self.body_limbs = limbs
         self.body_tail = tail
         self.body_manip = manipulators
         self.body_skel = skeleton

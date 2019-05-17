@@ -69,6 +69,7 @@ Features
     - go through text and implement advantages/disadvantages noted
         where this is possible; some examples below
         - slithering creatures get "No Legs (Slithering)" pg 146
+        - horizontal disadvantage based on symmetry and # of limbs pg 150
 
 Possible Bugs
     - LOGIC ERROR: "carnivore" subtype won't catch "combined" trophic level
