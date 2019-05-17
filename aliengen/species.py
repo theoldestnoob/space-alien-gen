@@ -184,6 +184,7 @@ class Species():
         self._gen_size_weight()
         self._gen_stat_st()
         self._gen_stat_move()
+        self._gen_body_symmetry()
         self._gen_bodyplan()
         self._gen_skin()
         self._gen_breathing()
@@ -217,6 +218,7 @@ class Species():
         self._gen_size_weight()
         self._gen_stat_st()
         self._gen_stat_move()
+        self._gen_body_symmetry()
         self._gen_bodyplan()
         self._gen_skin()
         self._gen_breathing()
@@ -674,11 +676,23 @@ class Species():
         walk = (((self.size_volume / 2) * self.planet.gravity) ** (1./2.)) * 5
         self.stat_move_walk = walk
 
-    # TODO: Separate into functions for
-    #   symmetry, limbs, tails, manipulators, skeleton, wingspan
     # Alien Creation V: GURPS Space pg. 154
-    def _gen_bodyplan(self):
+    def _gen_body_symmetry(self):
+
         symmetry = ""
+
+        roll = dice.rolldie_zero(2, 6)
+        if ("Immobile" in self.locomotion
+                or "Bouyant Flight" in self.locomotion
+                or self.habitat_type == "Space-Dwelling"):
+            roll += 1
+        symmetry = tables.body_symmetry[roll]
+
+        self.body_symmetry = symmetry
+
+    # TODO: Separate into functions for
+    #   limbs, tails, manipulators, skeleton, wingspan
+    def _gen_bodyplan(self):
         sides = 0
         segments = 0
         limbs = 0
@@ -692,22 +706,14 @@ class Species():
         manip_highdx = 0
         skeleton = ""
 
-        # Symmetry
-        roll = dice.rolldie_zero(2, 6)
-        if ("Immobile" in self.locomotion
-                or "Bouyant Flyer" in self.locomotion
-                or self.habitat_type == "Space-Dwelling"):
-            roll += 1
-        symmetry = tables.body_symmetry[roll]
-
         # Number of Limbs
-        if symmetry == "Bilateral":
+        if self.body_symmetry == "Bilateral":
             sides = 2
-        elif symmetry == "Trilateral":
+        elif self.body_symmetry == "Trilateral":
             sides = 3
-        elif symmetry == "Radial":
+        elif self.body_symmetry == "Radial":
             sides = dice.rolldie(1, 6) + 3
-        elif symmetry == "Spherical":
+        elif self.body_symmetry == "Spherical":
             roll = dice.rolldie(1, 6)
             if roll == 1:
                 sides = 4
@@ -720,15 +726,15 @@ class Species():
             elif roll == 6:
                 sides = 20
 
-        if symmetry == "Spherical":
+        if self.body_symmetry == "Spherical":
             limbs = sides
-        elif symmetry == "Asymmetric":
+        elif self.body_symmetry == "Asymmetric":
             limbs = dice.rolldie(2, 6) - 2
         else:
             roll = dice.rolldie(1, 6)
-            if symmetry == "Trilateral":
+            if self.body_symmetry == "Trilateral":
                 roll -= 1
-            elif symmetry == "Radial":
+            elif self.body_symmetry == "Radial":
                 roll -= 2
             if roll < 2:
                 limbs = 0
@@ -752,7 +758,7 @@ class Species():
         roll = dice.rolldie(1, 6)
         if "Swimming" in self.locomotion:
             roll += 1
-        if (symmetry != "Spherical"
+        if (self.body_symmetry != "Spherical"
                 and roll > 4):
             roll = dice.rolldie_zero(2, 6)
             tail_a = tables.body_tail_features[roll]
@@ -855,7 +861,7 @@ class Species():
         if ("Immobile" in self.locomotion
                 or "Slithering" in self.locomotion):
             roll -= 1
-        if symmetry == "Asymmetric":
+        if self.body_symmetry == "Asymmetric":
             roll -= 1
         if self.planet.gravity < 0.5:
             roll -= 1
@@ -870,7 +876,6 @@ class Species():
 
         # TODO: Wingspan calculation
 
-        self.body_symmetry = symmetry
         self.body_sides = sides
         self.body_segments = segments
         self.body_limbs = limbs
