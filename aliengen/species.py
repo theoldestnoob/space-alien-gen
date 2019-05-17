@@ -38,12 +38,17 @@ class Species():
         self.size_weight = 0
         self.stat_st = 0
         self.stat_move_walk = 0
+        self.body_wingspan = 0
         self.body_symmetry = ""
         self.body_sides = 0
         self.body_segments = 0
         self.body_limbs = 0
-        self.body_tail = ""
-        self.body_manip = ""
+        self.body_tail = []
+        self.body_manip = 0
+        self.body_manip_badgrip = 0
+        self.body_manip_normaldx = 0
+        self.body_manip_highdx = 0
+        self.body_manip_trunk = False
         self.body_skel = ""
         self.skin_type = ""
         self.skin_detail = ""
@@ -85,120 +90,6 @@ class Species():
         self.p_imagination_trait = ""
         self.p_suspicion_trait = ""
         self.p_playfulness_trait = ""
-
-    def change_planet(self, world):
-        '''
-        Set a new species planet.
-        '''
-        self.planet = world
-
-    def clear_attributes(self):
-        '''
-        Set all species attributes except planet to blank or default values.
-        '''
-        self.sapient = False
-        self.possible_sapient = True
-        self.chemical_basis = ""
-        self.habitat_type = ""
-        self.habitat = ""
-        self.trophic_type = ""
-        self.trophic_subtype = ""
-        self.trophic_level = []
-        self._is_herbivore = False
-        self._is_carnivore = False
-        self._is_autotroph = False
-        self.locomotion = []
-        self._is_flying = False
-        self.size_class = ""
-        self.size_volume = 0
-        self.size_mass = 0
-        self.size_weight = 0
-        self.stat_st = 0
-        self.stat_move_walk = 0
-        self.body_symmetry = ""
-        self.body_sides = 0
-        self.body_segments = 0
-        self.body_limbs = 0
-        self.body_tail = ""
-        self.body_manip = ""
-        self.body_skel = ""
-        self.skin_type = ""
-        self.skin_detail = ""
-        self.breathing = ""
-        self.temperature_regulation = ""
-        self.growth_pattern = ""
-        self.sexes = ""
-        self.gestation = ""
-        self.gestation_special = ""
-        self.reproductive_strat = ""
-        self.sense_primary = ""
-        self.sense_vision = ""
-        self.sense_hearing = ""
-        self.sense_touch = ""
-        self.sense_tastesmell = ""
-        self.sense_specials = []
-        self.comms_a = ""
-        self.comms_b = ""
-        self.intelligence = ""
-        self.stat_iq = 0
-        self.mating = ""
-        self.social_organization = ""
-        self.p_more_variation = True
-        self.p_chauvinism = 0
-        self.p_concentration = 0
-        self.p_curiosity = 0
-        self.p_egoism = 0
-        self.p_empathy = 0
-        self.p_gregariousness = 0
-        self.p_imagination = 0
-        self.p_suspicion = 0
-        self.p_playfulness = 0
-        self.p_chauvinism_trait = ""
-        self.p_concentration_trait = ""
-        self.p_curiosity_trait = ""
-        self.p_egoism_trait = ""
-        self.p_empathy_trait = ""
-        self.p_gregariousness_trait = ""
-        self.p_imagination_trait = ""
-        self.p_suspicion_trait = ""
-        self.p_playfulness_trait = ""
-
-    def reroll(self):
-        '''
-        Randomly generate all species attributes,
-        regardless of previous user input.
-        '''
-        self._gen_chemical_basis_planet()
-        # self._gen_chemical_basis_table()
-        self._gen_habitat_type()
-        self._gen_habitat()
-        self._gen_trophic_level()
-        self._gen_trophic_flags()
-        # self._gen_locomotion()
-        self._gen_locomotion_primary()
-        self._gen_locomotion_secondary()
-        self._gen_locomotion_flags()
-        self._gen_size_class()
-        self._gen_size_volume()
-        self._gen_size_mass()
-        self._gen_size_weight()
-        self._gen_stat_st()
-        self._gen_stat_move()
-        self._gen_body_symmetry()
-        self._gen_body_sides()
-        self._gen_body_limbs()
-        self._gen_body_tail()
-        self._gen_bodyplan()
-        self._gen_skin()
-        self._gen_breathing()
-        self._gen_temperature_regulation()
-        self._gen_growth()
-        self._gen_sexes()
-        self._gen_gestation()
-        self._gen_reproductive_strat()
-        self._gen_senses()
-        self._gen_intelligence()
-        self._gen_personality()
 
     def generate(self):
         '''
@@ -225,7 +116,8 @@ class Species():
         self._gen_body_sides()
         self._gen_body_limbs()
         self._gen_body_tail()
-        self._gen_bodyplan()
+        self._gen_body_manipulators()
+        self._gen_body_skeleton()
         self._gen_skin()
         self._gen_breathing()
         self._gen_temperature_regulation()
@@ -261,8 +153,13 @@ class Species():
         print("  Limbs: {}".format(self.body_limbs))
         print("  Tail: {}".format(self.body_tail))
         print("  Manipulators: {}".format(self.body_manip))
+        print("   Bad Grip: {}".format(self.body_manip_badgrip))
+        print("   Normal DX: {}".format(self.body_manip_normaldx))
+        print("   High DX: {}".format(self.body_manip_highdx))
+        print("   Prehensile Trunk or Tail: {}".format(self.body_manip_trunk))
         print("  Skeleton: {}".format(self.body_skel))
         print("  Skin: {}, {}".format(self.skin_type, self.skin_detail))
+        print("  Wingspan: {}".format(self.body_wingspan))
         print(" Metabolism:")
         print("  Breathing: {}".format(self.breathing))
         print("  Temp. Regulation: {}".format(self.temperature_regulation))
@@ -682,6 +579,14 @@ class Species():
         walk = (((self.size_volume / 2) * self.planet.gravity) ** (1./2.)) * 5
         self.stat_move_walk = walk
 
+    # TODO: make this function actually do something
+    # Alien Anatomy - Mobility - Flying: GURPS Space pg. 148
+    def _gen_wingspan(self):
+
+        wingspan = 0
+
+        self.body_wingspan = wingspan
+
     # Alien Creation V: GURPS Space pg. 154
     def _gen_body_symmetry(self):
 
@@ -773,91 +678,111 @@ class Species():
 
         self.body_tail = tail
 
-    # TODO: Separate into functions for
-    #   manipulators, skeleton, wingspan
-    def _gen_bodyplan(self):
+    # Alien Creation V: GURPS Space pg. 154
+    def _gen_body_manipulators(self):
 
-        manipulators = ""
-        manip_sets = 0
-        manip_badgrip = 0
-        manip_normaldx = 0
-        manip_highdx = 0
-        skeleton = ""
+        manipulators = 0
+        limb_sets = 0
+        badgrip = 0
+        normaldx = 0
+        highdx = 0
+        has_trunk = False
 
-        # Manipulators
+        check_badgrip = False
+        check_highdx = False
+        num_per_set = 0
+
+        if self.body_symmetry in ("Asymmetric", "Spherical"):
+            num_per_set = 1
+        else:
+            num_per_set = self.body_sides
+
+        roll = self._gen_body_manip_roll()
+
+        if roll == 8:
+            # TODO: handle having a prehensile trunk or tail better
+            #       maybe as part of the advantages/disadvantages refactor?
+            has_trunk = True
+            manipulators += 1
+            roll = dice.rolldie(1, 6)
+            if roll == 6:
+                roll = self._gen_body_manip_roll()
+
+        if roll == 7:
+            limb_sets = 1
+            badgrip = 1
+        elif roll == 9:
+            limb_sets = 1
+            normaldx = 1
+        elif roll == 10:
+            limb_sets = 2
+            check_badgrip = True
+        elif roll == 11:
+            limb_sets = dice.rolldie(1, 6)
+            check_badgrip = True
+        elif roll >= 12:
+            limb_sets = dice.rolldie(1, 6)
+            check_highdx = True
+
+        limb_sets_max = int(self.body_limbs / num_per_set)
+        if limb_sets > limb_sets_max:
+            limb_sets = limb_sets_max
+
+        if check_badgrip is True:
+            for _ in range(limb_sets):
+                roll = dice.rolldie(1, 6)
+                if roll <= 4:
+                    normaldx += 1
+                else:
+                    badgrip += 1
+        elif check_highdx is True:
+            for _ in range(limb_sets):
+                roll = dice.rolldie(1, 6)
+                if roll < 4:
+                    normaldx += 1
+                else:
+                    highdx += 1
+
+        manipulators += limb_sets * num_per_set
+        badgrip *= num_per_set
+        normaldx *= num_per_set
+        highdx *= num_per_set
+
+        self.body_manip = manipulators
+        self.body_manip_badgrip = badgrip
+        self.body_manip_normaldx = normaldx
+        self.body_manip_highdx = highdx
+        self.body_manip_trunk = has_trunk
+
+    def _gen_body_manip_roll(self):
+
         if self.sapient is True:
             roll = dice.rolldie(1, 6) + 6
         else:
             roll = dice.rolldie(2, 6)
         if self.body_limbs == 2:
             roll -= 1
-        if self.body_limbs > 6:
-            roll += 2
-        elif self.body_limbs > 4:
+        elif 4 < self.body_limbs <= 6:
             roll += 1
+        elif self.body_limbs > 6:
+            roll += 2
         if "Winged Flight" in self.locomotion:
             roll -= 1
         if ((self.habitat == "Open Ocean"
              and "Swimming" in self.locomotion)
                 or (self.habitat_type == "Gas Giant")):
             roll -= 2
-        # TODO: Brachiator is NOT A THING, figure out how to deal with it
-        if "Brachiator" in self.locomotion:
-            roll += 2
         if "Gathering Herbivore" in self.trophic_level:
             roll += 1
 
-        if (roll < 7 or self.body_limbs == 0):
-            manipulators = "No Manipulators"
-        elif roll < 8:
-            manip_sets = 1
-            manip_badgrip = 1
-        elif roll < 9:
-            manipulators = "Prehensile Tail or Trunk"
-        elif roll < 10:
-            manip_sets = 1
-            manip_normaldx = 1
-        elif roll < 11:
-            manip_sets = 2
-            if manip_sets > self.body_limbs:
-                manip_sets = self.body_limbs
-            for _ in range(manip_sets):
-                roll = dice.rolldie(1, 6)
-                if roll < 5:
-                    manip_badgrip = manip_badgrip + 1
-                else:
-                    manip_normaldx = manip_normaldx + 1
-        elif roll < 12:
-            manip_sets = dice.rolldie(1, 6)
-            if manip_sets > self.body_limbs:
-                manip_sets = self.body_limbs
-            for _ in range(manip_sets):
-                roll = dice.rolldie(1, 6)
-                if roll < 5:
-                    manip_badgrip = manip_badgrip + 1
-                else:
-                    manip_normaldx = manip_normaldx + 1
-        else:
-            manip_sets = 2
-            if manip_sets > self.body_limbs:
-                manip_sets = self.body_limbs
-            for _ in range(manip_sets):
-                roll = dice.rolldie(1, 6)
-                if roll < 5:
-                    manip_normaldx = manip_normaldx + 1
-                else:
-                    manip_highdx = manip_highdx + 1
+        return roll
 
-        if manipulators == "":
-            manipulators = "{} Sets of Manipulators; ".format(manip_sets)
-            manipulators += "{} Bad Grip, ".format(manip_badgrip)
-            manipulators += "{} Normal DX, ".format(manip_normaldx)
-            manipulators += "{} High DX".format(manip_highdx)
+    # TODO: refactoring started at the top and is up to this point so far
+    # Alien Creation V: GURPS Space pg. 154
+    def _gen_body_skeleton(self):
 
-        # TODO: change function to return manipulator set numbers ???????
-        #   got to be a better way to handle this
+        skeleton = ""
 
-        # Skeleton
         roll = dice.rolldie_zero(2, 6)
         if self.size_class == "Human-Scale":
             roll += 1
@@ -881,9 +806,6 @@ class Species():
         skeleton = tables.body_skeleton[roll]
         # TODO: deal with Combination skeletons?
 
-        # TODO: Wingspan calculation
-
-        self.body_manip = manipulators
         self.body_skel = skeleton
 
     # Alien Creation VI: GURPS Space pg. 157
@@ -2209,5 +2131,5 @@ if __name__ == '__main__':
     import planetinfo
     PLANET = planetinfo.PlanetInfo()
     ALIEN = Species(PLANET)
-    ALIEN.reroll()
+    ALIEN.generate()
     ALIEN.output_text_basic()

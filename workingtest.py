@@ -14,7 +14,7 @@ if __name__ == '__main__':
     print("space-aliens.py run! Have some dice rolls:")
     planet = planetinfo.PlanetInfo()
     spec = species.Species(planet)
-    spec.reroll()
+    spec.generate()
     print("First planet:")
     print("")
     planet.planetOutput()
@@ -27,16 +27,16 @@ if __name__ == '__main__':
     start = time.process_time()
     for i in range(1, 10000):
         planet.reroll()
-        spec.reroll()
-#        print(".", end="")
-#        if i % 89 == 0:
-#            print("")
+        spec = species.Species(planet)
+        spec.generate()
+
     end = time.process_time()
     elapsed = end - start
     print("That took ", end="")
     print(elapsed, end=" ")
     print("seconds!")
     print("")
+    spec.output_text_basic()
 '''
     print("Specific Input Tests:")
     print("")

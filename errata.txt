@@ -101,20 +101,36 @@ Errata / Deviations:
 		e.g. limbs per side per segment
 		
     It is possible to get "walking" creatures with no limbs
+        or creatures that e.g. only slither but have a bunch of limbs
         I don't know how that would work, but I have left it in as there is
         not really any way to interpret it otherwise without deviating from
         the procedure in the book by adding my own modifiers or special cases
 		
-	Tail Features in the Tails table do not have all words capitalized
+	Tails - Tail Features do not have all words capitalized
 	  I have done so
-	  
-	If Tail Features rolls "Combination" and both combination rolls 
-	come up the same, I just drop one
+
+	Tails - If Tail Features rolls "Combination" and both combination rolls 
+    	come up the same, I just drop one
 		The text does not indicate if this should be done 
 		or if I should reroll until two uniques
+	
+	Manipulators - 'for Asymmetrical ogranisms replace a "pair" of limbs with
+                	a single one'
+        "Pair" and "set" appear to be used interchangably in the table
+        I count an asymmetrical or spherical set as 1 manipulator per set
+	
+	Manipulators - Modifiers "-1 if winged or gliding"
+    	There is no "gliding" previously defined so I ignore it and apply this
+    	modifier if the creature has "winged flight" as a locomotion method
 		
 	Manipulators - Modifiers "+2 if Brachiator", 
-	but Brachiator is not present in earlier tables
+    	but Brachiator is not present in earlier tables so I ignore this
+
+    Manipulators - the logic in this section is kind of hard for me to parse
+        I spent a long time working up something and I still don't really
+        like it 100%, because the section is so unclear to me
+        I'm not going to explain it here for now, maybe later
+        For now, read Species._gen_body_manipulators() to see how I do it
 	
 - Alien Creation VI (GURPS Space pg. 157):
 
