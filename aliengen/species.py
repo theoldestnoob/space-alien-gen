@@ -38,18 +38,18 @@ class Species():
         self.size_weight = 0
         self.stat_st = 0
         self.stat_move_walk = 0
-        self.body_wingspan = 0
-        self.body_symmetry = ""
-        self.body_sides = 0
-        self.body_segments = 0
-        self.body_limbs = 0
-        self.body_tail = []
-        self.body_manip = 0
-        self.body_manip_badgrip = 0
-        self.body_manip_normaldx = 0
-        self.body_manip_highdx = 0
-        self.body_manip_trunk = False
-        self.body_skel = ()
+        self.wingspan = 0
+        self.symmetry = ""
+        self.sides = 0
+        self.segments = 0
+        self.limbs = 0
+        self.tail = []
+        self.manip = 0
+        self.manip_badgrip = 0
+        self.manip_normaldx = 0
+        self.manip_highdx = 0
+        self.manip_trunk = False
+        self.skel = ()
         self.skin_type = ""
         self.skin_detail = ""
         self.breathing = ""
@@ -112,12 +112,12 @@ class Species():
         self._gen_size_weight()
         self._gen_stat_st()
         self._gen_stat_move()
-        self._gen_body_symmetry()
-        self._gen_body_sides()
-        self._gen_body_limbs()
-        self._gen_body_tail()
-        self._gen_body_manipulators()
-        self._gen_body_skeleton()
+        self._gen_symmetry()
+        self._gen_sides()
+        self._gen_limbs()
+        self._gen_tail()
+        self._gen_manipulators()
+        self._gen_skeleton()
         self._gen_skin()
         self._gen_breathing()
         self._gen_temperature_regulation()
@@ -147,19 +147,19 @@ class Species():
         print("  ST: {:.2f}".format(self.stat_st))
         print("  Move (Walking): {:.2f}".format(self.stat_move_walk))
         print(" Body Plan:")
-        print("  Symmetry: {}".format(self.body_symmetry))
-        print("  Sides: {}".format(self.body_sides))
-        print("  Segments: {}".format(self.body_segments))
-        print("  Limbs: {}".format(self.body_limbs))
-        print("  Tail: {}".format(self.body_tail))
-        print("  Manipulators: {}".format(self.body_manip))
-        print("   Bad Grip: {}".format(self.body_manip_badgrip))
-        print("   Normal DX: {}".format(self.body_manip_normaldx))
-        print("   High DX: {}".format(self.body_manip_highdx))
-        print("   Prehensile Trunk or Tail: {}".format(self.body_manip_trunk))
-        print("  Skeleton: {}".format(self.body_skel))
+        print("  Symmetry: {}".format(self.symmetry))
+        print("  Sides: {}".format(self.sides))
+        print("  Segments: {}".format(self.segments))
+        print("  Limbs: {}".format(self.limbs))
+        print("  Tail: {}".format(self.tail))
+        print("  Manipulators: {}".format(self.manip))
+        print("   Bad Grip: {}".format(self.manip_badgrip))
+        print("   Normal DX: {}".format(self.manip_normaldx))
+        print("   High DX: {}".format(self.manip_highdx))
+        print("   Prehensile Trunk or Tail: {}".format(self.manip_trunk))
+        print("  Skeleton: {}".format(self.skel))
         print("  Skin: {}, {}".format(self.skin_type, self.skin_detail))
-        print("  Wingspan: {}".format(self.body_wingspan))
+        print("  Wingspan: {}".format(self.wingspan))
         print(" Metabolism:")
         print("  Breathing: {}".format(self.breathing))
         print("  Temp. Regulation: {}".format(self.temperature_regulation))
@@ -585,10 +585,10 @@ class Species():
 
         wingspan = 0
 
-        self.body_wingspan = wingspan
+        self.wingspan = wingspan
 
     # Alien Creation V: GURPS Space pg. 154
-    def _gen_body_symmetry(self):
+    def _gen_symmetry(self):
 
         symmetry = ""
 
@@ -597,66 +597,66 @@ class Species():
                 or "Bouyant Flight" in self.locomotion
                 or self.habitat_type == "Space-Dwelling"):
             roll += 1
-        symmetry = tables.body_symmetry[roll]
+        symmetry = tables.symmetry[roll]
 
-        self.body_symmetry = symmetry
+        self.symmetry = symmetry
 
     # Alien Creation V: GURPS Space pg. 154
-    def _gen_body_sides(self):
+    def _gen_sides(self):
 
         sides = 0
 
-        if self.body_symmetry == "Bilateral":
+        if self.symmetry == "Bilateral":
             sides = 2
-        elif self.body_symmetry == "Trilateral":
+        elif self.symmetry == "Trilateral":
             sides = 3
-        elif self.body_symmetry == "Radial":
+        elif self.symmetry == "Radial":
             sides = dice.rolldie(1, 6) + 3
-        elif self.body_symmetry == "Spherical":
+        elif self.symmetry == "Spherical":
             roll = dice.rolldie_zero(1, 6)
             sides = (4, 6, 6, 8, 12, 20)[roll]
 
-        self.body_sides = sides
+        self.sides = sides
 
     # Alien Creation V: GURPS Space pg. 154
-    def _gen_body_limbs(self):
+    def _gen_limbs(self):
 
         segments = 0
         limbs = 0
 
-        if self.body_symmetry == "Spherical":
-            limbs = self.body_sides
-        elif self.body_symmetry == "Asymmetric":
+        if self.symmetry == "Spherical":
+            limbs = self.sides
+        elif self.symmetry == "Asymmetric":
             limbs = dice.rolldie(2, 6) - 2
         else:
             roll = dice.rolldie(1, 6)
 
-            if self.body_symmetry == "Trilateral":
+            if self.symmetry == "Trilateral":
                 roll -= 1
-            elif self.body_symmetry == "Radial":
+            elif self.symmetry == "Radial":
                 roll -= 2
 
             if roll == 2:
                 segments = 1
-                limbs = self.body_sides
+                limbs = self.sides
             elif roll == 3:
                 segments = 2
-                limbs = self.body_sides * 2
+                limbs = self.sides * 2
             elif roll == 4:
                 segments = dice.rolldie(1, 6)
-                limbs = segments * self.body_sides
+                limbs = segments * self.sides
             elif roll == 5:
                 segments = dice.rolldie(2, 6)
-                limbs = segments * self.body_sides
+                limbs = segments * self.sides
             elif roll == 6:
                 segments = dice.rolldie(3, 6)
-                limbs = segments * self.body_sides
+                limbs = segments * self.sides
 
-        self.body_segments = segments
-        self.body_limbs = limbs
+        self.segments = segments
+        self.limbs = limbs
 
     # Alien Creation V: GURPS Space pg. 154
-    def _gen_body_tail(self):
+    def _gen_tail(self):
 
         tail = []
 
@@ -664,22 +664,22 @@ class Species():
         if "Swimming" in self.locomotion:
             roll += 1
 
-        if (self.body_symmetry != "Spherical"
+        if (self.symmetry != "Spherical"
                 and roll >= 5):
             roll = dice.rolldie_zero(2, 6)
-            tail.append(tables.body_tail_features[roll])
+            tail.append(tables.tail_features[roll])
             while "Combination" in tail:
                 tail.clear()
                 roll1 = dice.rolldie_zero(1, 6) + 5
                 roll2 = dice.rolldie_zero(1, 6) + 5
-                tail.append(tables.body_tail_features[roll1])
-                tail.append(tables.body_tail_features[roll2])
+                tail.append(tables.tail_features[roll1])
+                tail.append(tables.tail_features[roll2])
                 tail = list(dict.fromkeys(tail))
 
-        self.body_tail = tail
+        self.tail = tail
 
     # Alien Creation V: GURPS Space pg. 154
-    def _gen_body_manipulators(self):
+    def _gen_manipulators(self):
 
         manipulators = 0
         limb_sets = 0
@@ -692,12 +692,12 @@ class Species():
         check_highdx = False
         num_per_set = 0
 
-        if self.body_symmetry in ("Asymmetric", "Spherical"):
+        if self.symmetry in ("Asymmetric", "Spherical"):
             num_per_set = 1
         else:
-            num_per_set = self.body_sides
+            num_per_set = self.sides
 
-        roll = self._gen_body_manip_roll()
+        roll = self._gen_manip_roll()
 
         if roll == 8:
             # TODO: handle having a prehensile trunk or tail better
@@ -706,7 +706,7 @@ class Species():
             manipulators += 1
             roll = dice.rolldie(1, 6)
             if roll == 6:
-                roll = self._gen_body_manip_roll()
+                roll = self._gen_manip_roll()
 
         if roll == 7:
             limb_sets = 1
@@ -724,7 +724,7 @@ class Species():
             limb_sets = dice.rolldie(1, 6)
             check_highdx = True
 
-        limb_sets_max = int(self.body_limbs / num_per_set)
+        limb_sets_max = int(self.limbs / num_per_set)
         if limb_sets > limb_sets_max:
             limb_sets = limb_sets_max
 
@@ -748,23 +748,23 @@ class Species():
         normaldx *= num_per_set
         highdx *= num_per_set
 
-        self.body_manip = manipulators
-        self.body_manip_badgrip = badgrip
-        self.body_manip_normaldx = normaldx
-        self.body_manip_highdx = highdx
-        self.body_manip_trunk = has_trunk
+        self.manip = manipulators
+        self.manip_badgrip = badgrip
+        self.manip_normaldx = normaldx
+        self.manip_highdx = highdx
+        self.manip_trunk = has_trunk
 
-    def _gen_body_manip_roll(self):
+    def _gen_manip_roll(self):
 
         if self.sapient is True:
             roll = dice.rolldie(1, 6) + 6
         else:
             roll = dice.rolldie(2, 6)
-        if self.body_limbs == 2:
+        if self.limbs == 2:
             roll -= 1
-        elif 4 < self.body_limbs <= 6:
+        elif 4 < self.limbs <= 6:
             roll += 1
-        elif self.body_limbs > 6:
+        elif self.limbs > 6:
             roll += 2
         if "Winged Flight" in self.locomotion:
             roll -= 1
@@ -778,7 +778,7 @@ class Species():
         return roll
 
     # Alien Creation V: GURPS Space pg. 154
-    def _gen_body_skeleton(self):
+    def _gen_skeleton(self):
 
         skeleton = []
 
@@ -791,7 +791,7 @@ class Species():
             roll += 1
         if self.locomotion in ("Immobile", "Slithering"):
             roll -= 1
-        if self.body_symmetry == "Asymmetric":
+        if self.symmetry == "Asymmetric":
             roll -= 1
         if self.planet.gravity < 0.5:
             roll -= 1
@@ -799,16 +799,16 @@ class Species():
             roll += 1
         roll = max(0, min(roll, 14))
 
-        skeleton.append(tables.body_skeleton[roll])
+        skeleton.append(tables.skeleton[roll])
         while ("Combination" in skeleton
                 or skeleton.count(skeleton[0]) > 1):
             skeleton.clear()
             roll1 = dice.rolldie_zero(1, 7) + 2
             roll2 = dice.rolldie_zero(1, 7) + 2
-            skeleton.append(tables.body_skeleton[roll1])
-            skeleton.append(tables.body_skeleton[roll2])
+            skeleton.append(tables.skeleton[roll1])
+            skeleton.append(tables.skeleton[roll2])
 
-        self.body_skel = skeleton
+        self.skel = skeleton
 
     # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation VI: GURPS Space pg. 157
@@ -819,7 +819,7 @@ class Species():
         covertype = ""
 
         roll = dice.rolldie_zero(1, 6)
-        if "External" in self.body_skel:
+        if "External" in self.skel:
             covertype = "Exoskeleton"
         else:
             covertype = tables.skin_covertype[roll]
@@ -979,7 +979,7 @@ class Species():
 
         roll = dice.rolldie(2, 6)
 
-        if "External" in self.body_skel:
+        if "External" in self.skel:
             roll -= 1
         if self.size_class == "Large":
             roll += 1
@@ -1008,7 +1008,7 @@ class Species():
             sroll = dice.rolldie(2, 6)
             if "Immobile" in self.locomotion:
                 sroll = sroll - 1
-            if self.body_symmetry == "Asymmetric":
+            if self.symmetry == "Asymmetric":
                 sroll = sroll - 1
             if self._is_autotroph:
                 sroll = sroll - 1
@@ -1276,7 +1276,7 @@ class Species():
 
         # Touch
         roll_t = dice.rolldie(2, 6)
-        if "External" in self.body_skel:
+        if "External" in self.skel:
             roll_t = roll_t - 2
         if self.habitat_type == "Water":
             roll_t = roll_t + 2
@@ -1346,8 +1346,8 @@ class Species():
             if ("Gathering Herbivore" in self.trophic_level
                     or "Grazing/Browsing Herbivore" in self.trophic_level):
                 roll += 1
-            if (self.body_symmetry == "Radial"
-                    or self.body_symmetry == "Spherical"):
+            if (self.symmetry == "Radial"
+                    or self.symmetry == "Spherical"):
                 roll += 1
             if roll > 10:
                 special.append("360 Vision")
