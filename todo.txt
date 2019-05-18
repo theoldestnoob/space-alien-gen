@@ -42,6 +42,7 @@ GitHub
 
 Features
     - User Interface
+        - example.py for using module
     	- interactive text
     	- command line
     	- web
@@ -72,9 +73,6 @@ Features
         - horizontal disadvantage based on symmetry and # of limbs pg 150
 
 Possible Bugs
-    - LOGIC ERROR: "carnivore" subtype won't catch "combined" trophic level
-    	update all instances to account for Combined
-    	is_carnivore function or variable?
     - sanity check some combos 
         (Large Mobile Deep-Ocean Vent Decomposers, Immobile Chasing Predators, 
         Cannibalistic Herbivores, "Mating-only no pair bond" pair-bonded, wtf?)

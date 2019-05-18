@@ -49,7 +49,7 @@ class Species():
         self.body_manip_normaldx = 0
         self.body_manip_highdx = 0
         self.body_manip_trunk = False
-        self.body_skel = ""
+        self.body_skel = ()
         self.skin_type = ""
         self.skin_detail = ""
         self.breathing = ""
@@ -777,21 +777,19 @@ class Species():
 
         return roll
 
-    # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation V: GURPS Space pg. 154
     def _gen_body_skeleton(self):
 
-        skeleton = ""
+        skeleton = []
 
         roll = dice.rolldie_zero(2, 6)
         if self.size_class == "Human-Scale":
             roll += 1
-        elif self.size_class == "Large":
+        elif self.size_class in ("Large", "Huge"):
             roll += 2
         if self.habitat_type == "Land":
             roll += 1
-        if ("Immobile" in self.locomotion
-                or "Slithering" in self.locomotion):
+        if self.locomotion in ("Immobile", "Slithering"):
             roll -= 1
         if self.body_symmetry == "Asymmetric":
             roll -= 1
@@ -799,15 +797,20 @@ class Species():
             roll -= 1
         if self.planet.gravity > 1.25:
             roll += 1
-        if roll < 0:
-            roll = 0
-        if roll > 14:
-            roll = 14
-        skeleton = tables.body_skeleton[roll]
-        # TODO: deal with Combination skeletons?
+        roll = max(0, min(roll, 14))
+
+        skeleton.append(tables.body_skeleton[roll])
+        while ("Combination" in skeleton
+                or skeleton.count(skeleton[0]) > 1):
+            skeleton.clear()
+            roll1 = dice.rolldie_zero(1, 7) + 2
+            roll2 = dice.rolldie_zero(1, 7) + 2
+            skeleton.append(tables.body_skeleton[roll1])
+            skeleton.append(tables.body_skeleton[roll2])
 
         self.body_skel = skeleton
 
+    # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation VI: GURPS Space pg. 157
     # TODO: Separate into functions for
     #   skin type, skin ??? I may be misreading these tables
@@ -816,7 +819,7 @@ class Species():
         covertype = ""
 
         roll = dice.rolldie_zero(1, 6)
-        if self.body_skel == "External skeleton":
+        if "External" in self.body_skel:
             covertype = "Exoskeleton"
         else:
             covertype = tables.skin_covertype[roll]
@@ -976,7 +979,7 @@ class Species():
 
         roll = dice.rolldie(2, 6)
 
-        if self.body_skel == "External skeleton":
+        if "External" in self.body_skel:
             roll -= 1
         if self.size_class == "Large":
             roll += 1
@@ -1273,7 +1276,7 @@ class Species():
 
         # Touch
         roll_t = dice.rolldie(2, 6)
-        if self.body_skel == "External skeleton":
+        if "External" in self.body_skel:
             roll_t = roll_t - 2
         if self.habitat_type == "Water":
             roll_t = roll_t + 2

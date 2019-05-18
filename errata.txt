@@ -132,6 +132,11 @@ Errata / Deviations:
         I'm not going to explain it here for now, maybe later
         For now, read Species._gen_body_manipulators() to see how I do it
 	
+	Skeleton - Table and text do not specify how to handle "Combination"
+    	I roll twice on the table but only on 4 - 10 since computers can 
+    	handle rolling a 7-sided die with no problems, and keep re-rolling 
+    	until I get two unique skeleton types
+	
 - Alien Creation VI (GURPS Space pg. 157):
 
 	Skin - Scales Table Modifier "Tunneling" does not exist on other tables
