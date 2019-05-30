@@ -4,9 +4,9 @@ Created on Dec 15, 2018
 @author: willh
 '''
 
-world_sizes = ["Tiny", "Small", "Standard", "Large"]
+world_sizes = ("Tiny", "Small", "Standard", "Large")
 
-world_types = ["Asteroid Belt",
+world_types = ("Asteroid Belt",
                "Ice",
                "Sulfur",
                "Rock",
@@ -15,9 +15,9 @@ world_types = ["Asteroid Belt",
                "Ocean",
                "Garden",
                "Greenhouse",
-               "Cthonian"]
+               "Cthonian")
 
-world_climates = ["Frozen",
+world_climates = ("Frozen",
                   "Very Cold",
                   "Cold",
                   "Chilly",
@@ -27,9 +27,9 @@ world_climates = ["Frozen",
                   "Tropical",
                   "Hot",
                   "Very Hot",
-                  "Infernal"]
+                  "Infernal")
 
-chemical_basis = ["Hydrogen-Based",
+chemical_basis = ("Hydrogen-Based",
                   "Hydrogen-Based",
                   "Hydrogen-Based",
                   "Ammonia-Based",
@@ -44,16 +44,16 @@ chemical_basis = ["Hydrogen-Based",
                   "Silicon/Liquid Rock",
                   "Plasma",
                   "Exotica",
-                  "Exotica"]
+                  "Exotica")
 
 # not used in any code, defined as a reference
-hab_type = ["Space-Dwelling",
+hab_type = ("Space-Dwelling",
             "Gas Giant",
             "Planetary Interior",
             "Water",
-            "Land"]
+            "Land")
 
-hab_land = ["Plains",
+hab_land = ("Plains",
             "Plains",
             "Plains",
             "Plains",
@@ -68,9 +68,9 @@ hab_land = ["Plains",
             "Jungle",
             "Jungle",
             "Jungle",
-            "Jungle"]
+            "Jungle")
 
-hab_water = ["Banks",
+hab_water = ("Banks",
              "Banks",
              "Banks",
              "Banks",
@@ -85,9 +85,9 @@ hab_water = ["Banks",
              "Reef",
              "Reef",
              "Reef",
-             "Reef"]
+             "Reef")
 
-troph_ordinary = ["Combined",
+troph_ordinary = ("Combined",
                   "Autotroph",
                   "Decomposer",
                   "Scavenger",
@@ -102,9 +102,9 @@ troph_ordinary = ["Combined",
                   "Hijacking Carnivore",
                   "Filter-Feeder",
                   "Parasite/Symbiont",
-                  "Parasite/Symbiont"]
+                  "Parasite/Symbiont")
 
-troph_sapient = ["Combined",
+troph_sapient = ("Combined",
                  "Parasite/Symbiont",
                  "Filter-Feeder",
                  "Pouncing Carnivore",
@@ -119,17 +119,17 @@ troph_sapient = ["Combined",
                  "Trapping Carnivore",
                  "Trapping Carnivore",
                  "Decomposer",
-                 "Autotroph"]
+                 "Autotroph")
 
-troph_auto = ["Photosynthetic Autotroph",
+troph_auto = ("Photosynthetic Autotroph",
               "Photosynthetic Autotroph",
               "Photosynthetic Autotroph",
               "Chemosynthetic Autotroph",
               "Chemosynthetic Autotroph",
-              "Exotic Autotroph"]
+              "Exotic Autotroph")
 
 loco_primary = {
-        "Arctic": ["Immobile",
+        "Arctic": ("Immobile",
                    "Slithering",
                    "Slithering",
                    "Swimming",
@@ -140,9 +140,9 @@ loco_primary = {
                    "Winged Flight",
                    "Winged Flight",
                    "Special",
-                   "Special"],
+                   "Special"),
 
-        "Banks": ["Immobile",
+        "Banks": ("Immobile",
                   "Immobile",
                   "Floating",
                   "Sailing",
@@ -153,9 +153,9 @@ loco_primary = {
                   "Winged Flight",
                   "Winged Flight",
                   "Special",
-                  "Special"],
+                  "Special"),
 
-        "Open Ocean": ["Immobile",
+        "Open Ocean": ("Immobile",
                        "Immobile",
                        "Floating",
                        "Sailing",
@@ -166,9 +166,9 @@ loco_primary = {
                        "Winged Flight",
                        "Winged Flight",
                        "Special",
-                       "Special"],
+                       "Special"),
 
-        "Deep-Ocean Vents": ["Immobile",
+        "Deep-Ocean Vents": ("Immobile",
                              "Immobile",
                              "Immobile",
                              "Immobile",
@@ -179,9 +179,9 @@ loco_primary = {
                              "Swimming",
                              "Swimming",
                              "Swimming",
-                             "Swimming"],
+                             "Swimming"),
 
-        "Reef": ["Immobile",
+        "Reef": ("Immobile",
                  "Immobile",
                  "Immobile",
                  "Immobile",
@@ -192,9 +192,9 @@ loco_primary = {
                  "Swimming",
                  "Swimming",
                  "Swimming",
-                 "Swimming"],
+                 "Swimming"),
 
-        "Desert": ["Immobile",
+        "Desert": ("Immobile",
                    "Slithering",
                    "Slithering",
                    "Digging",
@@ -205,9 +205,9 @@ loco_primary = {
                    "Winged Flight",
                    "Winged Flight",
                    "Special",
-                   "Special"],
+                   "Special"),
 
-        "Gas Giant": ["Swimming",
+        "Gas Giant": ("Swimming",
                       "Swimming",
                       "Swimming",
                       "Swimming",
@@ -218,9 +218,9 @@ loco_primary = {
                       "Bouyant Flight",
                       "Bouyant Flight",
                       "Bouyant Flight",
-                      "Bouyant Flight"],
+                      "Bouyant Flight"),
 
-        "Island/Beach": ["Immobile",
+        "Island/Beach": ("Immobile",
                          "Slithering",
                          "Slithering",
                          "Digging",
@@ -231,9 +231,9 @@ loco_primary = {
                          "Winged Flight",
                          "Winged Flight",
                          "Special",
-                         "Special"],
+                         "Special"),
 
-        "Tropical Lagoon": ["Immobile",
+        "Tropical Lagoon": ("Immobile",
                             "Immobile",
                             "Immobile",
                             "Floating",
@@ -244,9 +244,9 @@ loco_primary = {
                             "Winged Flight",
                             "Winged Flight",
                             "Special",
-                            "Special"],
+                            "Special"),
 
-        "Fresh-Water Lakes": ["Immobile",
+        "Fresh-Water Lakes": ("Immobile",
                               "Immobile",
                               "Floating",
                               "Walking",
@@ -257,9 +257,9 @@ loco_primary = {
                               "Winged Flight",
                               "Winged Flight",
                               "Special",
-                              "Special"],
+                              "Special"),
 
-        "Salt-Water Sea": ["Immobile",
+        "Salt-Water Sea": ("Immobile",
                            "Immobile",
                            "Floating",
                            "Walking",
@@ -270,9 +270,9 @@ loco_primary = {
                            "Winged Flight",
                            "Winged Flight",
                            "Special",
-                           "Special"],
+                           "Special"),
 
-        "Mountain": ["Immobile",
+        "Mountain": ("Immobile",
                      "Slithering",
                      "Slithering",
                      "Digging",
@@ -283,9 +283,9 @@ loco_primary = {
                      "Winged Flight",
                      "Winged Flight",
                      "Special",
-                     "Special"],
+                     "Special"),
 
-        "Plains": ["Immobile",
+        "Plains": ("Immobile",
                    "Slithering",
                    "Slithering",
                    "Digging",
@@ -296,9 +296,9 @@ loco_primary = {
                    "Winged Flight",
                    "Winged Flight",
                    "Special",
-                   "Special"],
+                   "Special"),
 
-        "Planetary Interior": ["Immobile",
+        "Planetary Interior": ("Immobile",
                                "Immobile",
                                "Immobile",
                                "Immobile",
@@ -309,9 +309,9 @@ loco_primary = {
                                "Digging",
                                "Digging",
                                "Digging",
-                               "Digging"],
+                               "Digging"),
 
-        "River/Stream": ["Immobile",
+        "River/Stream": ("Immobile",
                          "Immobile",
                          "Floating",
                          "Slithering",
@@ -322,9 +322,9 @@ loco_primary = {
                          "Winged Flight",
                          "Winged Flight",
                          "Special",
-                         "Special"],
+                         "Special"),
 
-        "Space-Dwelling": ["Immobile",
+        "Space-Dwelling": ("Immobile",
                            "Immobile",
                            "Immobile",
                            "Immobile",
@@ -335,9 +335,9 @@ loco_primary = {
                            "Solar Sail",
                            "Solar Sail",
                            "Rocket",
-                           "Rocket"],
+                           "Rocket"),
 
-        "Swampland": ["Immobile",
+        "Swampland": ("Immobile",
                       "Swimming",
                       "Swimming",
                       "Swimming",
@@ -348,9 +348,9 @@ loco_primary = {
                       "Winged Flight",
                       "Winged Flight",
                       "Special",
-                      "Special"],
+                      "Special"),
 
-        "Woodlands": ["Immobile",
+        "Woodlands": ("Immobile",
                       "Slithering",
                       "Slithering",
                       "Digging",
@@ -361,9 +361,9 @@ loco_primary = {
                       "Winged Flight",
                       "Winged Flight",
                       "Special",
-                      "Special"],
+                      "Special"),
 
-        "Jungle": ["Immobile",
+        "Jungle": ("Immobile",
                    "Slithering",
                    "Slithering",
                    "Digging",
@@ -374,12 +374,12 @@ loco_primary = {
                    "Winged Flight",
                    "Winged Flight",
                    "Special",
-                   "Special"]
+                   "Special")
 
         }
 
 loco_second_water = {
-        "Climbing": ["Slithering",
+        "Climbing": ("Slithering",
                      "Slithering",
                      "Slithering",
                      "Slithering",
@@ -389,9 +389,9 @@ loco_second_water = {
                      "Walking",
                      "Walking",
                      "Walking",
-                     ""],
+                     ""),
 
-        "Digging": ["Slithering",
+        "Digging": ("Slithering",
                     "Slithering",
                     "Slithering",
                     "Slithering",
@@ -401,9 +401,9 @@ loco_second_water = {
                     "Swimming",
                     "Swimming",
                     "Swimming",
-                    ""],
+                    ""),
 
-        "Slithering": ["Swimming",
+        "Slithering": ("Swimming",
                        "Swimming",
                        "Swimming",
                        "Swimming",
@@ -413,9 +413,9 @@ loco_second_water = {
                        "Swimming",
                        "Swimming",
                        "",
-                       ""],
+                       ""),
 
-        "Swimming": ["Slithering",
+        "Swimming": ("Slithering",
                      "Slithering",
                      "Slithering",
                      "Slithering",
@@ -425,9 +425,9 @@ loco_second_water = {
                      "Walking",
                      "",
                      "",
-                     ""],
+                     ""),
 
-        "Walking": ["Swimming",
+        "Walking": ("Swimming",
                     "Swimming",
                     "Swimming",
                     "Swimming",
@@ -437,9 +437,9 @@ loco_second_water = {
                     "",
                     "",
                     "",
-                    ""],
+                    ""),
 
-        "Winged Flight": ["Climbing",
+        "Winged Flight": ("Climbing",
                           "Climbing",
                           "Climbing",
                           "Climbing",
@@ -449,12 +449,12 @@ loco_second_water = {
                           "Walking",
                           "Walking",
                           "Slithering",
-                          ""]
+                          "")
 
         }
 
 loco_second_land = {
-        "Climbing": ["Slithering",
+        "Climbing": ("Slithering",
                      "Slithering",
                      "Slithering",
                      "Slithering",
@@ -464,9 +464,9 @@ loco_second_land = {
                      "Walking",
                      "Walking",
                      "Walking",
-                     ""],
+                     ""),
 
-        "Digging": ["Slithering",
+        "Digging": ("Slithering",
                     "Slithering",
                     "Slithering",
                     "Slithering",
@@ -476,9 +476,9 @@ loco_second_land = {
                     "Walking",
                     "Walking",
                     "Walking",
-                    ""],
+                    ""),
 
-        "Swimming": ["Slithering",
+        "Swimming": ("Slithering",
                      "Slithering",
                      "Slithering",
                      "Slithering",
@@ -488,9 +488,9 @@ loco_second_land = {
                      "Walking",
                      "",
                      "",
-                     ""],
+                     ""),
 
-        "Walking": ["Slithering",
+        "Walking": ("Slithering",
                     "Slithering",
                     "Digging",
                     "Walking",
@@ -500,9 +500,9 @@ loco_second_land = {
                     "Winged Flight",
                     "Winged Flight",
                     "Special",
-                    "Special"],
+                    "Special"),
 
-        "Winged Flight": ["Climbing",
+        "Winged Flight": ("Climbing",
                           "Climbing",
                           "Climbing",
                           "Climbing",
@@ -512,54 +512,54 @@ loco_second_land = {
                           "Walking",
                           "Walking",
                           "Slithering",
-                          ""]
+                          "")
 
         }
 
 loco_primary_extra = {
 
-        "Arctic": ["Swimming", "Digging"],
-        "Banks": ["Winged Flight"],
-        "Open Ocean": ["Winged Flight"],
-        "Deep-Ocean Vents": ["Digging", "Walking"],
-        "Reef": ["Digging", "Walking"],
-        "Desert": ["Digging", "Winged Flight"],
-        "Gas Giant": [],
-        "Island/Beach": ["Digging", "Climbing", "Swimming", "Winged Flight"],
-        "Tropical Lagoon": ["Slithering", "Walking", "Digging"],
-        "Fresh-Water Lakes": ["Walking", "Slithering"],
-        "Salt-Water Sea": ["Walking", "Slithering"],
-        "Mountain": ["Digging", "Walking", "Climbing", "Winged Flight"],
-        "Plains": ["Digging", "Winged Flight"],
-        "Planetary Interior": [],
-        "River/Stream": ["Slithering", "Digging", "Walking"],
-        "Space-Dwelling": [],
-        "Swampland": ["Swimming", "Digging", "Climbing"],
-        "Woodlands": ["Digging", "Climbing", "Winged Flight"],
-        "Jungle": ["Digging", "Climbing", "Winged Flight"]
+        "Arctic": ("Swimming", "Digging"),
+        "Banks": ("Winged Flight"),
+        "Open Ocean": ("Winged Flight"),
+        "Deep-Ocean Vents": ("Digging", "Walking"),
+        "Reef": ("Digging", "Walking"),
+        "Desert": ("Digging", "Winged Flight"),
+        "Gas Giant": (),
+        "Island/Beach": ("Digging", "Climbing", "Swimming", "Winged Flight"),
+        "Tropical Lagoon": ("Slithering", "Walking", "Digging"),
+        "Fresh-Water Lakes": ("Walking", "Slithering"),
+        "Salt-Water Sea": ("Walking", "Slithering"),
+        "Mountain": ("Digging", "Walking", "Climbing", "Winged Flight"),
+        "Plains": ("Digging", "Winged Flight"),
+        "Planetary Interior": (),
+        "River/Stream": ("Slithering", "Digging", "Walking"),
+        "Space-Dwelling": (),
+        "Swampland": ("Swimming", "Digging", "Climbing"),
+        "Woodlands": ("Digging", "Climbing", "Winged Flight"),
+        "Jungle": ("Digging", "Climbing", "Winged Flight")
 
         }
 
 loco_second_extra = {
 
-        "Climbing": [],
-        "Digging": ["Slithering", "Walking"],
-        "Slithering": [],
-        "Swimming": [],
-        "Walking": [],
-        "Winged Flight": ["Climbing", "Swimming", "Slithering"]
+        "Climbing": (),
+        "Digging": ("Slithering", "Walking"),
+        "Slithering": (),
+        "Swimming": (),
+        "Walking": (),
+        "Winged Flight": ("Climbing", "Swimming", "Slithering")
 
         }
 
-size_volume_small = [0.05, 0.07, 0.1, 0.15, 0.2, 0.3]
-size_volume_human = [0.5, 0.7, 1, 1.5, 2, 3]
-size_volume_large = [5, 7, 10, 15, 20, 99999]
+size_volume_small = (0.05, 0.07, 0.1, 0.15, 0.2, 0.3)
+size_volume_human = (0.5, 0.7, 1, 1.5, 2, 3)
+size_volume_large = (5, 7, 10, 15, 20, 99999)
 
-size_mass_small = [0.003, 0.01, 0.025, 0.08, 0.2, 1]
-size_mass_human = [4, 9, 25, 80, 200, 600]
-size_mass_large = [3000, 8000, 24000, 80000, 200000, 99999]
+size_mass_small = (0.003, 0.01, 0.025, 0.08, 0.2, 1)
+size_mass_human = (4, 9, 25, 80, 200, 600)
+size_mass_large = (3000, 8000, 24000, 80000, 200000, 99999)
 
-symmetry = ["Bilateral",
+symmetry = ("Bilateral",
             "Bilateral",
             "Bilateral",
             "Bilateral",
@@ -571,9 +571,9 @@ symmetry = ["Bilateral",
             "Asymmetric",
             "Asymmetric",
             "Asymmetric",
-            "Asymmetric"]
+            "Asymmetric")
 
-tail_features = ["",
+tail_features = ("",
                  "",
                  "",
                  "",
@@ -583,9 +583,9 @@ tail_features = ["",
                  "Barbed Striker",
                  "Gripping",
                  "Branching",
-                 "Combination"]
+                 "Combination")
 
-skeleton = ["",
+skeleton = ("",
             "",
             "Hydrostatic",
             "Hydrostatic",
@@ -599,16 +599,16 @@ skeleton = ["",
             "Combination",
             "Combination",
             "Combination",
-            "Combination"]
+            "Combination")
 
-skin_covertype = ["Skin",
+skin_covertype = ("Skin",
                   "Skin",
                   "Scales",
                   "Fur",
                   "Feathers",
-                  "Exoskeleton"]
+                  "Exoskeleton")
 
-skin_skin = ["Soft Skin",
+skin_skin = ("Soft Skin",
              "Soft Skin",
              "Soft Skin",
              "Normal Skin",
@@ -621,9 +621,9 @@ skin_skin = ["Soft Skin",
              "Blubber",
              "Blubber",
              "Blubber",
-             "Blubber"]
+             "Blubber")
 
-skin_scales = ["Normal Skin",
+skin_scales = ("Normal Skin",
                "Normal Skin",
                "Scales (DR 1)",
                "Scales (DR 1)",
@@ -635,9 +635,9 @@ skin_scales = ["Normal Skin",
                "Armor Shell (DR 5)",
                "Armor Shell (DR 5)",
                "Armor Shell (DR 5)",
-               "Armor Shell (DR 5)"]
+               "Armor Shell (DR 5)")
 
-skin_fur = ["Normal Skin",
+skin_fur = ("Normal Skin",
             "Normal Skin",
             "Normal Skin",
             "Normal Skin",
@@ -649,9 +649,9 @@ skin_fur = ["Normal Skin",
             "Thick Fur over Hide (DR 1, +1 Temperature Tolerance)",
             "Spines",
             "Spines",
-            "Spines"]
+            "Spines")
 
-skin_feathers = ["Normal Skin",
+skin_feathers = ("Normal Skin",
                  "Normal Skin",
                  "Normal Skin",
                  "Normal Skin",
@@ -663,14 +663,14 @@ skin_feathers = ["Normal Skin",
                  "Feathers over Hide (DR 1, +1 Temperature Tolerance)",
                  "Spines",
                  "Spines",
-                 "Spines"]
+                 "Spines")
 
-skin_exoskeleton = ["Light Exoskeleton (DR 0)",
+skin_exoskeleton = ("Light Exoskeleton (DR 0)",
                     "Light Exoskeleton (DR 0)",
                     "Tough Exoskeleton (DR 1)",
                     "Tough Exoskeleton (DR 1)",
                     "Heavy Exoskeleton (DR 2)",
                     "Armor Shell (DR 5)",
                     "Armor Shell (DR 5)",
-                    "Armor Shell (DR 5)"]
+                    "Armor Shell (DR 5)")
 

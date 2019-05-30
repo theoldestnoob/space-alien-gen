@@ -49,9 +49,8 @@ class Species():
         self.manip_normaldx = 0
         self.manip_highdx = 0
         self.manip_trunk = False
-        self.skel = ()
-        self.skin_type = ""
-        self.skin_detail = ""
+        self.skeleton = ()
+        self.skin = ""
         self.breathing = ""
         self.temperature_regulation = ""
         self.growth_pattern = ""
@@ -157,8 +156,8 @@ class Species():
         print("   Normal DX: {}".format(self.manip_normaldx))
         print("   High DX: {}".format(self.manip_highdx))
         print("   Prehensile Trunk or Tail: {}".format(self.manip_trunk))
-        print("  Skeleton: {}".format(self.skel))
-        print("  Skin: {}, {}".format(self.skin_type, self.skin_detail))
+        print("  Skeleton: {}".format(self.skeleton))
+        print("  Skin: {}".format(self.skin))
         print("  Wingspan: {}".format(self.wingspan))
         print(" Metabolism:")
         print("  Breathing: {}".format(self.breathing))
@@ -801,103 +800,133 @@ class Species():
 
         skeleton.append(tables.skeleton[roll])
         while ("Combination" in skeleton
-                or skeleton.count(skeleton[0]) > 1):
+               or skeleton.count(skeleton[0]) > 1):
             skeleton.clear()
             roll1 = dice.rolldie_zero(1, 7) + 2
             roll2 = dice.rolldie_zero(1, 7) + 2
             skeleton.append(tables.skeleton[roll1])
             skeleton.append(tables.skeleton[roll2])
 
-        self.skel = skeleton
+        self.skeleton = skeleton
 
-    # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation VI: GURPS Space pg. 157
-    # TODO: Separate into functions for
-    #   skin type, skin ??? I may be misreading these tables
     def _gen_skin(self):
         skincover = ""
         covertype = ""
 
-        roll = dice.rolldie_zero(1, 6)
-        if "External" in self.skel:
+        if "External" in self.skeleton:
             covertype = "Exoskeleton"
         else:
+            roll = dice.rolldie_zero(1, 6)
             covertype = tables.skin_covertype[roll]
 
         if covertype == "Skin":
-            roll = dice.rolldie_zero(2, 6)
-            if self.habitat == "Arctic":
-                roll += 1
-            if self.habitat == "Desert":
-                roll -= 1
-            if self.habitat_type == "Water":
-                roll += 1
-            if ("Gathering Herbivore" in self.trophic_level
-                    or "Grazing/Browsing Herbivore" in self.trophic_level):
-                roll += 1
-            if self._is_flying:
-                roll -= 5
-            if roll < 0:
-                roll = 0
-            skincover = tables.skin_skin[roll]
-            if skincover == "Blubber":
-                roll = dice.rolldie(1, 6)
-                skincover = "Blubber (DR 4, "
-                skincover += "+{} Temperature Tolerance)".format(roll)
+            skincover = self._gen_skin_skin()
         elif covertype == "Scales":
-            roll = dice.rolldie_zero(2, 6)
-            if self.habitat == "Desert":
-                roll += 1
-            if ("Gathering Herbivore" in self.trophic_level
-                    or "Grazing/Browsing Herbivore" in self.trophic_level):
-                roll += 1
-            if self._is_flying:
-                roll -= 2
-            if "Digging" in self.locomotion:
-                roll -= 1
-            if roll < 0:
-                roll = 0
-            skincover = tables.skin_scales[roll]
+            skincover = self._gen_skin_scales()
         elif covertype == "Fur":
-            roll = dice.rolldie_zero(2, 6)
-            if self.habitat == "Desert":
-                roll -= 1
-            if self.habitat == "Arctic":
-                roll += 1
-            if self._is_flying:
-                roll -= 1
-            if ("Gathering Herbivore" in self.trophic_level
-                    or "Grazing/Browsing Herbivore" in self.trophic_level):
-                roll += 1
-            if roll < 0:
-                roll = 0
-            skincover = tables.skin_fur[roll]
+            skincover = self._gen_skin_fur()
         elif covertype == "Feathers":
-            roll = dice.rolldie_zero(2, 6)
-            if self.habitat == "Desert":
-                roll -= 1
-            if self.habitat == "Arctic":
-                roll += 1
-            if self._is_flying:
-                roll += 1
-            if roll < 0:
-                roll = 0
-            skincover = tables.skin_feathers[roll]
+            skincover = self._gen_skin_feathers()
         elif covertype == "Exoskeleton":
-            roll = dice.rolldie_zero(1, 6)
-            if self.habitat_type == "Water":
-                roll += 1
-            if "Immobile" in self.locomotion:
-                roll += 1
-            if self._is_flying:
-                roll -= 2
-            if roll < 0:
-                roll = 0
-            skincover = tables.skin_exoskeleton[roll]
+            skincover = self._gen_skin_exoskeleton()
 
-        self.skin_type = covertype
-        self.skin_detail = skincover
+        self.skin = skincover
 
+    def _gen_skin_skin(self):
+        skin = ""
+
+        roll = dice.rolldie_zero(2, 6)
+        if self.habitat == "Arctic":
+            roll += 1
+        if self.habitat == "Desert":
+            roll -= 1
+        if self.habitat_type == "Water":
+            roll += 1
+        if self._is_herbivore:
+            roll += 1
+        if self._is_flying:
+            roll -= 5
+        if roll < 0:
+            roll = 0
+        skin = tables.skin_skin[roll]
+        if skin == "Blubber":
+            roll = dice.rolldie(1, 6)
+            skin = "Blubber (DR 4, "
+            skin += "+{} Temperature Tolerance)".format(roll)
+
+        return skin
+
+    def _gen_skin_scales(self):
+        skin = ""
+
+        roll = dice.rolldie_zero(2, 6)
+        if self.habitat == "Desert":
+            roll += 1
+        if self._is_herbivore:
+            roll += 1
+        if self._is_flying:
+            roll -= 2
+        if "Digging" in self.locomotion:
+            roll -= 1
+        if roll < 0:
+            roll = 0
+        skin = tables.skin_scales[roll]
+
+        return skin
+
+    def _gen_skin_fur(self):
+        skin = ""
+
+        roll = dice.rolldie_zero(2, 6)
+        if self.habitat == "Desert":
+            roll -= 1
+        if self.habitat == "Arctic":
+            roll += 1
+        if self._is_flying:
+            roll -= 1
+        if self._is_herbivore:
+            roll += 1
+        if roll < 0:
+            roll = 0
+        skin = tables.skin_fur[roll]
+
+        return skin
+
+    def _gen_skin_feathers(self):
+        skin = ""
+
+        roll = dice.rolldie_zero(2, 6)
+        if self.habitat == "Desert":
+            roll -= 1
+        if self.habitat == "Arctic":
+            roll += 1
+        if self._is_flying:
+            roll += 1
+        if roll < 0:
+            roll = 0
+        skin = tables.skin_feathers[roll]
+
+        return skin
+
+    def _gen_skin_exoskeleton(self):
+        skin = ""
+
+        roll = dice.rolldie_zero(1, 6)
+        if self.habitat_type == "Water":
+            roll += 1
+        if "Immobile" in self.locomotion:
+            roll += 1
+        if self._is_flying:
+            roll -= 2
+        if roll < 0:
+            roll = 0
+        skin = tables.skin_exoskeleton[roll]
+
+        return skin
+
+    # TODO: refactoring started at the top and is up to this point so far
+    # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation VI: GURPS Space pg. 157
     def _gen_breathing(self):
         breathing = ""
@@ -939,6 +968,7 @@ class Species():
 
         self.breathing = breathing
 
+    # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation VI: GURPS Space pg. 157
     def _gen_temperature_regulation(self):
         temp_reg = ""
@@ -979,7 +1009,7 @@ class Species():
 
         roll = dice.rolldie(2, 6)
 
-        if "External" in self.skel:
+        if "External" in self.skeleton:
             roll -= 1
         if self.size_class == "Large":
             roll += 1
@@ -1276,7 +1306,7 @@ class Species():
 
         # Touch
         roll_t = dice.rolldie(2, 6)
-        if "External" in self.skel:
+        if "External" in self.skeleton:
             roll_t = roll_t - 2
         if self.habitat_type == "Water":
             roll_t = roll_t + 2

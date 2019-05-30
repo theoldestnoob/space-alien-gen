@@ -4,12 +4,9 @@ ToDo:
 
 Program Structure
     - Break up some of the longer Creation functions to make them less unwieldy
-    	I'm looking at you, Alien Creation V
     - see if it's possible to clean up some of the big combined conditionals 
         to make them more readable
     - Break up generation functions to minimum logical blocks
-    - Add higher-level generation function that only calls
-        sub-generation functions for empty variables
     - clean up planetinfo.py to remove unncessary getter functions
     - update planetinfo.py to generate truly random planets with reroll
     - update planetinfo.py to add ability to generate only default attributes
@@ -19,6 +16,8 @@ Program Structure
         - webserver option = webserver
         - gui option = gui
     - change "<" to "<=" in most places to make dice rolls more readable
+    - properties for variables to enforce correct input
+        raise ValueError exception if inputs don't match list from tables.py
 
 Data Structure
     - separate senses object/module
