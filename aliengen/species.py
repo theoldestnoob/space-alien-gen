@@ -961,7 +961,6 @@ class Species():
 
         self.breathing = breathing
 
-    # TODO: refactoring started at the top and is up to this point so far
     # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation VI: GURPS Space pg. 157
     def _gen_temperature_regulation(self):
@@ -984,19 +983,20 @@ class Species():
             elif self.habitat == "Arctic":
                 roll += 2
 
-        if roll < 5:
+        if roll <= 4:
             temp_reg = "Cold-blooded (with disadvantage)"
-        elif roll < 7:
+        elif roll <= 6:
             temp_reg = "Cold-blooded (no disadvantage)"
-        elif roll < 8:
+        elif roll == 7:
             temp_reg = "Partial regulation (temperature varies within limits)"
-        elif roll < 10:
+        elif roll <= 9:
             temp_reg = "Warm-blooded"
         else:
             temp_reg = "Warm-blooded (with Metabolism Control 2)"
 
         self.temperature_regulation = temp_reg
 
+    # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation VI: GURPS Space pg. 158
     def _gen_growth(self):
         growth_pattern = ""
