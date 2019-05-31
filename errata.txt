@@ -167,6 +167,9 @@ Errata / Deviations:
 		Climbing can only be a secondary locomotion if Winged Flight is the
 		primary locomotion, so I ignore that portion of it
 		
+    Growth - Modifier "+1 for Large size category"
+        I also include "Huge" size category
+		
 - Alien Creation VII (GURPS Space pg. 161)
 
 	Sexes - I don't check if the "roll twice" result gets the same result twice

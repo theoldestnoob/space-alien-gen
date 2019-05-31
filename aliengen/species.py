@@ -996,7 +996,6 @@ class Species():
 
         self.temperature_regulation = temp_reg
 
-    # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation VI: GURPS Space pg. 158
     def _gen_growth(self):
         growth_pattern = ""
@@ -1005,16 +1004,16 @@ class Species():
 
         if "External" in self.skeleton:
             roll -= 1
-        if self.size_class == "Large":
+        if self.size_class in ("Large", "Huge"):
             roll += 1
         if "Immobile" in self.locomotion:
             roll += 1
 
-        if roll < 5:
+        if roll <= 4:
             growth_pattern = "Metamorphosis"
-        elif roll < 7:
+        elif roll <= 6:
             growth_pattern = "Molting"
-        elif roll < 12:
+        elif roll <= 11:
             growth_pattern = "Continuous Growth"
         else:
             growth_pattern = "Unusual Growth Pattern "
@@ -1024,6 +1023,7 @@ class Species():
 
     # TODO: Lifespan, GURPS Space pg. 159
 
+    # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation VII: GURPS Space pg. 161
     def _gen_sexes(self):
         sexes = ""
