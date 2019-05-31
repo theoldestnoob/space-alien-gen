@@ -24,8 +24,6 @@ class Species():
         self.chemical_basis = ""
         self.habitat_type = ""
         self.habitat = ""
-        self.trophic_type = ""
-        self.trophic_subtype = ""
         self.trophic_level = []
         self._is_herbivore = False
         self._is_carnivore = False
@@ -925,18 +923,17 @@ class Species():
 
         return skin
 
-    # TODO: refactoring started at the top and is up to this point so far
     # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation VI: GURPS Space pg. 157
     def _gen_breathing(self):
         breathing = ""
 
-        if self._is_flying:
+        flight = ("Winged Flight", "Bouyant Flight")
+
+        if set(self.locomotion).issubset(set(flight)):
             breathing = "Lungs"
         elif (self.habitat_type != "Water"
               and "Swimming" not in self.locomotion):
-            breathing = "Lungs"
-        elif self.habitat_type == "Gas Giant":
             breathing = "Lungs"
         elif self.habitat_type == "Space-Dwelling":
             breathing = "Doesn't Breathe (Space-Dwelling)"
@@ -944,30 +941,27 @@ class Species():
             breathing = "Doesn't Breathe (Gills)"
         else:
             roll = dice.rolldie(2, 6)
-            if (self.habitat == "Arctic"
-                    or self.habitat == "Swampland"
-                    or self.habitat == "River/Stream"
-                    or self.habitat == "Island/Beach"
-                    or self.habitat == "Tropical Lagoon"):
+            if self.habitat in ("Arctic", "Swampland", "River/Stream",
+                                "Island/Beach", "Tropical Lagoon"):
                 roll += 1
             if "Walking" in self.locomotion:
                 roll += 1
-            if (self._is_flying
-                    or "Climbing" in self.locomotion):
+            if self._is_flying:
                 roll += 2
-            if roll < 7:
+            if roll <= 6:
                 breathing = "Doesn't Breathe (Gills)"
-            elif roll < 9:
+            elif roll <= 8:
                 breathing = "Lungs (air-breathing), "
                 breathing += "Doesn't Breathe (Oxygen Storage)"
-            elif roll < 11:
+            elif roll <= 10:
                 breathing = "Doesn't Breathe (Gills), "
-                breathing += "Lungs or convertable organ"
+                breathing += "Lungs (or convertable organ)"
             else:
                 breathing = "Lungs"
 
         self.breathing = breathing
 
+    # TODO: refactoring started at the top and is up to this point so far
     # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation VI: GURPS Space pg. 157
     def _gen_temperature_regulation(self):

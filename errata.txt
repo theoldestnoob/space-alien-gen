@@ -142,12 +142,15 @@ Errata / Deviations:
 	Skin - Scales Table Modifier "Tunneling" does not exist on other tables
 		I apply the modifier if the species has "Digging" locomotion 
 		
-	Breathing - "Aerial or land-dwelling organisms" is not defined elsewhere
-		I consider a creature aerial 
-    		if its locomotion contains "Winged Flight" or "Bouyant Flight"
-    		and if its locomotion does not contain "Swimming"
-		I consider a creature land-dwelling 
-    		if its habitat type is not "Water"
+	Breathing - "Aerial" is not defined elsewhere
+		I consider a creature aerial if its locomotion contains only 
+    		"Winged Flight" or "Bouyant Flight". I do not consider a creature
+    		aerial just for having flight, becuase of the modifier +2 for if
+    		flying is a secondary locomotion; there would be no point to this
+    		modifier if having flight precluded all but "Lungs" breathing
+    		
+    Breathing - "land-dwelling organisms" is not defined elsewhere
+		I consider a creature land-dwelling if its habitat type is not "Water"
 			and if its locomotion does not contain "Swimming"
 			
 	Breathing - Space-Dwelling is not addressed
@@ -158,9 +161,11 @@ Errata / Deviations:
         I add +2 if walking is included in locomotion at all (even tertiary)
 
 	Breathing - Modifier "+2 if flying or climbing is secondary locomotion"
-		Flying or Climbing can not be secondary locomotion types according to 
+		Flying can not be a secondary locomotion type according to 
 		Alien Creation III rules (pg. 149)
-		I add +2 if flying or climbing is included in locomotion at all
+		I add +2 if flying is included in locomotion at all
+		Climbing can only be a secondary locomotion if Winged Flight is the
+		primary locomotion, so I ignore that portion of it
 		
 - Alien Creation VII (GURPS Space pg. 161)
 
