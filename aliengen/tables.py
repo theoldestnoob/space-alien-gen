@@ -674,3 +674,14 @@ skin_exoskeleton = ("Light Exoskeleton (DR 0)",
                     "Armor Shell (DR 5)",
                     "Armor Shell (DR 5)")
 
+sexes = ("Asexual Reproduction or Parthenogenesis",
+         "Asexual Reproduction or Parthenogenesis",
+         "Asexual Reproduction or Parthenogenesis",
+         "Hermaphrodite",
+         "Hermaphrodite",
+         "Two Sexes",
+         "Two Sexes",
+         "Two Sexes",
+         "Switching between male and female",
+         "Three or more",
+         "Roll Twice")
