@@ -1027,49 +1027,50 @@ class Species():
     def _gen_sexes(self):
         sexes = ""
 
-        def _sex_roll():
-            sroll = dice.rolldie_zero(2, 6)
-            if "Immobile" in self.locomotion:
-                sroll = sroll - 1
-            if self.symmetry == "Asymmetric":
-                sroll = sroll - 1
-            if self._is_autotroph:
-                sroll = sroll - 1
-            if sroll < 0:
-                sroll = 0
-            return sroll
-
-        def _sex_three_or_more():
-            roll = dice.rolldie(1, 6)
-            if roll <= 3:
-                sexes = "Three"
-            elif roll <= 5:
-                sexes = "Four"
-            else:
-                sexes = str(dice.rolldie(2, 6))
-            sexes += " Sexes"
-            return sexes
-
-        roll = _sex_roll()
+        roll = self._sex_roll()
         sexes = tables.sexes[roll]
 
         if sexes == "Three or more":
-            sexes = _sex_three_or_more()
+            sexes = self._sex_three_or_more()
         while "Roll Twice" in sexes:
-            roll = _sex_roll()
+            roll = self._sex_roll()
             sex1 = tables.sexes[roll]
             if sex1 == "Three or more":
-                sex1 = _sex_three_or_more()
-            roll = _sex_roll()
+                sex1 = self._sex_three_or_more()
+            roll = self._sex_roll()
             sex2 = tables.sexes[roll]
             if sex2 == "Three or more":
-                sex2 = _sex_three_or_more()
+                sex2 = self._sex_three_or_more()
             if sex1 == sex2:
                 sexes = sex1
             else:
                 sexes = "Alternating/Conditional: {} / {}".format(sex1, sex2)
 
         self.sexes = sexes
+
+    def _sex_roll(self):
+        sroll = dice.rolldie_zero(2, 6)
+        if "Immobile" in self.locomotion:
+            sroll = sroll - 1
+        if self.symmetry == "Asymmetric":
+            sroll = sroll - 1
+        if self._is_autotroph:
+            sroll = sroll - 1
+        if sroll < 0:
+            sroll = 0
+        return sroll
+
+    @staticmethod
+    def _sex_three_or_more():
+        roll = dice.rolldie(1, 6)
+        if roll <= 3:
+            sexes = "Three"
+        elif roll <= 5:
+            sexes = "Four"
+        else:
+            sexes = str(dice.rolldie(2, 6))
+        sexes += " Sexes"
+        return sexes
 
     # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation VII: GURPS Space pg. 161
