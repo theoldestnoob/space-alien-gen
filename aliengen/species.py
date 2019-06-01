@@ -1123,27 +1123,26 @@ class Species():
 
         self.gestation_special = gest_special
 
-    # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation VII: GURPS Space pg. 161
     def _gen_reproductive_strat(self):
         strat = ""
 
         roll = dice.rolldie(2, 6)
-        if self.size_class == "Large":
-            roll -= 1
+        if self.size_class in ("Large", "Huge"):
+            roll -= 2
         elif self.size_class == "Small":
             roll += 1
         if self.gestation == "Spawning/Pollinating":
             roll += 2
 
-        if roll < 5:
+        if roll <= 4:
             if self.gestation == "Spawning/Pollinating":
                 strat = "Strong K-Strategy: 20 - 120 offspring, "
                 strat += "extensive care after birth"
             else:
                 strat = "Strong K-Strategy: 1 offspring, "
                 strat += "extensive care after birth"
-        elif roll < 7:
+        elif roll <= 6:
             litter_l = 1
             litter_h = 2
             if self.gestation == "Spawning/Pollinating":
@@ -1152,7 +1151,7 @@ class Species():
                 litter_h = litter_h * mult
             strat = "Moderate K-Strategy: {} - {} ".format(litter_l, litter_h)
             strat += "offspring per litter, extensive care after birth"
-        elif roll < 8:
+        elif roll == 7:
             litter_l = 1
             litter_h = 6
             if self.gestation == "Spawning/Pollinating":
@@ -1161,7 +1160,7 @@ class Species():
                 litter_h = litter_h * mult
             strat = "Median Strategy: {} - {} ".format(litter_l, litter_h)
             strat += "offspring per litter, moderate care after birth"
-        elif roll < 10:
+        elif roll <= 9:
             litter_l = 2
             litter_h = 7
             if self.gestation == "Spawning/Pollinating":
@@ -1182,6 +1181,7 @@ class Species():
 
         self.reproductive_strat = strat
 
+    # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation VIII: GURPS Space pg. 164
     # TODO: Bundle senses into their own datastructure / class
     # TODO: Separate into functions for
