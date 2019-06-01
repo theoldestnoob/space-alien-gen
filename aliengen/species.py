@@ -121,6 +121,7 @@ class Species():
         self._gen_growth()
         self._gen_sexes()
         self._gen_gestation()
+        self._gen_gestation_special()
         self._gen_reproductive_strat()
         self._gen_senses()
         self._gen_intelligence()
@@ -807,6 +808,7 @@ class Species():
 
         self.skeleton = skeleton
 
+    # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation VI: GURPS Space pg. 157
     def _gen_skin(self):
         skincover = ""
@@ -831,6 +833,7 @@ class Species():
 
         self.skin = skincover
 
+    # TODO: separate descriptors + advantages/disadvantages
     def _gen_skin_skin(self):
         skin = ""
 
@@ -855,6 +858,7 @@ class Species():
 
         return skin
 
+    # TODO: separate descriptors + advantages/disadvantages
     def _gen_skin_scales(self):
         skin = ""
 
@@ -873,6 +877,7 @@ class Species():
 
         return skin
 
+    # TODO: separate descriptors + advantages/disadvantages
     def _gen_skin_fur(self):
         skin = ""
 
@@ -891,6 +896,7 @@ class Species():
 
         return skin
 
+    # TODO: separate descriptors + advantages/disadvantages
     def _gen_skin_feathers(self):
         skin = ""
 
@@ -907,6 +913,7 @@ class Species():
 
         return skin
 
+    # TODO: separate descriptors + advantages/disadvantages
     def _gen_skin_exoskeleton(self):
         skin = ""
 
@@ -1072,11 +1079,9 @@ class Species():
         sexes += " Sexes"
         return sexes
 
-    # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation VII: GURPS Space pg. 161
     def _gen_gestation(self):
         gest = ""
-        gest_special = ""
 
         roll = dice.rolldie(2, 6)
         if (self.habitat_type == "Water"
@@ -1087,30 +1092,38 @@ class Species():
         if "Warm-blooded" in self.temperature_regulation:
             roll += 1
 
-        if roll < 7:
+        if roll <= 6:
             gest = "Spawning/Pollinating"
-        elif roll < 9:
+        elif roll <= 8:
             gest = "Egg-Laying"
-        elif roll < 11:
+        elif roll <= 10:
             gest = "Live-Bearing"
         else:
             gest = "Live-Bearing with Pouch"
 
+        self.gestation = gest
+
+    # Alien Creation VII: GURPS Space pg. 161
+    def _gen_gestation_special(self):
+        gest_special = ""
+
         roll = dice.rolldie(2, 6)
         if roll == 12:
             roll = dice.rolldie(1, 6)
-            if roll < 2:
+            if roll == 1:
                 gest_special = "Brood Parasite (raised by another species)"
-            elif roll < 4:
+            elif roll <= 3:
                 gest_special = "Parasitic Young (implanted in a host)"
-            elif roll < 6:
+            elif roll <= 5:
                 gest_special = "Cannibalistic Young (fatal to parent)"
             else:
                 gest_special = "Cannibalistic Young (consume each other)"
+        else:
+            gest_special = "None"
 
-        self.gestation = gest
         self.gestation_special = gest_special
 
+    # TODO: refactoring started at the top and is up to this point so far
     # Alien Creation VII: GURPS Space pg. 161
     def _gen_reproductive_strat(self):
         strat = ""
