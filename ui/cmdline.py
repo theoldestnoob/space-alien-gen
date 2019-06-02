@@ -15,6 +15,7 @@ def run_cmdline(args):
 
     in_world = planetinfo.PlanetInfo()
     # TODO: parse user input for planet and apply to in_world
+    in_world.generate()
     in_species = species.Species(in_world)
     if args.sapient:
         in_species.sapient = True
@@ -26,6 +27,8 @@ def run_cmdline(args):
     else:
         in_species.p_more_variation = False
 
+    print("================================================")
+    in_world.planetOutput()
     print("================================================")
     for _ in range(0, args.num):
         alien = copy.deepcopy(in_species)
