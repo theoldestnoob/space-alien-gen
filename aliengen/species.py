@@ -1530,7 +1530,6 @@ class Species():
         self.comms_a = comms_a
         self.comms_b = comms_b
 
-    # TODO: refactoring started at the top and is up to this point so far
     # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation IX: GURPS Space pg. 168
     def _gen_intelligence(self):
@@ -1911,12 +1910,12 @@ class Species():
         elif self.p_chauvinism == -1:
             t_cha = "Broad-Minded (quirk)"
         elif self.p_chauvinism == -2:
-            if (self.p_suspicion < 0 and self.p_empathy > 0):
+            if self.p_empathy > 0 > self.p_suspicion:
                 t_cha = "Xenophilia (15)"
             else:
                 t_cha = "Broad-minded (quirk)"
         elif self.p_chauvinism < -2:
-            if (self.p_suspicion < 0 and self.p_empathy > 0):
+            if self.p_empathy > 0 > self.p_suspicion:
                 t_cha = "Xenophilia (9)"
             elif (self.p_suspicion < 0 or self.p_empathy > 0):
                 t_cha = "Xenophilia (12)"
@@ -2023,7 +2022,7 @@ class Species():
         elif self.p_empathy == 2:
             t_emp = "Empathy (Sensitive)"
         elif self.p_empathy == 1:
-            if (self.p_gregariousness > 0 and self.p_suspicion < 0):
+            if self.p_gregariousness > 0 > self.p_suspicion:
                 t_emp = "Sensitive"
             else:
                 t_emp = "Responsive (quirk)"
