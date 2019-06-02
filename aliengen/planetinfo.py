@@ -16,37 +16,50 @@ class PlanetInfo(object):
         '''
         Constructor
         '''
-        self.size = "Standard"
-        self.type = "Garden"
-        self.temp = random.randint(260, 340)
-        self.climate_index = 0
-        self.climate_index, self.climate = self.gen_climate()
-        self.hydro = 70
-        self.gravity = random.uniform(0, 6)
+        self.type = ""
+        self.temp = -1
+        self.climate_index = -1
+        self.climate = ""
+        self.hydro = -1
+        self.gravity = -1
 
     def reroll(self):
         """
-        Randomly generate all planet attributes,
+        Randomly generate all planet attributes except type,
         regardless of previous user input.
         """
-        self.size = "Standard"
-        self.type = "Garden"
+        self.type = "Regular"
         self.temp = random.randint(260, 340)
         self.climate_index = 0
         self.climate_index, self.climate = self.gen_climate()
-        self.hydro = 70
+        self.hydro = random.randint(0, 100)
         self.gravity = random.uniform(0, 6)
+
+    def generate(self):
+        """
+        Randomly generate all planet attributes not previously entered by user.
+        """
+        if self.type == "":
+            self.type = "Regular"
+        if self.temp == -1:
+            self.temp = random.randint(260, 340)
+        if self.climate == "":
+            self.climate_index, self.climate = self.gen_climate()
+        if self.hydro == -1:
+            self.hydro = random.randint(0, 100)
+        if self.gravity == -1:
+            self.gravity = random.uniform(0, 6)
 
     def planetOutput(self):
         """
         Very basic unformatted text output of all planet attributes.
         """
-        print(self.get_size())
-        print(self.get_type())
-        print(self.get_climate())
-        print(self.get_temp_f())
-        print(self.get_hydro())
-        print(self.get_gravity())
+        print("Planet Info:")
+        print(" Type: {}".format(self.type))
+        print(" Climate: {}".format(self.climate))
+        print(" Temperature: {}K ({}F)".format(self.temp, self.get_temp_f()))
+        print(" Hydrographic Coverage: {}%".format(self.hydro))
+        print(" Gravity: {}G".format(self.gravity))
 
     def get_temp_f(self):
         return ((1.8 * self.temp) - 460)
@@ -74,3 +87,10 @@ class PlanetInfo(object):
             return 9, "Very Hot"
         else:
             return 10, "Infernal"
+
+
+if __name__ == '__main__':
+    import planetinfo
+    PLANET = planetinfo.PlanetInfo()
+    PLANET.reroll()
+    PLANET.planetOutput()
