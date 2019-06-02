@@ -63,7 +63,7 @@ Features
             so the system won't roll them properly
             I have included them where I see them in the rules, 
             but they are pretty much just dead code right now
-    - size support for huge creatures?
+    - better size support for huge creatures? is this already done?
     - import planet info from starsystem-gen: 
         https://github.com/tschoppi/starsystem-gen
     - go through text and implement advantages/disadvantages noted
@@ -83,8 +83,8 @@ Possible Bugs
     	seems like I'm getting a lot of Winged Flight with 
     	no second or third locomotion methods
     - add check and warning if planets will not support any life 
-        in the current system
-        this case currently drops through to chemical basis = Exotica
+        in the current system this case currently drops through to 
+        chemical basis = Exotica
 
 
 
