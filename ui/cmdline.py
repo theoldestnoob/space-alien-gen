@@ -17,6 +17,8 @@ def run_cmdline(args):
     if args.earthlike:
         in_world.generate_earthlike()
     else:
+        if args.gasgiant:
+            in_world.type = "Gas Giant"
         in_world.gravity = args.planet_gravity
         in_world.hydro = args.planet_hydro
         in_world.temp = args.planet_temp
