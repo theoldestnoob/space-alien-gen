@@ -29,11 +29,11 @@ class PlanetInfo(object):
         regardless of previous user input.
         """
         self.type = "Regular"
-        self.temp = random.randint(260, 340)
+        self.temp = random.randint(260, 350)
         self.climate_index = 0
         self.climate_index, self.climate = self.gen_climate()
         self.hydro = random.randint(0, 100)
-        self.gravity = random.uniform(0, 6)
+        self.gravity = round(random.uniform(0, 6), 3)
 
     def generate(self):
         """
@@ -42,17 +42,17 @@ class PlanetInfo(object):
         if self.type == "":
             self.type = "Regular"
         if self.temp == -1:
-            self.temp = random.randint(260, 340)
+            self.temp = random.randint(260, 350)
         if self.climate == "":
             self.climate_index, self.climate = self.gen_climate()
         if self.hydro == -1:
             self.hydro = random.randint(0, 100)
         if self.gravity == -1:
-            self.gravity = random.uniform(0, 6)
+            self.gravity = round(random.uniform(0, 6), 3)
 
     def planetOutput(self):
         """
-        Very basic unformatted text output of all planet attributes.
+        Very basic text output of all planet attributes.
         """
         print("Planet Info:")
         print(" Type: {}".format(self.type))
@@ -62,7 +62,7 @@ class PlanetInfo(object):
         print(" Gravity: {}G".format(self.gravity))
 
     def get_temp_f(self):
-        return ((1.8 * self.temp) - 460)
+        return round((1.8 * self.temp) - 460, 2)
 
     def gen_climate(self):
         if self.temp < 244:

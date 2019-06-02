@@ -18,6 +18,7 @@ Program Structure
     - change "<" to "<=" in most places to make dice rolls more readable
     - properties for variables to enforce correct input
         raise ValueError exception if inputs don't match list from tables.py
+    - write class dunder methods for e.g. __repr__ and __print__
 
 Data Structure
     - separate senses object/module
