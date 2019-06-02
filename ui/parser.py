@@ -23,6 +23,16 @@ def parse_cmdline():
                         help="Run Local Webserver UI, ignore other options")
     parser.add_argument("-n", "--num", default=1, type=int,
                         help="Number of species to generate")
+    parser.add_argument("--earthlike", action="store_true",
+                        help="Generate Earthlike planet for species")
+    parser.add_argument("--gasgiant", action="store_true",
+                        help="Generate Gas Giant planet for species")
+    parser.add_argument("--planet-temp", type=int,
+                        help="Set Planet Temperature in Kelvin")
+    parser.add_argument("--planet-hydro", type=int,
+                        help="Set Planet Percentage Hydrographic Coverage")
+    parser.add_argument("--planet-gravity", type=float,
+                        help="Set Planet Gravity in Gs")
     parser.add_argument("--sapient", action="store_true",
                         help="Species generated will be sapient")
     parser.add_argument("--nonsapient", action="store_true",

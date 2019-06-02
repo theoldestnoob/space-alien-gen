@@ -14,8 +14,11 @@ import aliengen.species as species
 def run_cmdline(args):
 
     in_world = planetinfo.PlanetInfo()
-    # TODO: parse user input for planet and apply to in_world
+    in_world.gravity = args.planet_gravity
+    in_world.hydro = args.planet_hydro
+    in_world.temp = args.planet_temp
     in_world.generate()
+
     in_species = species.Species(in_world)
     if args.sapient:
         in_species.sapient = True

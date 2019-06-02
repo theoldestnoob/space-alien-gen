@@ -16,12 +16,12 @@ class PlanetInfo(object):
         '''
         Constructor
         '''
-        self.type = ""
-        self.temp = -1
-        self.climate_index = -1
-        self.climate = ""
-        self.hydro = -1
-        self.gravity = -1
+        self.type = None
+        self.temp = None
+        self.climate_index = None
+        self.climate = None
+        self.hydro = None
+        self.gravity = None
 
     def reroll(self):
         """
@@ -39,15 +39,15 @@ class PlanetInfo(object):
         """
         Randomly generate all planet attributes not previously entered by user.
         """
-        if self.type == "":
+        if self.type == None:
             self.type = "Regular"
-        if self.temp == -1:
+        if self.temp == None:
             self.temp = random.randint(260, 350)
-        if self.climate == "":
+        if self.climate == None:
             self.climate_index, self.climate = self.gen_climate()
-        if self.hydro == -1:
+        if self.hydro == None:
             self.hydro = random.randint(0, 100)
-        if self.gravity == -1:
+        if self.gravity == None:
             self.gravity = round(random.uniform(0, 6), 3)
 
     def planetOutput(self):
