@@ -166,8 +166,8 @@ class Species():
         print("  Growth Pattern: {}".format(self.growth_pattern))
         print(" Reproduction:")
         print("  Sexes: {}".format(self.sexes))
-        print("  Gestation: {}, {}".format(self.gestation,
-                                           self.gestation_special))
+        print("  Gestation: {}".format(self.gestation))
+        print("   Special: {}".format(self.gestation_special))
         print("  Reproductive Strategy: {}".format(self.reproductive_strat))
         print(" Senses:")
         print("  Primary: {}".format(self.sense_primary))
@@ -1183,12 +1183,12 @@ class Species():
 
         self.reproductive_strat = strat
 
-    # TODO: SKIPPED REFACTORING THIS FUNCTION BECAUSE JEEZUS. WILL DO IT LATER
     # Alien Creation VIII: GURPS Space pg. 164
-    # TODO: Bundle senses into their own datastructure / class
-    # TODO: Separate into functions for
-    #   vision, hearing, touch, taste/smell, special senses,
-    #   primary + secondary sense, communication channels
+    # TODO: SKIPPED REFACTORING THIS FUNCTION BECAUSE JEEZUS. WILL DO IT LATER
+    #   - Bundle senses into their own datastructure / class
+    #   - Separate into functions for
+    #       vision, hearing, touch, taste/smell, special senses,
+    #       primary + secondary sense, communication channels
     def _gen_senses(self):
         primary = ""
         vision = ""
@@ -1531,15 +1531,13 @@ class Species():
         self.comms_b = comms_b
 
     # TODO: refactoring started at the top and is up to this point so far
-    # TODO: Separate into functions for
-    #   _gen_intelligence, _gen_mating, _gen_social
+    # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation IX: GURPS Space pg. 168
     def _gen_intelligence(self):
 
         intell = ""
         stat_iq = 0
 
-        # Intelligence
         #  Non-Sapient
         roll = dice.rolldie(2, 6)
         if ("Filter-Feeder" in self.trophic_level
@@ -1557,16 +1555,16 @@ class Species():
             roll -= 1
         # TODO: include lifespan modifier to roll, once it's in the
         #   generator at an earlier stage
-        if roll < 4:
+        if roll <= 3:
             intell = "Mindless"
             stat_iq = 0
-        elif roll < 6:
+        elif roll <= 5:
             intell = "Preprogrammed (Cannot Learn)"
             stat_iq = 1
-        elif roll < 9:
+        elif roll <= 8:
             intell = "Low Intelligence (Bestial)"
             stat_iq = dice.rolldie(1, 3)
-        elif roll < 11:
+        elif roll <= 10:
             intell = "High Intelligence (Bestial)"
             stat_iq = dice.rolldie(1, 3) + 2
         else:
@@ -1575,7 +1573,7 @@ class Species():
 
         #  Possibly Sapient
         if self.possible_sapient is True:
-            if roll > 12:
+            if roll >= 13:
                 intell = "Sapient"
 
         #  Definitely Sapient
@@ -1603,12 +1601,12 @@ class Species():
         self.intelligence = intell
         self.stat_iq = stat_iq
 
+    # Alien Creation IX: GURPS Space pg. 168
     def _gen_mating(self):
         mating = ""
 
-        # Mating Behavior
         roll = dice.rolldie(2, 6)
-        if self.sexes == "Hermaphrodite":
+        if "Hermaphrodite" in self.sexes:
             roll -= 2
         if self.gestation == "Spawning/Pollinating":
             roll -= 1
@@ -1619,19 +1617,20 @@ class Species():
         elif "Strong r-Strategy" in self.reproductive_strat:
             roll -= 1
 
-        if roll < 6:
+        if roll <= 5:
             mating = "Mating only, no pair bond"
-        elif roll < 8:
+        elif roll <= 7:
             mating = "Temporary pair bond"
-        elif roll < 9:
+        elif roll == 8:
             mating = "Permanent pair bond"
-        elif roll < 11:
+        elif roll <= 10:
             mating = "Harem"
         else:
             mating = "Hive"
 
         self.mating = mating
 
+    # Alien Creation IX: GURPS Space pg. 168
     def _gen_social(self):
         social = ""
 
@@ -1643,21 +1642,20 @@ class Species():
                 roll -= 1
             if "Grazing/Browsing Herbivore" in self.trophic_level:
                 roll += 1
-            if (self.size_class == "Large"
-                    or self.size_class == "Huge"):
+            if self.size_class in ("Large", "Huge"):
                 roll -= 1
             if self.mating == "Harem":
                 roll += 1
             if self.mating == "Mating only, no pair bond":
                 roll -= 1
 
-            if roll < 7:
+            if roll <= 6:
                 social = "Solitary"
-            elif roll < 9:
+            elif roll <= 8:
                 social = "Pair-bonded"
-            elif roll < 11:
+            elif roll <= 10:
                 social = "Troop of 4 - 10 members"
-            elif roll < 12:
+            elif roll == 11:
                 social = "Pack of 6 - 20 members"
             else:
                 social = "Herd of 10+ members"
