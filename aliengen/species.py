@@ -446,10 +446,7 @@ class Species():
             roll -= 4
         if self.habitat == "Space-Dewlling":
             roll += 3
-        # TODO: should this be an elif so that space-dewlling doesn't get
-        #   an extra +2 for 0 gravity? or should space-dwelling just get a +1
-        #   so that the 0 gravity adds up to +3?
-        if self.planet.gravity < 0.5:
+        elif self.planet.gravity < 0.5:
             roll += 2
         elif self.planet.gravity <= 0.75:
             roll += 1
