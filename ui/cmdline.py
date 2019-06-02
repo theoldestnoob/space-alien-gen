@@ -14,10 +14,13 @@ import aliengen.species as species
 def run_cmdline(args):
 
     in_world = planetinfo.PlanetInfo()
-    in_world.gravity = args.planet_gravity
-    in_world.hydro = args.planet_hydro
-    in_world.temp = args.planet_temp
-    in_world.generate()
+    if args.earthlike:
+        in_world.generate_earthlike()
+    else:
+        in_world.gravity = args.planet_gravity
+        in_world.hydro = args.planet_hydro
+        in_world.temp = args.planet_temp
+        in_world.generate()
 
     in_species = species.Species(in_world)
     if args.sapient:
@@ -31,7 +34,7 @@ def run_cmdline(args):
         in_species.p_more_variation = False
 
     print("================================================")
-    in_world.planetOutput()
+    in_world.planet_output()
     print("================================================")
     for _ in range(0, args.num):
         alien = copy.deepcopy(in_species)

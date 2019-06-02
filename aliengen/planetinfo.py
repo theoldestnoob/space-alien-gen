@@ -39,18 +39,28 @@ class PlanetInfo(object):
         """
         Randomly generate all planet attributes not previously entered by user.
         """
-        if self.type == None:
+        if self.type is None:
             self.type = "Regular"
-        if self.temp == None:
+        if self.temp is None:
             self.temp = random.randint(260, 350)
-        if self.climate == None:
+        if self.climate is None:
             self.climate_index, self.climate = self.gen_climate()
-        if self.hydro == None:
+        if self.hydro is None:
             self.hydro = random.randint(0, 100)
-        if self.gravity == None:
+        if self.gravity is None:
             self.gravity = round(random.uniform(0, 6), 3)
 
-    def planetOutput(self):
+    def generate_earthlike(self):
+        """
+        Generate a planet with a random range closer to earth.
+        """
+        self.type = "Earthlike"
+        self.temp = random.randint(285, 305)
+        self.hydro = random.randint(60, 80)
+        self.gravity = round(random.uniform(0.7, 1.3), 3)
+        self.climate_index, self.climate = self.gen_climate()
+
+    def planet_output(self):
         """
         Very basic text output of all planet attributes.
         """
