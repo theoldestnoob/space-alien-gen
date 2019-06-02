@@ -5,8 +5,19 @@ Created on Tue May 14 19:17:54 2019
 @author: willh
 """
 
+import ui.parser as parser
+import ui.cmdline as cmdline
+
+
 if __name__ == '__main__':
 
-    import ui.interactive_text
+    args = parser.parse_cmdline()
 
-    ui.interactive_text.textui()
+    if args.textui:
+        print("Call Text UI here!")
+    elif args.gui:
+        print("Call GUI here!")
+    elif args.web:
+        print("Call WebServer here!")
+    else:
+        cmdline.run_cmdline(args)
