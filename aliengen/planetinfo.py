@@ -48,29 +48,8 @@ class PlanetInfo(object):
         print(self.get_hydro())
         print(self.get_gravity())
 
-    def get_size(self):
-        return self.size
-
-    def get_type(self):
-        return self.type
-
-    def get_temp_k(self):
-        return self.temp
-
     def get_temp_f(self):
         return ((1.8 * self.temp) - 460)
-
-    def get_climate_index(self):
-        return self.climate_index
-
-    def get_climate(self):
-        return self.climate
-
-    def get_hydro(self):
-        return self.hydro
-
-    def get_gravity(self):
-        return self.gravity
 
     def gen_climate(self):
         if self.temp < 244:
