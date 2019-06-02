@@ -6,9 +6,18 @@ Created on Sat Jun  1 20:37:09 2019
 """
 
 import argparse
+import itertools
+import aliengen.tables as tables
 
 
 def parse_cmdline():
+
+    c_chembasis = set(tables.chemical_basis)
+    c_habitat = set(tables.hab_land + tables.hab_water)
+    c_trophic = set(tables.troph_sapient)
+    c_loco_p = set(itertools.chain.from_iterable(tables.loco_primary.values()))
+    c_size_class = ("Small", "Human-Scale", "Large", "Huge")
+
     parser = argparse.ArgumentParser(prog="space-alien-gen",
                                      description="Randomly Generate an Alien. \
                                      Use --textui, --gui, --web options for \
@@ -43,6 +52,22 @@ def parse_cmdline():
                         help="Species personality generation will be more \
                               varied. Otherwise, personality will be very \
                               dependent on biology.")
+    parser.add_argument("--chem-basis", choices=c_chembasis,
+                        help="Species Chemical Basis")
+    parser.add_argument("--hab-type", choices=tables.hab_type,
+                        help="Species Habitat Type")
+    parser.add_argument("--habitat", choices=c_habitat,
+                        help="Species Habitat")
+    parser.add_argument("--trophic", choices=c_trophic,
+                        help="Species Trophic Level")
+    parser.add_argument("--loco-primary", choices=c_loco_p,
+                        help="Species Primary Method of Locomotion")
+    parser.add_argument("--size-class", choices=c_size_class,
+                        help="Species Size Class")
+    parser.add_argument("--size-volume", type=float,
+                        help="Species Length on Longest Axis")
+    parser.add_argument("--size-mass", type=float,
+                        help="Species Mass")
 
     # TODO: delete scaffolding after command line parser is completed
     print(parser.parse_args())

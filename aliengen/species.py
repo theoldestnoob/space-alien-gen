@@ -159,7 +159,7 @@ class Species():
         print("   Prehensile Trunk or Tail: {}".format(self.manip_trunk))
         print("  Skeleton: {}".format(self.skeleton))
         print("  Skin: {}".format(self.skin))
-        print("  Wingspan: {}".format(self.wingspan))
+        # print("  Wingspan: {}".format(self.wingspan))
         print(" Metabolism:")
         print("  Breathing: {}".format(self.breathing))
         print("  Temp. Regulation: {}".format(self.temperature_regulation))
