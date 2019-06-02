@@ -21,6 +21,10 @@ def run_cmdline(args):
     elif args.nonsapient:
         in_species.sapient = False
         in_species.possible_sapient = False
+    if args.personality_varied:
+        in_species.p_more_variation = True
+    else:
+        in_species.p_more_variation = False
 
     print("================================================")
     for _ in range(0, args.num):
