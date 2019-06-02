@@ -125,6 +125,8 @@ class Species():
         self._gen_reproductive_strat()
         self._gen_senses()
         self._gen_intelligence()
+        self._gen_mating()
+        self._gen_social()
         self._gen_personality()
 
     def output_text_basic(self):
@@ -1181,7 +1183,7 @@ class Species():
 
         self.reproductive_strat = strat
 
-    # TODO: refactoring started at the top and is up to this point so far
+    # TODO: SKIPPED REFACTORING THIS FUNCTION BECAUSE JEEZUS. WILL DO IT LATER
     # Alien Creation VIII: GURPS Space pg. 164
     # TODO: Bundle senses into their own datastructure / class
     # TODO: Separate into functions for
@@ -1528,6 +1530,7 @@ class Species():
         self.comms_a = comms_a
         self.comms_b = comms_b
 
+    # TODO: refactoring started at the top and is up to this point so far
     # TODO: Separate into functions for
     #   _gen_intelligence, _gen_mating, _gen_social
     # Alien Creation IX: GURPS Space pg. 168
@@ -1535,8 +1538,6 @@ class Species():
 
         intell = ""
         stat_iq = 0
-        mating = ""
-        social = ""
 
         # Intelligence
         #  Non-Sapient
@@ -1599,6 +1600,12 @@ class Species():
             if stat_iq < 6:
                 stat_iq = 6
 
+        self.intelligence = intell
+        self.stat_iq = stat_iq
+
+    def _gen_mating(self):
+        mating = ""
+
         # Mating Behavior
         roll = dice.rolldie(2, 6)
         if self.sexes == "Hermaphrodite":
@@ -1623,8 +1630,12 @@ class Species():
         else:
             mating = "Hive"
 
-        # Social Organization
-        if mating == "Hive":
+        self.mating = mating
+
+    def _gen_social(self):
+        social = ""
+
+        if self.mating == "Hive":
             social = "Hive"
         else:
             roll = dice.rolldie(2, 6)
@@ -1635,9 +1646,9 @@ class Species():
             if (self.size_class == "Large"
                     or self.size_class == "Huge"):
                 roll -= 1
-            if mating == "Harem":
+            if self.mating == "Harem":
                 roll += 1
-            if mating == "Mating only, no pair bond":
+            if self.mating == "Mating only, no pair bond":
                 roll -= 1
 
             if roll < 7:
@@ -1651,9 +1662,6 @@ class Species():
             else:
                 social = "Herd of 10+ members"
 
-        self.intelligence = intell
-        self.stat_iq = stat_iq
-        self.mating = mating
         self.social_organization = social
 
     # Alien Creation X: GURPS Space pg. 169
