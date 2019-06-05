@@ -19,6 +19,13 @@ Program Structure
     - properties for variables to enforce correct input
         raise ValueError exception if inputs don't match list from tables.py
     - write class dunder methods for e.g. __repr__ and __print__
+    - rewrite some methods (e.g. reproductive strategy) to make user input
+        possible, so that users can select e.g. the reproductive strat and
+        the method generates the details
+    - make user input possible for all generation methods
+    - write tables for command line user input + update parser so that user
+        does not have to type in full output string
+        e.g. "Armor Shell (DR5)" user input as just "Armor Shell"
 
 Data Structure
     - separate senses object/module

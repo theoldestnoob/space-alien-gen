@@ -551,6 +551,8 @@ loco_second_extra = {
 
         }
 
+size_class = ("Small", "Human-Scale", "Large", "Huge")
+
 size_volume_small = (0.05, 0.07, 0.1, 0.15, 0.2, 0.3)
 size_volume_human = (0.5, 0.7, 1, 1.5, 2, 3)
 size_volume_large = (5, 7, 10, 15, 20, 99999)
@@ -674,6 +676,22 @@ skin_exoskeleton = ("Light Exoskeleton (DR 0)",
                     "Armor Shell (DR 5)",
                     "Armor Shell (DR 5)")
 
+breathing = ("Lungs",
+             "Gills",
+             "Lungs Storage",
+             "Gills Other")
+
+temp = ("Cold-blooded-",
+        "Cold-blooded (no disadvantage)",
+        "Partial",
+        "Warm-blooded",
+        "Warm-blooded+")
+
+growth = ("Metamorphosis",
+          "Molting",
+          "Continuous Growth",
+          "Unusual")
+
 sexes = ("Asexual Reproduction or Parthenogenesis",
          "Asexual Reproduction or Parthenogenesis",
          "Asexual Reproduction or Parthenogenesis",
@@ -685,3 +703,13 @@ sexes = ("Asexual Reproduction or Parthenogenesis",
          "Switching between male and female",
          "Three or more",
          "Roll Twice")
+
+gestation = ("Spawning/Pollinating",
+             "Egg-Laying",
+             "Live-Bearing",
+             "Live-Bearing with Pouch")
+
+gestation_special = ("Brood Parasite",
+                     "Parasitic Young",
+                     "Cannibalistic Young Fatal",
+                     "Cannibalistic Young")
