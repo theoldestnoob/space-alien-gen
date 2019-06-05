@@ -1,6 +1,6 @@
 # GURPS 4<sup>th</sup> Edition Space Alien Generator
 
-This code can be found on GitHub: http://theoldestnoob/space-alien-gen/
+This code can be found on GitHub: http://github.com/theoldestnoob/space-alien-gen/
 
 ## What is this?
 
