@@ -19,7 +19,6 @@ def parse_cmdline():
     c_size_class = set(tables.size_class)
     c_symmetry = set(tables.symmetry)
     c_skeleton = set(tables.skeleton)
-    c_skin_type = set(tables.skin_covertype)
     c_skin = set(tables.skin_exoskeleton + tables.skin_feathers +
                  tables.skin_fur + tables.skin_scales + tables.skin_skin)
     c_breathing = set(tables.breathing)

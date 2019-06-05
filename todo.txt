@@ -21,6 +21,12 @@ Program Structure
     - write class dunder methods for e.g. __repr__ and __print__
     - rewrite skin generator to allow for user set skin type and not just
         specific detailed skin
+    - rewrite trophic level generator to allow for user input "Combined"
+    - rewrite skeleton generator to allow for user input "Combination"
+    - rewrite sexes generator to allow for user input "Three or More", etc
+    - check to see if user input for later stages prohibits former stage result
+        e.g. if skin-type is not an exoskeletal type, 
+            skeleton should not be external
     - rewrite some methods (e.g. reproductive strategy) to make user input
         possible, so that users can select e.g. the reproductive strat and
         the method generates the details
@@ -28,6 +34,7 @@ Program Structure
     - write tables for command line user input + update parser so that user
         does not have to type in full output string
         e.g. "Armor Shell (DR5)" user input as just "Armor Shell"
+    - rewrite input to generate appropriate size class based on weight or volume input
 
 Data Structure
     - separate senses object/module
