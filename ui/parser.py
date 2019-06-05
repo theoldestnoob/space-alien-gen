@@ -46,6 +46,11 @@ def parse_cmdline():
                         help="Output to FILE")
     parser.add_argument("--csv", action="store_true",
                         help="Output in Semicolon Separated Variable format")
+    parser.add_argument("--dir", help="Create a directory DIR in the current \
+                        working directory and output a planet.txt file \
+                        and a numbered .txt file for each alien generated. \
+                        If --dir option is present, --csv and --write options \
+                        are ignored.")
     parser.add_argument("--earthlike", action="store_true",
                         help="Generate Earthlike planet for species")
     parser.add_argument("--gasgiant", action="store_true",

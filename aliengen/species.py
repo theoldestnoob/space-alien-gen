@@ -155,7 +155,6 @@ class Species():
         Output all species attributes in a structured but crude manner.
         '''
         outlist = [
-            "Species Output:",
             " Chemical Basis: {}".format(self.chemical_basis),
             " Habitat: {} - {}".format(self.habitat_type, self.habitat),
             " Trophic Levels: {}".format(self.trophic_level),

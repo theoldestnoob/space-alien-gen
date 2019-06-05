@@ -8,6 +8,7 @@ Created on Sat Jun  1 20:39:18 2019
 import copy
 import csv
 import sys
+import os
 
 import aliengen.planetinfo as planetinfo
 import aliengen.species as species
@@ -90,21 +91,53 @@ def run_cmdline(args):
         elif args.gest_special == "Cannibalistic Young":
             in_species.gestation_special = "Cannibalistic Young (consume each other)"
 
-    if args.write and not args.csv:
-        with open(args.write, "w") as file:
-            file.write("==========================================\n")
+    lead_z = len(str(args.num))
+    if args.dir is not None:
+        print("Directory: {} but not CSV!".format(args.dir))
+        cwd = os.getcwd()
+        out_dir = os.path.join(cwd, args.dir)
+        print("Full path: {}".format(out_dir))
+        if not os.path.exists(out_dir):
+            print("Directory does not exist! making it!")
+            os.mkdir(out_dir)
+        os.chdir(out_dir)
+        with open("planet.txt", "w") as file:
             file.write(in_world.planet_output())
-            file.write("\n")
-            file.write("==========================================\n")
-            for _ in range(0, args.num):
+        for k in range(0, args.num):
+            outfile = "".join([str(k).zfill(lead_z), ".txt"])
+            alien = copy.deepcopy(in_species)
+            alien.generate()
+            with open(outfile, "w") as file:
+                file.write(alien.output_text_basic())
+    else:
+        if not args.csv and args.write is None:
+            print("========================================")
+            print("Planet Info:")
+            print(in_world.planet_output())
+            print("========================================")
+            for k in range(0, args.num):
                 alien = copy.deepcopy(in_species)
                 alien.generate()
-                file.write(alien.output_text_basic())
-                file.write("\n")
-                file.write("==========================================\n")
-    elif args.write and args.csv:
-        with open(args.write, "w", newline="") as file:
-            writer = csv.DictWriter(file, fieldnames=tables.fieldnames,
+                print("Species {}:".format(str(k).zfill(lead_z)))
+                print(alien.output_text_basic())
+                print("========================================")
+        elif not args.csv and args.write is not None:
+            with open(args.write, "w") as file:
+                file.write("========================================\n")
+                file.write("Planet Info:\n")
+                file.write(in_world.planet_output())
+                file.write("\n========================================\n")
+                for k in range(0, args.num):
+                    alien = copy.deepcopy(in_species)
+                    alien.generate()
+                    file.write("Species #{}:\n".format(str(k).zfill(lead_z)))
+                    file.write(alien.output_text_basic())
+                    file.write("\n========================================\n")
+        elif args.csv and args.write is None:
+            print("========================================")
+            print(in_world.planet_output())
+            print("========================================")
+            writer = csv.DictWriter(sys.stdout, fieldnames=tables.fieldnames,
                                     delimiter=";")
             writer.writeheader()
             for _ in range(0, args.num):
@@ -114,23 +147,15 @@ def run_cmdline(args):
                 for key in tables.nocsv:
                     out_row.pop(key, None)
                 writer.writerow(out_row)
-    elif not args.write and not args.csv:
-        print("==========================================")
-        print(in_world.planet_output())
-        print("==========================================")
-        for _ in range(0, args.num):
-            alien = copy.deepcopy(in_species)
-            alien.generate()
-            print(alien.output_text_basic())
-            print("==========================================")
-    else:
-        writer = csv.DictWriter(sys.stdout, fieldnames=tables.fieldnames,
-                                delimiter=";")
-        writer.writeheader()
-        for _ in range(0, args.num):
-            alien = copy.deepcopy(in_species)
-            alien.generate()
-            out_row = vars(alien)
-            for key in tables.nocsv:
-                out_row.pop(key, None)
-            writer.writerow(out_row)
+        else:
+            with open(args.write, "w", newline="") as file:
+                writer = csv.DictWriter(file, fieldnames=tables.fieldnames,
+                                        delimiter=";")
+                writer.writeheader()
+                for _ in range(0, args.num):
+                    alien = copy.deepcopy(in_species)
+                    alien.generate()
+                    out_row = vars(alien)
+                    for key in tables.nocsv:
+                        out_row.pop(key, None)
+                    writer.writerow(out_row)
