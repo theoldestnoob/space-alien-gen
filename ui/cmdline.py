@@ -6,6 +6,8 @@ Created on Sat Jun  1 20:39:18 2019
 """
 
 import copy
+import csv
+import sys
 
 import aliengen.planetinfo as planetinfo
 import aliengen.species as species
@@ -88,14 +90,47 @@ def run_cmdline(args):
         elif args.gest_special == "Cannibalistic Young":
             in_species.gestation_special = "Cannibalistic Young (consume each other)"
 
-    if args.csv:
-        pass
-    else:
-        print("================================================")
-        in_world.planet_output()
-        print("================================================")
+    if args.write and not args.csv:
+        with open(args.write, "w") as file:
+            file.write("==========================================\n")
+            file.write(in_world.planet_output())
+            file.write("\n")
+            file.write("==========================================\n")
+            for _ in range(0, args.num):
+                alien = copy.deepcopy(in_species)
+                alien.generate()
+                file.write(alien.output_text_basic())
+                file.write("\n")
+                file.write("==========================================\n")
+    elif args.write and args.csv:
+        with open(args.write, "w", newline="") as file:
+            writer = csv.DictWriter(file, fieldnames=tables.fieldnames,
+                                    delimiter=";")
+            writer.writeheader()
+            for _ in range(0, args.num):
+                alien = copy.deepcopy(in_species)
+                alien.generate()
+                out_row = vars(alien)
+                for key in tables.nocsv:
+                    out_row.pop(key, None)
+                writer.writerow(out_row)
+    elif not args.write and not args.csv:
+        print("==========================================")
+        print(in_world.planet_output())
+        print("==========================================")
         for _ in range(0, args.num):
             alien = copy.deepcopy(in_species)
             alien.generate()
-            alien.output_text_basic()
-            print("================================================")
+            print(alien.output_text_basic())
+            print("==========================================")
+    else:
+        writer = csv.DictWriter(sys.stdout, fieldnames=tables.fieldnames,
+                                delimiter=";")
+        writer.writeheader()
+        for _ in range(0, args.num):
+            alien = copy.deepcopy(in_species)
+            alien.generate()
+            out_row = vars(alien)
+            for key in tables.nocsv:
+                out_row.pop(key, None)
+            writer.writerow(out_row)

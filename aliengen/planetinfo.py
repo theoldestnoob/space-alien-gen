@@ -64,12 +64,15 @@ class PlanetInfo(object):
         """
         Very basic text output of all planet attributes.
         """
-        print("Planet Info:")
-        print(" Type: {}".format(self.type))
-        print(" Climate: {}".format(self.climate))
-        print(" Temperature: {}K ({}F)".format(self.temp, self.get_temp_f()))
-        print(" Hydrographic Coverage: {}%".format(self.hydro))
-        print(" Gravity: {}G".format(self.gravity))
+        outlist = ["Planet Info:",
+                   " Type: {}".format(self.type),
+                   " Climate: {}".format(self.climate),
+                   " Temperature: {}K ({}F)".format(self.temp,
+                                                    self.get_temp_f()),
+                   " Hydrographic Coverage: {}%".format(self.hydro),
+                   " Gravity: {}G".format(self.gravity)]
+        outstr = "\n".join(outlist)
+        return outstr
 
     def get_temp_f(self):
         return round((1.8 * self.temp) - 460, 2)
@@ -103,4 +106,4 @@ if __name__ == '__main__':
     import planetinfo
     PLANET = planetinfo.PlanetInfo()
     PLANET.reroll()
-    PLANET.planetOutput()
+    print(PLANET.planet_output())

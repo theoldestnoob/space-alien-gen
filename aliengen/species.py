@@ -154,74 +154,78 @@ class Species():
         '''
         Output all species attributes in a structured but crude manner.
         '''
-        print("Species Output:")
-        print(" Chemical Basis: {}".format(self.chemical_basis))
-        print(" Habitat: ", end="")
-        print(self.habitat_type, end=" - ")
-        print(self.habitat)
-        print("  Trophic Levels: {}".format(self.trophic_level))
-        print(" Locomotion: {}".format(self.locomotion))
-        print(" Size: {}".format(self.size_class))
-        print("  Volume: {:.5f} yards".format(self.size_volume))
-        print("  Mass: {:.5f} lbs".format(self.size_mass))
-        print("  Weight: {:.5f} lbs".format(self.size_weight))
-        print("  ST: {:.2f}".format(self.stat_st))
-        print("  Move (Walking): {:.2f}".format(self.stat_move_walk))
-        print(" Body Plan:")
-        print("  Symmetry: {}".format(self.symmetry))
-        print("  Sides: {}".format(self.sides))
-        print("  Segments: {}".format(self.segments))
-        print("  Limbs: {}".format(self.limbs))
-        print("  Tail: {}".format(self.tail))
-        print("  Manipulators: {}".format(self.manip))
-        print("   Bad Grip: {}".format(self.manip_badgrip))
-        print("   Normal DX: {}".format(self.manip_normaldx))
-        print("   High DX: {}".format(self.manip_highdx))
-        print("   Prehensile Trunk or Tail: {}".format(self.manip_trunk))
-        print("  Skeleton: {}".format(self.skeleton))
-        print("  Skin: {}".format(self.skin))
-        # print("  Wingspan: {}".format(self.wingspan))
-        print(" Metabolism:")
-        print("  Breathing: {}".format(self.breathing))
-        print("  Temp. Regulation: {}".format(self.temperature_regulation))
-        print("  Growth Pattern: {}".format(self.growth_pattern))
-        print(" Reproduction:")
-        print("  Sexes: {}".format(self.sexes))
-        print("  Gestation: {}".format(self.gestation))
-        print("   Special: {}".format(self.gestation_special))
-        print("  Reproductive Strategy: {}".format(self.reproductive_strat))
-        print(" Senses:")
-        print("  Primary: {}".format(self.sense_primary))
-        print("  Vision: {}".format(self.sense_vision))
-        print("  Hearing: {}".format(self.sense_hearing))
-        print("  Touch: {}". format(self.sense_touch))
-        print("  Taste/Smell: {}".format(self.sense_tastesmell))
-        print("  Special: {}".format(self.sense_specials))
-        print("  Primary Communication: {}".format(self.comms_a))
-        print("  Secondary Communication: {}".format(self.comms_b))
-        print(" Intelligence: {}".format(self.intelligence))
-        print("  IQ: {}".format(self.stat_iq))
-        print(" Mating Behavior: {}".format(self.mating))
-        print(" Social Organization: {}".format(self.social_organization))
-        print(" Personality:")
-        print("  Chauvinism: {} ({})".format(self.p_chauvinism,
-                                             self.p_chauvinism_trait))
-        print("  Concentration: {} ({})".format(self.p_concentration,
-                                                self.p_concentration_trait))
-        print("  Curiosity: {} ({})".format(self.p_curiosity,
-                                            self.p_curiosity_trait))
-        print("  Egoism: {} ({})".format(self.p_egoism,
-                                         self.p_egoism_trait))
-        print("  Empathy: {} ({})".format(self.p_empathy,
-                                          self.p_empathy_trait))
-        print("  Gregariousness: {} ({})".format(self.p_gregariousness,
-                                                 self.p_gregariousness_trait))
-        print("  Imagination: {} ({})".format(self.p_imagination,
-                                              self.p_imagination_trait))
-        print("  Suspicion: {} ({})".format(self.p_suspicion,
-                                            self.p_suspicion_trait))
-        print("  Playfulness: {} ({})".format(self.p_playfulness,
-                                              self.p_playfulness_trait))
+        outlist = [
+            "Species Output:",
+            " Chemical Basis: {}".format(self.chemical_basis),
+            " Habitat: {} - {}".format(self.habitat_type, self.habitat),
+            " Trophic Levels: {}".format(self.trophic_level),
+            " Locomotion: {}".format(self.locomotion),
+            " Size: {}".format(self.size_class),
+            "  Volume: {:.5f} yards".format(self.size_volume),
+            "  Mass: {:.5f} lbs".format(self.size_mass),
+            "  Weight: {:.5f} lbs".format(self.size_weight),
+            "  ST: {:.2f}".format(self.stat_st),
+            "  Move (Walking): {:.2f}".format(self.stat_move_walk),
+            " Body Plan:",
+            "  Symmetry: {}".format(self.symmetry),
+            "  Sides: {}".format(self.sides),
+            "  Segments: {}".format(self.segments),
+            "  Limbs: {}".format(self.limbs),
+            "  Tail: {}".format(self.tail),
+            "  Manipulators: {}".format(self.manip),
+            "   Bad Grip: {}".format(self.manip_badgrip),
+            "   Normal DX: {}".format(self.manip_normaldx),
+            "   High DX: {}".format(self.manip_highdx),
+            "   Prehensile Trunk or Tail: {}".format(self.manip_trunk),
+            "  Skeleton: {}".format(self.skeleton),
+            "  Skin: {}".format(self.skin),
+            # "  Wingspan: {}".format(self.wingspan),
+            " Metabolism:",
+            "  Breathing: {}".format(self.breathing),
+            "  Temp. Regulation: {}".format(self.temperature_regulation),
+            "  Growth Pattern: {}".format(self.growth_pattern),
+            " Reproduction:",
+            "  Sexes: {}".format(self.sexes),
+            "  Gestation: {}".format(self.gestation),
+            "   Special: {}".format(self.gestation_special),
+            "  Reproductive Strategy: {}".format(self.reproductive_strat),
+            " Senses:",
+            "  Primary: {}".format(self.sense_primary),
+            "  Vision: {}".format(self.sense_vision),
+            "  Hearing: {}".format(self.sense_hearing),
+            "  Touch: {}". format(self.sense_touch),
+            "  Taste/Smell: {}".format(self.sense_tastesmell),
+            "  Special: {}".format(self.sense_specials),
+            "  Primary Communication: {}".format(self.comms_a),
+            "  Secondary Communication: {}".format(self.comms_b),
+            " Intelligence: {}".format(self.intelligence),
+            "  IQ: {}".format(self.stat_iq),
+            " Mating Behavior: {}".format(self.mating),
+            " Social Organization: {}".format(self.social_organization),
+            " Personality:",
+            "  Chauvinism: {} ({})".format(self.p_chauvinism,
+                                           self.p_chauvinism_trait),
+            "  Concentration: {} ({})".format(self.p_concentration,
+                                              self.p_concentration_trait),
+            "  Curiosity: {} ({})".format(self.p_curiosity,
+                                          self.p_curiosity_trait),
+            "  Egoism: {} ({})".format(self.p_egoism,
+                                       self.p_egoism_trait),
+            "  Empathy: {} ({})".format(self.p_empathy,
+                                        self.p_empathy_trait),
+            "  Gregariousness: {} ({})".format(self.p_gregariousness,
+                                               self.p_gregariousness_trait),
+            "  Imagination: {} ({})".format(self.p_imagination,
+                                            self.p_imagination_trait),
+            "  Suspicion: {} ({})".format(self.p_suspicion,
+                                          self.p_suspicion_trait),
+            "  Playfulness: {} ({})".format(self.p_playfulness,
+                                            self.p_playfulness_trait)
+            ]
+
+        outstr = "\n".join(outlist)
+
+        return outstr
 
     # Alien Creation I: GURPS Space pg. 140
     def _gen_chemical_basis_planet(self):
@@ -2175,4 +2179,4 @@ if __name__ == '__main__':
     PLANET.generate()
     ALIEN = Species(PLANET)
     ALIEN.generate()
-    ALIEN.output_text_basic()
+    print(ALIEN.output_text_basic())

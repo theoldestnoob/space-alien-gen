@@ -45,7 +45,7 @@ def parse_cmdline():
     parser.add_argument("-w", "--write", metavar="FILE",
                         help="Output to FILE")
     parser.add_argument("--csv", action="store_true",
-                        help="Output in CSV format")
+                        help="Output in Semicolon Separated Variable format")
     parser.add_argument("--earthlike", action="store_true",
                         help="Generate Earthlike planet for species")
     parser.add_argument("--gasgiant", action="store_true",
@@ -101,7 +101,6 @@ def parse_cmdline():
     parser.add_argument("--gest-special", choices=c_gest_special,
                         help="Species Special Gestation")
 
-    # TODO: delete scaffolding after command line parser is completed
-    print(parser.parse_args())
+    # print(parser.parse_args())
 
     return parser.parse_args()
