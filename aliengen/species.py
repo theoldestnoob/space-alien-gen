@@ -19,110 +19,131 @@ class Species():
         Constructor
         '''
         self.planet = world
-        self.sapient = False
-        self.possible_sapient = True
-        self.chemical_basis = ""
-        self.habitat_type = ""
-        self.habitat = ""
-        self.trophic_level = []
-        self._is_herbivore = False
-        self._is_carnivore = False
-        self._is_autotroph = False
-        self.locomotion = []
-        self._is_flying = False
-        self.size_class = ""
-        self.size_volume = 0
-        self.size_mass = 0
-        self.size_weight = 0
-        self.stat_st = 0
-        self.stat_move_walk = 0
-        self.wingspan = 0
-        self.symmetry = ""
-        self.sides = 0
-        self.segments = 0
-        self.limbs = 0
-        self.tail = []
-        self.manip = 0
-        self.manip_badgrip = 0
-        self.manip_normaldx = 0
-        self.manip_highdx = 0
-        self.manip_trunk = False
-        self.skeleton = ()
-        self.skin = ""
-        self.breathing = ""
-        self.temperature_regulation = ""
-        self.growth_pattern = ""
-        self.sexes = ""
-        self.gestation = ""
-        self.gestation_special = ""
-        self.reproductive_strat = ""
-        self.sense_primary = ""
-        self.sense_vision = ""
-        self.sense_hearing = ""
-        self.sense_touch = ""
-        self.sense_tastesmell = ""
-        self.sense_specials = []
-        self.comms_a = ""
-        self.comms_b = ""
-        self.intelligence = ""
-        self.stat_iq = 0
-        self.mating = ""
-        self.social_organization = ""
-        self.p_more_variation = True
-        self.p_chauvinism = 0
-        self.p_concentration = 0
-        self.p_curiosity = 0
-        self.p_egoism = 0
-        self.p_empathy = 0
-        self.p_gregariousness = 0
-        self.p_imagination = 0
-        self.p_suspicion = 0
-        self.p_playfulness = 0
-        self.p_chauvinism_trait = ""
-        self.p_concentration_trait = ""
-        self.p_curiosity_trait = ""
-        self.p_egoism_trait = ""
-        self.p_empathy_trait = ""
-        self.p_gregariousness_trait = ""
-        self.p_imagination_trait = ""
-        self.p_suspicion_trait = ""
-        self.p_playfulness_trait = ""
+        self.sapient = None
+        self.possible_sapient = None
+        self.chemical_basis = None
+        self.habitat_type = None
+        self.habitat = None
+        self.trophic_level = None
+        self._is_herbivore = None
+        self._is_carnivore = None
+        self._is_autotroph = None
+        self.locomotion = None
+        self._is_flying = None
+        self.size_class = None
+        self.size_volume = None
+        self.size_mass = None
+        self.size_weight = None
+        self.stat_st = None
+        self.stat_move_walk = None
+        self.wingspan = None
+        self.symmetry = None
+        self.sides = None
+        self.segments = None
+        self.limbs = None
+        self.tail = None
+        self.manip = None
+        self.manip_badgrip = None
+        self.manip_normaldx = None
+        self.manip_highdx = None
+        self.manip_trunk = None
+        self.skeleton = None
+        self.skin = None
+        self.breathing = None
+        self.temperature_regulation = None
+        self.growth_pattern = None
+        self.sexes = None
+        self.gestation = None
+        self.gestation_special = None
+        self.reproductive_strat = None
+        self.sense_primary = None
+        self.sense_vision = None
+        self.sense_hearing = None
+        self.sense_touch = None
+        self.sense_tastesmell = None
+        self.sense_specials = None
+        self.comms_a = None
+        self.comms_b = None
+        self.intelligence = None
+        self.stat_iq = None
+        self.mating = None
+        self.social_organization = None
+        self.p_more_variation = None
+        self.p_chauvinism = None
+        self.p_concentration = None
+        self.p_curiosity = None
+        self.p_egoism = None
+        self.p_empathy = None
+        self.p_gregariousness = None
+        self.p_imagination = None
+        self.p_suspicion = None
+        self.p_playfulness = None
+        self.p_chauvinism_trait = None
+        self.p_concentration_trait = None
+        self.p_curiosity_trait = None
+        self.p_egoism_trait = None
+        self.p_empathy_trait = None
+        self.p_gregariousness_trait = None
+        self.p_imagination_trait = None
+        self.p_suspicion_trait = None
+        self.p_playfulness_trait = None
 
     def generate(self):
         '''
         Generate all species attributes that have default / empty values.
         '''
-        if self.chemical_basis == "":
+        if self.sapient is None:
+            self.sapient = False
+        if self.possible_sapient is None:
+            self.possible_sapient = True
+        if self.p_more_variation is None:
+            self.p_more_variation = True
+        if self.chemical_basis is None:
             self._gen_chemical_basis_planet()
-        if self.habitat_type == "":
+        if self.habitat_type is None:
             self._gen_habitat_type()
-        if self.habitat == "":
+        if self.habitat is None:
             self._gen_habitat()
-        self._gen_trophic_level()
+        if self.trophic_level is None:
+            self._gen_trophic_level()
         self._gen_trophic_flags()
-        self._gen_locomotion_primary()
+        if self.locomotion is None:
+            self._gen_locomotion_primary()
         self._gen_locomotion_secondary()
         self._gen_locomotion_flags()
-        self._gen_size_class()
-        self._gen_size_volume()
-        self._gen_size_mass()
+        if self.size_class is None:
+            self._gen_size_class()
+        if self.size_volume is None:
+            self._gen_size_volume()
+        if self.size_mass is None:
+            self._gen_size_mass()
         self._gen_size_weight()
         self._gen_stat_st()
         self._gen_stat_move()
-        self._gen_symmetry()
+        if self.symmetry is None:
+            self._gen_symmetry()
         self._gen_sides()
         self._gen_limbs()
         self._gen_tail()
         self._gen_manipulators()
-        self._gen_skeleton()
-        self._gen_skin()
-        self._gen_breathing()
-        self._gen_temperature_regulation()
-        self._gen_growth()
-        self._gen_sexes()
-        self._gen_gestation()
-        self._gen_gestation_special()
-        self._gen_reproductive_strat()
+        if self.skeleton is None:
+            self._gen_skeleton()
+        if self.skin is None:
+            self._gen_skin()
+        if self.breathing is None:
+            self._gen_breathing()
+        if self.temperature_regulation is None:
+            self._gen_temperature_regulation()
+        if self.growth_pattern is None:
+            self._gen_growth()
+        if self.sexes is None:
+            self._gen_sexes()
+        if self.gestation is None:
+            self._gen_gestation()
+        if self.gestation_special is None:
+            self._gen_gestation_special()
+        if self.reproductive_strat is None:
+            self._gen_reproductive_strat()
         self._gen_senses()
         self._gen_intelligence()
         self._gen_mating()
@@ -300,7 +321,7 @@ class Species():
         elif self.habitat_type == "Water":
             if self.planet.hydro < 1:
                 tab_nowater_land = ["Salt-Water Sea",
-                                    "Fresh-Water Lake",
+                                    "Fresh-Water Lakes",
                                     "River/Stream"]
                 habitat = tab_nowater_land[dice.rolldie_zero(1, 3)]
             else:
@@ -2151,6 +2172,7 @@ class Species():
 if __name__ == '__main__':
     import planetinfo
     PLANET = planetinfo.PlanetInfo()
+    PLANET.generate()
     ALIEN = Species(PLANET)
     ALIEN.generate()
     ALIEN.output_text_basic()

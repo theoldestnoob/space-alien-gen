@@ -13,11 +13,12 @@ if __name__ == '__main__':
 
     print("space-aliens.py run! Have some dice rolls:")
     planet = planetinfo.PlanetInfo()
+    planet.generate()
     spec = species.Species(planet)
     spec.generate()
     print("First planet:")
     print("")
-    planet.planetOutput()
+    planet.planet_output()
     print("")
     print("First species:")
     print("")
