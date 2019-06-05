@@ -87,8 +87,6 @@ def parse_cmdline():
                         help="Species Symmetry")
     parser.add_argument("--skeleton", choices=c_skeleton,
                         help="Species Skeleton Type")
-    parser.add_argument("--skin-type", choices=c_skin_type,
-                        help="Species Skin Type (general)")
     parser.add_argument("--skin", choices=c_skin,
                         help="Species Skin Type (specific)")
     parser.add_argument("--breathing", choices=c_breathing,

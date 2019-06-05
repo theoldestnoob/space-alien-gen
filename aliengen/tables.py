@@ -682,7 +682,7 @@ breathing = ("Lungs",
              "Gills Other")
 
 temp = ("Cold-blooded-",
-        "Cold-blooded (no disadvantage)",
+        "Cold-blooded",
         "Partial",
         "Warm-blooded",
         "Warm-blooded+")
