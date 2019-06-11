@@ -128,6 +128,7 @@ class Species():
         self._gen_manipulators()
         if self.skeleton is None:
             self._gen_skeleton()
+        self._gen_skeleton_combo()
         if self.skin is None:
             self._gen_skin()
         if self.breathing is None:
@@ -821,6 +822,12 @@ class Species():
         roll = max(0, min(roll, 14))
 
         skeleton.append(tables.skeleton[roll])
+
+        self.skeleton = skeleton
+
+    def _gen_skeleton_combo(self):
+        skeleton = self.skeleton
+
         while ("Combination" in skeleton
                or skeleton.count(skeleton[0]) > 1):
             skeleton.clear()
