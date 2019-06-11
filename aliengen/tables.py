@@ -704,6 +704,9 @@ sexes = ("Asexual Reproduction or Parthenogenesis",
          "Three or more",
          "Roll Twice")
 
+numbers = ("Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven",
+           "Eight", "Nine", "Ten", "Eleven", "Twelve")
+
 gestation = ("Spawning/Pollinating",
              "Egg-Laying",
              "Live-Bearing",

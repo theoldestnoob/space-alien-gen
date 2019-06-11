@@ -20,14 +20,12 @@ Program Structure
         raise ValueError exception if inputs don't match list from tables.py
     - write class dunder methods for e.g. __repr__ and __print__
     - make user input possible for all generation methods
-        trophic level combination
+        combination trophic level
         secondary/tertiary locomotion
-        sides
         limbs
         combination tail features
         manipulators
         combination skeleton
-        combination / multiple sexes
         reproductive strategy
         senses
         intelligence

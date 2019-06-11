@@ -150,6 +150,10 @@ class Species():
             self._gen_growth()
         if self.sexes is None:
             self._gen_sexes()
+        if "Three or more" in self.sexes:
+            self._gen_sex_three_or_more()
+        if "Roll Twice" in self.sexes:
+            self._gen_sex_roll_twice()
         if self.gestation is None:
             self._gen_gestation()
         if self.gestation_special is None:
@@ -1132,8 +1136,19 @@ class Species():
         roll = self._sex_roll()
         sexes = tables.sexes[roll]
 
+        self.sexes = sexes
+
+    def _gen_sex_three_or_more(self):
+        sexes = self.sexes
+
         if sexes == "Three or more":
             sexes = self._sex_three_or_more()
+
+        self.sexes = sexes
+
+    def _gen_sex_roll_twice(self):
+        sexes = self.sexes
+
         while "Roll Twice" in sexes:
             roll = self._sex_roll()
             sex1 = tables.sexes[roll]
@@ -1170,7 +1185,7 @@ class Species():
         elif roll <= 5:
             sexes = "Four"
         else:
-            sexes = str(dice.rolldie(2, 6))
+            sexes = tables.numbers[dice.rolldie(2, 6)]
         sexes += " Sexes"
         return sexes
 
