@@ -127,7 +127,10 @@ class Species():
             self._gen_symmetry()
         self._gen_sides()
         self._gen_limbs()
-        self._gen_tail()
+        if self.tail is None:
+            self._gen_tail()
+        if "Combination" in self.tail:
+            self._gen_tail_combo()
         self._gen_manipulators()
         if self.skeleton is None:
             self._gen_skeleton()
@@ -718,13 +721,23 @@ class Species():
                 and roll >= 5):
             roll = dice.rolldie_zero(2, 6)
             tail.append(tables.tail_features[roll])
-            while "Combination" in tail:
-                tail.clear()
-                roll1 = dice.rolldie_zero(1, 6) + 5
-                roll2 = dice.rolldie_zero(1, 6) + 5
-                tail.append(tables.tail_features[roll1])
-                tail.append(tables.tail_features[roll2])
-                tail = list(dict.fromkeys(tail))
+
+        self.tail = tail
+
+    def _gen_tail_combo(self):
+
+        if isinstance(self.tail, str):
+            tail = [self.tail]
+        else:
+            tail = self.tail
+
+        while "Combination" in tail:
+            tail.clear()
+            roll1 = dice.rolldie_zero(1, 6) + 5
+            roll2 = dice.rolldie_zero(1, 6) + 5
+            tail.append(tables.tail_features[roll1])
+            tail.append(tables.tail_features[roll2])
+            tail = list(dict.fromkeys(tail))
 
         self.tail = tail
 

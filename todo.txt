@@ -19,20 +19,20 @@ Program Structure
     - properties for variables to enforce correct input
         raise ValueError exception if inputs don't match list from tables.py
     - write class dunder methods for e.g. __repr__ and __print__
+    - make user input possible for all generation methods
     - rewrite skin generator to allow for user set skin type and not just
         specific detailed skin
+    - rewrite tail generator to allow user input
+    - rewrite sexes generator to allow for user input "Three or More", etc
     - rewrite generators with multiple outputs to allow user input of all
         instead of just "combined" or "combination", etc
         e.g. trophic level, locomotion, skeleton
-    - rewrite tail generator to allow user input
-    - rewrite sexes generator to allow for user input "Three or More", etc
     - check to see if user input for later stages prohibits former stage result
         e.g. if skin-type is not an exoskeletal type, 
             skeleton should not be external
     - rewrite some methods (e.g. reproductive strategy) to make user input
         possible, so that users can select e.g. the reproductive strat and
         the method generates the details
-    - make user input possible for all generation methods
     - write tables for command line user input + update parser so that user
         does not have to type in full output string
         e.g. "Armor Shell (DR5)" user input as just "Armor Shell"

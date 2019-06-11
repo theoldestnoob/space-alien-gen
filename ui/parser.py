@@ -18,6 +18,7 @@ def parse_cmdline():
     c_loco_p = set(itertools.chain.from_iterable(tables.loco_primary.values()))
     c_size_class = set(tables.size_class)
     c_symmetry = set(tables.symmetry)
+    c_tail = set(tables.tail_features)
     c_skeleton = set(tables.skeleton)
     c_skin = set(tables.skin_exoskeleton + tables.skin_feathers +
                  tables.skin_fur + tables.skin_scales + tables.skin_skin)
@@ -89,6 +90,8 @@ def parse_cmdline():
                         help="Species Mass")
     parser.add_argument("--symmetry", choices=c_symmetry,
                         help="Species Symmetry")
+    parser.add_argument("--tail", choices=c_tail,
+                        help="Species Tail Feature")
     parser.add_argument("--skeleton", choices=c_skeleton,
                         help="Species Skeleton Type")
     parser.add_argument("--skin", choices=c_skin,

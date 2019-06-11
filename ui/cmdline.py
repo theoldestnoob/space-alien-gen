@@ -54,6 +54,7 @@ def run_cmdline(args):
     in_species.size_volume = args.size_volume
     in_species.size_mass = args.size_mass
     in_species.symmetry = args.symmetry
+    in_species.tail = args.tail
     in_species.skeleton = args.skeleton
     in_species.skin = args.skin
     if args.breathing is not None:
