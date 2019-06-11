@@ -21,8 +21,10 @@ Program Structure
     - write class dunder methods for e.g. __repr__ and __print__
     - rewrite skin generator to allow for user set skin type and not just
         specific detailed skin
-    - rewrite trophic level generator to allow for user input "Combined"
-    - rewrite skeleton generator to allow for user input "Combination"
+    - rewrite generators with multiple outputs to allow user input of all
+        instead of just "combined" or "combination", etc
+        e.g. trophic level, locomotion, skeleton
+    - rewrite tail generator to allow user input
     - rewrite sexes generator to allow for user input "Three or More", etc
     - check to see if user input for later stages prohibits former stage result
         e.g. if skin-type is not an exoskeletal type, 

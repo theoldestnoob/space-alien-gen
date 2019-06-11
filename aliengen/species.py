@@ -106,6 +106,7 @@ class Species():
             self._gen_habitat()
         if self.trophic_level is None:
             self._gen_trophic_level()
+        self._gen_trophic_level_combo()
         self._gen_trophic_flags()
         if self.locomotion is None:
             self._gen_locomotion_primary()
@@ -348,7 +349,22 @@ class Species():
         else:
             trophtable = tables.troph_sapient
 
-        troph.append(tables.troph_ordinary[dice.rolldie_zero(3, 6)])
+        troph.append(trophtable[dice.rolldie_zero(3, 6)])
+
+        self.trophic_level = troph
+
+    def _gen_trophic_level_combo(self):
+
+        if isinstance(self.trophic_level, str):
+            troph = [self.trophic_level]
+        else:
+            troph = self.trophic_level
+
+        if self.possible_sapient is False:
+            trophtable = tables.troph_ordinary
+        else:
+            trophtable = tables.troph_sapient
+
         while "Combined" in troph:
             troph.clear()
             troph.append(trophtable[dice.rolldie_zero(3, 6)])
