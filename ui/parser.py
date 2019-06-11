@@ -91,6 +91,10 @@ def parse_cmdline():
                         help="Species Mass")
     parser.add_argument("--symmetry", choices=c_symmetry,
                         help="Species Symmetry")
+    parser.add_argument("--sides", type=check_sides,
+                        help="Species # of sides. Minimum 2. \
+                              Automatically 2 if symmetry is bilateral \
+                              and 3 if symmetry is trilateral.")
     parser.add_argument("--tail", choices=c_tail,
                         help="Species Tail Feature")
     parser.add_argument("--skeleton", choices=c_skeleton,
@@ -115,3 +119,10 @@ def parse_cmdline():
     # print(parser.parse_args())
 
     return parser.parse_args()
+
+
+def check_sides(in_value):
+    value = int(in_value)
+    if value < 2:
+        raise argparse.ArgumentTypeError("{} is an invalid number of sides".format(value))
+    return value

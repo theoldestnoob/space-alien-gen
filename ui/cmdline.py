@@ -54,6 +54,12 @@ def run_cmdline(args):
     in_species.size_volume = args.size_volume
     in_species.size_mass = args.size_mass
     in_species.symmetry = args.symmetry
+    if args.symmetry == "Bilateral":
+        in_species.sides = 2
+    elif args.symmetry == "Trilateral":
+        in_species.sides = 3
+    else:
+        in_species.sides = args.sides
     in_species.tail = args.tail
     in_species.skeleton = args.skeleton
     in_species.skin_type = args.skin_type

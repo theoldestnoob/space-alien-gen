@@ -126,7 +126,8 @@ class Species():
         self._gen_stat_move()
         if self.symmetry is None:
             self._gen_symmetry()
-        self._gen_sides()
+        if self.sides is None:
+            self._gen_sides()
         self._gen_limbs()
         if self.tail is None:
             self._gen_tail()
@@ -647,13 +648,23 @@ class Species():
     def _gen_symmetry(self):
 
         symmetry = ""
+        sides = self.sides
 
-        roll = dice.rolldie_zero(2, 6)
-        if ("Immobile" in self.locomotion
-                or "Bouyant Flight" in self.locomotion
-                or self.habitat_type == "Space-Dwelling"):
-            roll += 1
-        symmetry = tables.symmetry[roll]
+        if sides is not None:
+            if sides == 2:
+                symmetry = "Bilateral"
+            elif sides == 3:
+                symmetry = "Trilateral"
+            else:
+                roll = dice.rolldie_zero(1, 6) + 7
+                symmetry = tables.symmetry[roll]
+        else:
+            roll = dice.rolldie_zero(2, 6)
+            if ("Immobile" in self.locomotion
+                    or "Bouyant Flight" in self.locomotion
+                    or self.habitat_type == "Space-Dwelling"):
+                roll += 1
+            symmetry = tables.symmetry[roll]
 
         self.symmetry = symmetry
 
