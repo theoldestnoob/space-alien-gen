@@ -63,41 +63,19 @@ def run_cmdline(args):
     in_species.tail = args.tail
     in_species.skeleton = args.skeleton
     in_species.skin_type = args.skin_type
-    in_species.skin = args.skin
+    if args.skin is not None:
+        in_species.skin = tables.ui_skin_map[args.skin]
     if args.breathing is not None:
-        if args.breathing == "Lungs":
-            in_species.breathing = "Lungs"
-        elif args.breathing == "Gills":
-            in_species.breathing = "Doesn't Breathe (Gills)"
-        elif args.breathing == "Lungs Storage":
-            in_species.breathing = "Lungs (air-breathing), Doesn't Breathe (Oxygen Storage)"
-        elif args.breathing == "Gills Other":
-            in_species.breathing = "Doesn't Breathe (Gills), Lungs (or convertable organ)"
+        in_species.breathing = tables.ui_lungs_map[args.breathing]
     if args.temp is not None:
-        if args.temp == "Cold-blooded-":
-            in_species.temperature_regulation = "Cold-blooded (with disadvantage)"
-        elif args.temp == "Cold-blooded":
-            in_species.temperature_regulation = "Cold-blooded (no disadvantage)"
-        elif args.temp == "Partial":
-            in_species.temperature_regulation = "Partial regulation (temperature varies within limits)"
-        elif args.temp == "Warm-blooded":
-            in_species.temperature_regulation = "Warm-blooded"
-        elif args.temp == "Warm-blooded+":
-            in_species.temperature_regulation = "Warm-blooded (with Metabolism Control 2)"
+        in_species.temperature_regulation = tables.ui_temp_map[args.temp]
     in_species.growth_pattern = args.growth
     if in_species.growth_pattern == "Unusual":
         in_species.growth_pattern = "Unusual Growth Pattern (adding segments, branching, etc.)"
     in_species.sexes = args.sexes
     in_species.gestation = args.gestation
     if args.gest_special is not None:
-        if args.gest_special == "Brood Parasite":
-            in_species.gestation_special = "Brood Parasite (raised by another species)"
-        elif args.gest_special == "Parasitic Young":
-            in_species.gestation_special = "Parasitic Young (implanted in a host)"
-        elif args.gest_special == "Cannibalistic Young Fatal":
-            in_species.gestation_special = "Cannibalistic Young (fatal to parent)"
-        elif args.gest_special == "Cannibalistic Young":
-            in_species.gestation_special = "Cannibalistic Young (consume each other)"
+        in_species.gestation_special = tables.ui_gest_special_map[args.gest_special]
 
     lead_z = len(str(args.num))
     if args.dir is not None:

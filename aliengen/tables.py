@@ -802,33 +802,67 @@ ui_skin_type = ["Skin",
 
 ui_skin = ["Soft Skin",
            "Normal Skin",
-           "Hide (DR 1)",
-           "Thick Hide (DR 4)",
+           "Hide",
+           "Thick Hide",
            "Blubber",
-           "Scales (DR 1)",
-           "Heavy Scales (DR 3)",
+           "Scales",
+           "Heavy Scales",
            "Fur",
-           "Thick Fur (+1 Temperature Tolerance)",
-           "Thick Fur over Hide (DR 1, +1 Temperature Tolerance)",
+           "Thick Fur",
+           "Thick Fur over Hide",
            "Spines",
-           "Feathers (+1 Temperature Tolerance)",
-           "Thick Feathers (+2 Temperature Tolerance)",
-           "Feathers over Hide (DR 1, +1 Temperature Tolerance)",
-           "Light Exoskeleton (DR 0)",
-           "Tough Exoskeleton (DR 1)",
-           "Heavy Exoskeleton (DR 2)",
-           "Armor Shell (DR 5)"]
+           "Feathers",
+           "Thick Feathers",
+           "Feathers over Hide",
+           "Light Exoskeleton",
+           "Tough Exoskeleton",
+           "Heavy Exoskeleton",
+           "Armor Shell"]
+
+ui_skin_map = {"Soft Skin": "Soft Skin",
+               "Normal Skin": "Normal Skin",
+               "Hide": "Hide (DR 1)",
+               "Thick Hide": "Thick Hide (DR 4)",
+               "Blubber": "Blubber",
+               "Scales": "Scales (DR 1)",
+               "Heavy Scales": "Heavy Scales (DR 3)",
+               "Fur": "Fur",
+               "Thick Fur": "Thick Fur (+1 Temperature Tolerance)",
+               "Thick Fur over Hide": "Thick Fur over Hide (DR 1, +1 Temperature Tolerance)",
+               "Spines": "Spines",
+               "Feathers": "Feathers (+1 Temperature Tolerance)",
+               "Thick Feathers": "Thick Feathers (+2 Temperature Tolerance)",
+               "Feathers over Hide": "Feathers over Hide (DR 1, +1 Temperature Tolerance)",
+               "Light Exoskeleton": "Light Exoskeleton (DR 0)",
+               "Tough Exoskeleton": "Tough Exoskeleton (DR 1)",
+               "Heavy Exoskeleton": "Heavy Exoskeleton (DR 2)",
+               "Armor Shell": "Armor Shell (DR 5)"}
 
 ui_breathing = ["Lungs",
                 "Gills",
                 "Lungs Storage",
                 "Gills Other"]
 
+ui_lungs_map = {
+        "Lungs": "Lungs",
+        "Gills": "Doesn't Breathe (Gills)",
+        "Lungs Storage": "Lungs (air-breathing), Doesn't Breathe (Oxygen Storage)",
+        "Gills Other": "Doesn't Breathe (Gills), Lungs (or convertable organ)"
+        }
+
 ui_temp = ["Cold-blooded-",
            "Cold-blooded",
            "Partial",
            "Warm-blooded",
            "Warm-blooded+"]
+
+ui_temp_map = {
+        "Cold-blooded-": "Cold-blooded (with disadvantage)",
+        "Cold-blooded": "Cold-blooded (no disadvantage)",
+        "Partial": "Partial regulation (temperature varies within limits)",
+        "Warm-blooded": "Warm-blooded",
+        "Warm-blooded+": "Warm-blooded (with Metabolism Control 2)"
+        }
 
 ui_growth = ["Metamorphosis",
              "Molting",
@@ -851,6 +885,14 @@ ui_gestation_special = ["Brood Parasite",
                         "Parasitic Young",
                         "Cannibalistic Young Fatal",
                         "Cannibalistic Young"]
+
+ui_gest_special_map = {
+        "Brood Parasite": "Brood Parasite (raised by another species)",
+        "Parasitic Young": "Parasitic Young (implanted in a host)",
+        "Cannibalistic Young Fatal": "Cannibalistic Young (fatal to parent)",
+        "Cannibalistic Young": "Cannibalistic Young (consume each other)"
+        }
+
 csv_fields = [
         "chemical_basis",
         "habitat_type",

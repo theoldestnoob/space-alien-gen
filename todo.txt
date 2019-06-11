@@ -42,9 +42,6 @@ Program Structure
     - rewrite some methods (e.g. reproductive strategy) to make user input
         possible, so that users can select e.g. the reproductive strat and
         the method generates the details
-    - write tables for command line user input + update parser so that user
-        does not have to type in full output string
-        e.g. "Armor Shell (DR5)" user input as just "Armor Shell"
     - rewrite input to generate appropriate size class based on weight or volume input
 
 Data Structure
