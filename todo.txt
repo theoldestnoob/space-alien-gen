@@ -20,13 +20,10 @@ Program Structure
         raise ValueError exception if inputs don't match list from tables.py
     - write class dunder methods for e.g. __repr__ and __print__
     - make user input possible for all generation methods
-    - rewrite skin generator to allow for user set skin type and not just
-        specific detailed skin
-    - rewrite tail generator to allow user input
     - rewrite sexes generator to allow for user input "Three or More", etc
     - rewrite generators with multiple outputs to allow user input of all
         instead of just "combined" or "combination", etc
-        e.g. trophic level, locomotion, skeleton
+        e.g. trophic level, locomotion, tail, skeleton
     - check to see if user input for later stages prohibits former stage result
         e.g. if skin-type is not an exoskeletal type, 
             skeleton should not be external

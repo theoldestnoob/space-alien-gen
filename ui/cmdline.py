@@ -56,6 +56,7 @@ def run_cmdline(args):
     in_species.symmetry = args.symmetry
     in_species.tail = args.tail
     in_species.skeleton = args.skeleton
+    in_species.skin_type = args.skin_type
     in_species.skin = args.skin
     if args.breathing is not None:
         if args.breathing == "Lungs":

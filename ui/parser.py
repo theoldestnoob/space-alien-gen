@@ -20,6 +20,7 @@ def parse_cmdline():
     c_symmetry = set(tables.symmetry)
     c_tail = set(tables.tail_features)
     c_skeleton = set(tables.skeleton)
+    c_skintype = set(tables.skin_covertype)
     c_skin = set(tables.skin_exoskeleton + tables.skin_feathers +
                  tables.skin_fur + tables.skin_scales + tables.skin_skin)
     c_breathing = set(tables.breathing)
@@ -94,6 +95,8 @@ def parse_cmdline():
                         help="Species Tail Feature")
     parser.add_argument("--skeleton", choices=c_skeleton,
                         help="Species Skeleton Type")
+    parser.add_argument("--skin-type", choices=c_skintype,
+                        help="Species Skin Type (general)")
     parser.add_argument("--skin", choices=c_skin,
                         help="Species Skin Type (specific)")
     parser.add_argument("--breathing", choices=c_breathing,

@@ -48,6 +48,7 @@ class Species():
         self.manip_highdx = None
         self.manip_trunk = None
         self.skeleton = None
+        self.skin_type = None
         self.skin = None
         self.breathing = None
         self.temperature_regulation = None
@@ -136,6 +137,8 @@ class Species():
             self._gen_skeleton()
         if "Combination" in self.skeleton:
             self._gen_skeleton_combo()
+        if self.skin_type is None:
+            self._gen_skin_type()
         if self.skin is None:
             self._gen_skin()
         if self.breathing is None:
@@ -885,8 +888,8 @@ class Species():
 
     # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation VI: GURPS Space pg. 157
-    def _gen_skin(self):
-        skincover = ""
+    def _gen_skin_type(self):
+
         covertype = ""
 
         if "External" in self.skeleton:
@@ -894,6 +897,12 @@ class Species():
         else:
             roll = dice.rolldie_zero(1, 6)
             covertype = tables.skin_covertype[roll]
+
+        self.skin_type = covertype
+
+    def _gen_skin(self):
+        covertype = self.skin_type
+        skincover = ""
 
         if covertype == "Skin":
             skincover = self._gen_skin_skin()
