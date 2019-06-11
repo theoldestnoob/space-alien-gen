@@ -126,7 +126,7 @@ class Species():
         self._gen_limbs()
         self._gen_tail()
         self._gen_manipulators()
-        if self.skeleton is None:
+        if self.skeleton is None or self.skeleton == "":
             self._gen_skeleton()
         self._gen_skeleton_combo()
         if self.skin is None:
@@ -826,7 +826,11 @@ class Species():
         self.skeleton = skeleton
 
     def _gen_skeleton_combo(self):
-        skeleton = self.skeleton
+
+        if isinstance(self.skeleton, str):
+            skeleton = [self.skeleton]
+        else:
+            skeleton = self.skeleton
 
         while ("Combination" in skeleton
                or skeleton.count(skeleton[0]) > 1):
