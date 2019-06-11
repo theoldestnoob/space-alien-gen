@@ -6,29 +6,28 @@ Created on Sat Jun  1 20:37:09 2019
 """
 
 import argparse
-import itertools
 import aliengen.tables as tables
 
 
 def parse_cmdline():
 
-    c_chembasis = set(tables.chemical_basis)
-    c_habitat = set(tables.hab_land + tables.hab_water)
-    c_trophic = set(tables.troph_sapient)
-    c_loco_p = set(itertools.chain.from_iterable(tables.loco_primary.values()))
-    c_size_class = set(tables.size_class)
-    c_symmetry = set(tables.symmetry)
-    c_tail = set(tables.tail_features)
-    c_skeleton = set(tables.skeleton)
-    c_skintype = set(tables.skin_covertype)
-    c_skin = set(tables.skin_exoskeleton + tables.skin_feathers +
-                 tables.skin_fur + tables.skin_scales + tables.skin_skin)
-    c_breathing = set(tables.breathing)
-    c_temp = set(tables.temp)
-    c_growth = set(tables.growth)
-    c_sexes = set(tables.sexes)
-    c_gestation = set(tables.gestation)
-    c_gest_special = set(tables.gestation_special)
+    c_chembasis = tables.ui_chemical_basis
+    c_hab_type = tables.ui_hab_type
+    c_habitat = tables.ui_habitat
+    c_trophic = tables.ui_trophic_level
+    c_loco_p = tables.ui_locomotion
+    c_size_class = tables.ui_size_class
+    c_symmetry = tables.ui_symmetry
+    c_tail = tables.ui_tail_features
+    c_skeleton = tables.ui_skeleton
+    c_skintype = tables.ui_skin_type
+    c_skin = tables.ui_skin
+    c_breathing = tables.ui_breathing
+    c_temp = tables.ui_temp
+    c_growth = tables.ui_growth
+    c_sexes = tables.ui_sexes
+    c_gestation = tables.ui_gestation
+    c_gest_special = tables.ui_gestation_special
 
     parser = argparse.ArgumentParser(prog="space-alien-gen",
                                      description="Randomly Generate an Alien. \
@@ -75,7 +74,7 @@ def parse_cmdline():
                               dependent on biology.")
     parser.add_argument("--chem-basis", choices=c_chembasis,
                         help="Species Chemical Basis")
-    parser.add_argument("--hab-type", choices=tables.hab_type,
+    parser.add_argument("--hab-type", choices=c_hab_type,
                         help="Species Habitat Type")
     parser.add_argument("--habitat", choices=c_habitat,
                         help="Species Habitat")

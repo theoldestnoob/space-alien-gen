@@ -683,22 +683,6 @@ skin_exoskeleton = ("Light Exoskeleton (DR 0)",
                     "Armor Shell (DR 5)",
                     "Armor Shell (DR 5)")
 
-breathing = ("Lungs",
-             "Gills",
-             "Lungs Storage",
-             "Gills Other")
-
-temp = ("Cold-blooded-",
-        "Cold-blooded",
-        "Partial",
-        "Warm-blooded",
-        "Warm-blooded+")
-
-growth = ("Metamorphosis",
-          "Molting",
-          "Continuous Growth",
-          "Unusual")
-
 sexes = ("Asexual Reproduction or Parthenogenesis",
          "Asexual Reproduction or Parthenogenesis",
          "Asexual Reproduction or Parthenogenesis",
@@ -719,12 +703,155 @@ gestation = ("Spawning/Pollinating",
              "Live-Bearing",
              "Live-Bearing with Pouch")
 
-gestation_special = ("Brood Parasite",
-                     "Parasitic Young",
-                     "Cannibalistic Young Fatal",
-                     "Cannibalistic Young")
+ui_chemical_basis = ["Hydrogen-Based",
+                     "Ammonia-Based",
+                     "Hydrocarbon-Based",
+                     "Water-Based",
+                     "Chlorine-Based",
+                     "Silicon/Sulfuric Acid",
+                     "Silicon/Liquid Sulfur",
+                     "Silicon/Liquid Rock",
+                     "Plasma",
+                     "Exotica"]
 
-fieldnames = (
+ui_hab_type = ["Space-Dwelling",
+               "Gas Giant",
+               "Planetary Interior",
+               "Water",
+               "Land"]
+
+ui_habitat = ["Plains",
+              "Desert",
+              "Island/Beach",
+              "Woodlands",
+              "Swampland",
+              "Mountain",
+              "Arctic",
+              "Jungle",
+              "Banks",
+              "Open Ocean",
+              "Fresh-Water Lakes",
+              "River/Stream",
+              "Tropical Lagoon",
+              "Deep-Ocean Vents",
+              "Salt-Water Sea",
+              "Reef"]
+
+ui_trophic_level = ["Combined",
+                    "Autotroph",
+                    "Decomposer",
+                    "Scavenger",
+                    "Omnivore",
+                    "Gathering Herbivore",
+                    "Grazing/Browsing Herbivore",
+                    "Pouncing Carnivore",
+                    "Chasing Carnivore",
+                    "Trapping Carnivore",
+                    "Hijacking Carnivore",
+                    "Filter-Feeder",
+                    "Parasite/Symbiont",
+                    "Photosynthetic Autotroph",
+                    "Chemosynthetic Autotroph",
+                    "Exotic Autotroph"]
+
+ui_locomotion = ["Immobile",
+                 "Floating",
+                 "Swimming",
+                 "Sailing",
+                 "Digging",
+                 "Slithering",
+                 "Walking",
+                 "Climbing",
+                 "Winged Flight",
+                 "Bouyant Flight",
+                 "Special",
+                 "Solar Sail",
+                 "Rocket"]
+
+ui_size_class = ["Small",
+                 "Human-Scale",
+                 "Large",
+                 "Huge"]
+
+ui_symmetry = ["Bilateral",
+               "Trilateral",
+               "Radial",
+               "Spherical",
+               "Asymmetric"]
+
+ui_tail_features = ["None",
+                    "Striker",
+                    "Long",
+                    "Constricting",
+                    "Barbed Striker",
+                    "Gripping",
+                    "Branching",
+                    "Combination"]
+
+ui_skeleton = ["None",
+               "Hydrostatic",
+               "External",
+               "Internal",
+               "Combination"]
+
+ui_skin_type = ["Skin",
+                "Scales",
+                "Fur",
+                "Feathers",
+                "Exoskeleton"]
+
+ui_skin = ["Soft Skin",
+           "Normal Skin",
+           "Hide (DR 1)",
+           "Thick Hide (DR 4)",
+           "Blubber",
+           "Scales (DR 1)",
+           "Heavy Scales (DR 3)",
+           "Fur",
+           "Thick Fur (+1 Temperature Tolerance)",
+           "Thick Fur over Hide (DR 1, +1 Temperature Tolerance)",
+           "Spines",
+           "Feathers (+1 Temperature Tolerance)",
+           "Thick Feathers (+2 Temperature Tolerance)",
+           "Feathers over Hide (DR 1, +1 Temperature Tolerance)",
+           "Light Exoskeleton (DR 0)",
+           "Tough Exoskeleton (DR 1)",
+           "Heavy Exoskeleton (DR 2)",
+           "Armor Shell (DR 5)"]
+
+ui_breathing = ["Lungs",
+                "Gills",
+                "Lungs Storage",
+                "Gills Other"]
+
+ui_temp = ["Cold-blooded-",
+           "Cold-blooded",
+           "Partial",
+           "Warm-blooded",
+           "Warm-blooded+"]
+
+ui_growth = ["Metamorphosis",
+             "Molting",
+             "Continuous Growth",
+             "Unusual"]
+
+ui_sexes = ["Asexual Reproduction or Parthenogenesis",
+            "Hermaphrodite",
+            "Two Sexes",
+            "Switching between male and female",
+            "Three or more",
+            "Roll Twice"]
+
+ui_gestation = ["Spawning/Pollinating",
+                "Egg-Laying",
+                "Live-Bearing",
+                "Live-Bearing with Pouch"]
+
+ui_gestation_special = ["Brood Parasite",
+                        "Parasitic Young",
+                        "Cannibalistic Young Fatal",
+                        "Cannibalistic Young"]
+csv_fields = [
         "chemical_basis",
         "habitat_type",
         "habitat",
@@ -785,9 +912,9 @@ fieldnames = (
         "p_suspicion_trait",
         "p_playfulness",
         "p_playfulness_trait"
-        )
+        ]
 
-nocsv = (
+csv_unused = [
         "planet",
         "p_more_variation",
         "possible_sapient",
@@ -797,4 +924,4 @@ nocsv = (
         "_is_flying",
         "_is_autotroph",
         "_is_herbivore"
-        )
+        ]

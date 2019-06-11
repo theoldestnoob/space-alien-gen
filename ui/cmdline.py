@@ -145,25 +145,25 @@ def run_cmdline(args):
             print("========================================")
             print(in_world.planet_output())
             print("========================================")
-            writer = csv.DictWriter(sys.stdout, fieldnames=tables.fieldnames,
+            writer = csv.DictWriter(sys.stdout, fieldnames=tables.csv_fields,
                                     delimiter=";")
             writer.writeheader()
             for _ in range(0, args.num):
                 alien = copy.deepcopy(in_species)
                 alien.generate()
                 out_row = vars(alien)
-                for key in tables.nocsv:
+                for key in tables.csv_unused:
                     out_row.pop(key, None)
                 writer.writerow(out_row)
         else:
             with open(args.write, "w", newline="") as file:
-                writer = csv.DictWriter(file, fieldnames=tables.fieldnames,
+                writer = csv.DictWriter(file, fieldnames=tables.csv_fields,
                                         delimiter=";")
                 writer.writeheader()
                 for _ in range(0, args.num):
                     alien = copy.deepcopy(in_species)
                     alien.generate()
                     out_row = vars(alien)
-                    for key in tables.nocsv:
+                    for key in tables.csv_unused:
                         out_row.pop(key, None)
                     writer.writerow(out_row)

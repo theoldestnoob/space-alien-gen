@@ -33,7 +33,6 @@ Program Structure
         mating behavior
         social organization
         personality
-    - rewrite sexes generator to allow for user input "Three or More", etc
     - rewrite generators with multiple outputs to allow user input of all
         instead of just "combined" or "combination", etc
         e.g. trophic level, locomotion, tail, skeleton
