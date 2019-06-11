@@ -20,6 +20,20 @@ Program Structure
         raise ValueError exception if inputs don't match list from tables.py
     - write class dunder methods for e.g. __repr__ and __print__
     - make user input possible for all generation methods
+        trophic level combination
+        secondary/tertiary locomotion
+        sides
+        limbs
+        combination tail features
+        manipulators
+        combination skeleton
+        combination / multiple sexes
+        reproductive strategy
+        senses
+        intelligence
+        mating behavior
+        social organization
+        personality
     - rewrite sexes generator to allow for user input "Three or More", etc
     - rewrite generators with multiple outputs to allow user input of all
         instead of just "combined" or "combination", etc
