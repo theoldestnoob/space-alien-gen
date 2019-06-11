@@ -563,38 +563,14 @@ class Species():
         elif self.size_class == "Huge":
             volume = dice.rolldie(2, 6) * 10
 
-        if self.planet.gravity < 0.15:
-            mult = 4.6
-        elif self.planet.gravity < 0.25:
-            mult = 2.9
-        elif self.planet.gravity < 0.35:
-            mult = 2.2
-        elif self.planet.gravity < 0.45:
-            mult = 1.8
-        elif self.planet.gravity < 0.55:
-            mult = 1.6
-        elif self.planet.gravity < 0.65:
-            mult = 1.4
-        elif self.planet.gravity < 0.75:
-            mult = 1.3
-        elif self.planet.gravity < 0.85:
-            mult = 1.2
-        elif self.planet.gravity < 0.95:
-            mult = 1.1
-        elif self.planet.gravity < 1.125:
-            mult = 1
-        elif self.planet.gravity < 1.375:
-            mult = 0.9
-        elif self.planet.gravity < 1.75:
-            mult = 0.75
-        elif self.planet.gravity < 2.25:
-            mult = 0.6
-        elif self.planet.gravity < 3:
-            mult = 0.5
-        elif self.planet.gravity < 4.25:
-            mult = 0.4
-        else:
+        mult = 0
+        for gravity, multiplier in tables.size_volume_gravity:
+            if self.planet.gravity < gravity:
+                mult = multiplier
+                break
+        if mult == 0:
             mult = 0.3
+
         if not ((self.habitat_type == "Water"
                  and "Winged Flight" not in self.locomotion)
                 or "Bouyant Flight" in self.locomotion):

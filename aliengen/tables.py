@@ -557,6 +557,13 @@ size_volume_small = (0.05, 0.07, 0.1, 0.15, 0.2, 0.3)
 size_volume_human = (0.5, 0.7, 1, 1.5, 2, 3)
 size_volume_large = (5, 7, 10, 15, 20, 99999)
 
+# tables of (gravity, volume multiplier) pairs to use in chain where
+# if gravity < value, multiplier = value
+size_volume_gravity = ((0.15, 4.6), (0.25, 2.9), (0.35, 2.2), (0.45, 1.8),
+                       (0.55, 1.6), (0.65, 1.4), (0.75, 1.3), (0.85, 1.2),
+                       (0.95, 1.1), (1.125, 1), (1.375, 0.9), (1.75, 0.75),
+                       (2.25, 0.6), (3, 0.5), (4.25, 0.4))
+
 size_mass_small = (0.003, 0.01, 0.025, 0.08, 0.2, 1)
 size_mass_human = (4, 9, 25, 80, 200, 600)
 size_mass_large = (3000, 8000, 24000, 80000, 200000, 99999)

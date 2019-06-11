@@ -26,6 +26,7 @@ Program Structure
         combination tail features
         manipulators
         combination skeleton
+        combination sexes
         reproductive strategy
         senses
         intelligence
