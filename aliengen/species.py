@@ -106,7 +106,9 @@ class Species():
             self._gen_habitat()
         if self.trophic_level is None:
             self._gen_trophic_level()
-        self._gen_trophic_level_combo()
+        if "Combination" in self.trophic_level:
+            self._gen_trophic_level_combo()
+        self._gen_trophic_filter()
         self._gen_trophic_flags()
         if self.locomotion is None:
             self._gen_locomotion_primary()
@@ -127,9 +129,10 @@ class Species():
         self._gen_limbs()
         self._gen_tail()
         self._gen_manipulators()
-        if self.skeleton is None or self.skeleton == "":
+        if self.skeleton is None:
             self._gen_skeleton()
-        self._gen_skeleton_combo()
+        if "Combination" in self.skeleton:
+            self._gen_skeleton_combo()
         if self.skin is None:
             self._gen_skin()
         if self.breathing is None:
@@ -369,6 +372,15 @@ class Species():
             troph.clear()
             troph.append(trophtable[dice.rolldie_zero(3, 6)])
             troph.append(trophtable[dice.rolldie_zero(3, 6)])
+
+        self.trophic_level = troph
+
+    def _gen_trophic_filter(self):
+
+        if isinstance(self.trophic_level, str):
+            troph = [self.trophic_level]
+        else:
+            troph = self.trophic_level
 
         if len(troph) > 1:
             troph = list(set(troph))

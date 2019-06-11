@@ -587,8 +587,8 @@ tail_features = ("",
                  "Branching",
                  "Combination")
 
-skeleton = ("",
-            "",
+skeleton = ("None",
+            "None",
             "Hydrostatic",
             "Hydrostatic",
             "External",
