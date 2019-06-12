@@ -1,6 +1,7 @@
 # GURPS 4<sup>th</sup> Edition Space Alien Generator
 
 This code can be found on GitHub: http://github.com/theoldestnoob/space-alien-gen/
+Note: the current most updated branch is cli-features, not master.
 
 ## What is this?
 
