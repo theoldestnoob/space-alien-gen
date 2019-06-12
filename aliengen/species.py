@@ -57,6 +57,7 @@ class Species():
         self.gestation = None
         self.gestation_special = None
         self.reproductive_strat = None
+        self.reproductive_detail = None
         self.sense_primary = None
         self.sense_vision = None
         self.sense_hearing = None
@@ -160,6 +161,8 @@ class Species():
             self._gen_gestation_special()
         if self.reproductive_strat is None:
             self._gen_reproductive_strat()
+        if self.reproductive_detail is None:
+            self._gen_reproductive_detail()
         self._gen_senses()
         self._gen_intelligence()
         self._gen_mating()
@@ -204,6 +207,7 @@ class Species():
             "  Gestation: {}".format(self.gestation),
             "   Special: {}".format(self.gestation_special),
             "  Reproductive Strategy: {}".format(self.reproductive_strat),
+            "  Reproductive Detail: {}".format(self.reproductive_detail),
             " Senses:",
             "  Primary: {}".format(self.sense_primary),
             "  Vision: {}".format(self.sense_vision),
@@ -1222,50 +1226,66 @@ class Species():
             roll += 2
 
         if roll <= 4:
-            if self.gestation == "Spawning/Pollinating":
-                strat = "Strong K-Strategy: 20 - 120 offspring, "
-                strat += "extensive care after birth"
-            else:
-                strat = "Strong K-Strategy: 1 offspring, "
-                strat += "extensive care after birth"
+            strat = "Strong K-Strategy"
         elif roll <= 6:
+            strat = "Moderate K-Strategy"
+        elif roll == 7:
+            strat = "Median Strategy"
+        elif roll <= 9:
+            strat = "Moderate r-Strategy"
+        else:
+            strat = "Strong r-Strategy"
+
+        self.reproductive_strat = strat
+
+    def _gen_reproductive_detail(self):
+
+        detail = ""
+
+        if "Strong K-Strategy" in self.reproductive_strat:
+            if self.gestation == "Spawning/Pollinating":
+                detail = "20 - 120 offspring, extensive care after birth"
+            else:
+                detail = "1 offspring, extensive care after birth"
+        elif "Moderate K-Strategy" in self.reproductive_strat:
             litter_l = 1
             litter_h = 2
             if self.gestation == "Spawning/Pollinating":
                 mult = 10 * dice.rolldie(2, 6)
                 litter_l = litter_l * mult
                 litter_h = litter_h * mult
-            strat = "Moderate K-Strategy: {} - {} ".format(litter_l, litter_h)
-            strat += "offspring per litter, extensive care after birth"
-        elif roll == 7:
+            detail = "{} - {} offspring per litter".format(litter_l, litter_h)
+            detail += ", extensive care after birth"
+        elif "Median Strategy" in self.reproductive_strat:
             litter_l = 1
             litter_h = 6
             if self.gestation == "Spawning/Pollinating":
                 mult = 10 * dice.rolldie(2, 6)
                 litter_l = litter_l * mult
                 litter_h = litter_h * mult
-            strat = "Median Strategy: {} - {} ".format(litter_l, litter_h)
-            strat += "offspring per litter, moderate care after birth"
-        elif roll <= 9:
+            detail = "{} - {} offspring per litter".format(litter_l, litter_h)
+            detail += ", moderate care after birth"
+        elif "Moderate r-Strategy" in self.reproductive_strat:
             litter_l = 2
             litter_h = 7
             if self.gestation == "Spawning/Pollinating":
                 mult = 10 * dice.rolldie(2, 6)
                 litter_l = litter_l * mult
                 litter_h = litter_h * mult
-            strat = "Moderate r-Strategy: {} - {} ".format(litter_l, litter_h)
-            strat += "offspring per litter, some care after birth"
-        else:
+            detail = "{} - {} offspring per litter".format(litter_l, litter_h)
+            detail += ", some care after birth"
+        elif "Strong r-Strategy" in self.reproductive_strat:
             litter_l = 2
             litter_h = 12
             if self.gestation == "Spawning/Pollinating":
                 mult = 10 * dice.rolldie(2, 6)
                 litter_l = litter_l * mult
                 litter_h = litter_h * mult
-            strat = "Strong r-Strategy: {} - {} ".format(litter_l, litter_h)
-            strat += "offspring per litter, no care, +1 Short Lifespan"
+            detail = "{} - {} offspring per litter".format(litter_l, litter_h)
+            detail += ", no care, +1 Short Lifespan"
 
-        self.reproductive_strat = strat
+        print(detail)
+        self.reproductive_detail = detail
 
     # Alien Creation VIII: GURPS Space pg. 164
     # TODO: SKIPPED REFACTORING THIS FUNCTION BECAUSE JEEZUS. WILL DO IT LATER
