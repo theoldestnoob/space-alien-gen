@@ -164,7 +164,10 @@ class Species():
         if self.reproductive_detail is None:
             self._gen_reproductive_detail()
         self._gen_senses()
-        self._gen_intelligence()
+        if self.intelligence is None:
+            self._gen_intelligence()
+        if self.stat_iq is None:
+            self._gen_stat_iq()
         self._gen_mating()
         self._gen_social()
         self._gen_personality()
@@ -1634,7 +1637,6 @@ class Species():
     def _gen_intelligence(self):
 
         intell = ""
-        stat_iq = 0
 
         #  Non-Sapient
         roll = dice.rolldie(2, 6)
@@ -1655,30 +1657,38 @@ class Species():
         #   generator at an earlier stage
         if roll <= 3:
             intell = "Mindless"
-            stat_iq = 0
         elif roll <= 5:
             intell = "Preprogrammed (Cannot Learn)"
-            stat_iq = 1
         elif roll <= 8:
             intell = "Low Intelligence (Bestial)"
-            stat_iq = dice.rolldie(1, 3)
         elif roll <= 10:
             intell = "High Intelligence (Bestial)"
-            stat_iq = dice.rolldie(1, 3) + 2
         else:
             intell = "Presapient"
-            stat_iq = 5
 
-        #  Possibly Sapient
         if self.possible_sapient is True:
             if roll >= 13:
                 intell = "Sapient"
 
-        #  Definitely Sapient
         if self.sapient is True:
             intell = "Sapient"
 
-        if intell == "Sapient":
+        self.intelligence = intell
+
+    def _gen_stat_iq(self):
+        stat_iq = 0
+
+        if "Mindless" in self.intelligence:
+            stat_iq = 0
+        elif "Preprogrammed" in self.intelligence:
+            stat_iq = 1
+        elif "Low" in self.intelligence:
+            stat_iq = dice.rolldie(1, 3)
+        elif "High" in self.intelligence:
+            stat_iq = dice.rolldie(1, 3) + 2
+        elif "Presapient" in self.intelligence:
+            stat_iq = 5
+        elif "Sapient" in self.intelligence:
             stat_iq = dice.rolldie(1, 6) + 5
             if ("Filter-Feeder" in self.trophic_level
                     or "Grazing/Browsing Herbivore" in self.trophic_level
@@ -1696,7 +1706,6 @@ class Species():
             if stat_iq < 6:
                 stat_iq = 6
 
-        self.intelligence = intell
         self.stat_iq = stat_iq
 
     # Alien Creation IX: GURPS Space pg. 168
