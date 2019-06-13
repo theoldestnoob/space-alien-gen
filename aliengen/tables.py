@@ -929,6 +929,22 @@ ui_mating_map = {
         "Hive": "Hive"
         }
 
+ui_social = ["Solitary",
+             "Pair",
+             "Troop",
+             "Pack",
+             "Herd",
+             "Hive"]
+
+ui_social_map = {
+        "Solitary": "Solitary",
+        "Pair": "Pair-bonded",
+        "Troop": "Troop of 4 - 10 members",
+        "Pack": "Pack of 6 - 20 members",
+        "Herd": "Herd of 10+ members",
+        "Hive": "Hive"
+        }
+
 csv_fields = [
         "chemical_basis",
         "habitat_type",

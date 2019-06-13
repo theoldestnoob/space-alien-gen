@@ -84,6 +84,12 @@ def run_cmdline(args):
         in_species.sapient = True
     if args.mating is not None:
         in_species.mating = tables.ui_mating_map[args.mating]
+    if args.mating == "Hive":
+        args.social = "Hive"
+    elif args.social == "Hive":
+        in_species.mating = "Hive"
+    if args.social is not None:
+        in_species.social_organization = tables.ui_social_map[args.social]
 
     lead_z = len(str(args.num))
     if args.dir is not None:

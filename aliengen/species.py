@@ -170,7 +170,8 @@ class Species():
             self._gen_stat_iq()
         if self.mating is None:
             self._gen_mating()
-        self._gen_social()
+        if self.social_organization is None:
+            self._gen_social()
         self._gen_personality()
 
     def output_text_basic(self):
@@ -1723,6 +1724,13 @@ class Species():
             roll += 1
         elif "Strong r-Strategy" in self.reproductive_strat:
             roll -= 1
+
+        # exception for user input, otherwise it's impossible to have
+        #   already determined the social organization before mating behavior
+        if (self.social_organization is not None
+                and self.social_organization != "Hive"
+                and roll > 10):
+            roll = 10
 
         if roll <= 5:
             mating = "Mating only, no pair bond"
