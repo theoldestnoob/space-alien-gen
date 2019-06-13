@@ -899,6 +899,22 @@ ui_reproductive_strategy = ["Strong K-Strategy",
                             "Moderate r-Strategy",
                             "Strong r-Strategy"]
 
+ui_intelligence = ["Mindless",
+                   "Preprogrammed",
+                   "Low",
+                   "High",
+                   "Presapient",
+                   "Sapient"]
+
+ui_intel_map = {
+        "Mindless": "Mindless",
+        "Preprogrammed": "Preprogrammed (Cannot Learn)",
+        "Low": "Low Intelligence (Bestial)",
+        "High": "High Intelligence (Bestial)",
+        "Presapient": "Presapient",
+        "Sapient": "Sapient",
+        }
+
 csv_fields = [
         "chemical_basis",
         "habitat_type",

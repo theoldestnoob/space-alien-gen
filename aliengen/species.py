@@ -1635,7 +1635,6 @@ class Species():
     # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation IX: GURPS Space pg. 168
     def _gen_intelligence(self):
-
         intell = ""
 
         #  Non-Sapient

@@ -32,6 +32,7 @@ def run_cmdline(args):
     in_species = species.Species(in_world)
     if args.sapient:
         in_species.sapient = True
+        in_species.intelligence = "Sapient"
     elif args.nonsapient:
         in_species.sapient = False
         in_species.possible_sapient = False
@@ -77,6 +78,9 @@ def run_cmdline(args):
     if args.gest_special is not None:
         in_species.gestation_special = tables.ui_gest_special_map[args.gest_special]
     in_species.reproductive_strat = args.repro_strat
+    in_species.intelligence = tables.ui_intel_map[args.intelligence]
+    if args.intelligence == "Sapient":
+        in_species.sapient = True
 
     lead_z = len(str(args.num))
     if args.dir is not None:
