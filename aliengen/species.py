@@ -168,7 +168,8 @@ class Species():
             self._gen_intelligence()
         if self.stat_iq is None:
             self._gen_stat_iq()
-        self._gen_mating()
+        if self.mating is None:
+            self._gen_mating()
         self._gen_social()
         self._gen_personality()
 

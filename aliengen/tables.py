@@ -915,6 +915,20 @@ ui_intel_map = {
         "Sapient": "Sapient",
         }
 
+ui_mating = ["No Bond",
+             "Temp Pair",
+             "Pair",
+             "Harem",
+             "Hive"]
+
+ui_mating_map = {
+        "No Bond": "Mating only, no pair bond",
+        "Temp Pair": "Temporary pair bond",
+        "Pair": "Permanent pair bond",
+        "Harem": "Harem",
+        "Hive": "Hive"
+        }
+
 csv_fields = [
         "chemical_basis",
         "habitat_type",

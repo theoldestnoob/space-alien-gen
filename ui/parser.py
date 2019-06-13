@@ -30,6 +30,7 @@ def parse_cmdline():
     c_gest_special = tables.ui_gestation_special
     c_repro_strat = tables.ui_reproductive_strategy
     c_intelligence = tables.ui_intelligence
+    c_mating = tables.ui_mating
 
     parser = argparse.ArgumentParser(prog="space-alien-gen",
                                      description="Randomly Generate an Alien. \
@@ -120,6 +121,8 @@ def parse_cmdline():
                         help="Species Reproductive Strategy")
     parser.add_argument("--intelligence", choices=c_intelligence,
                         help="Species Intelligence")
+    parser.add_argument("--mating", choices=c_mating,
+                        help="Species Mating Behavior")
 
     # print(parser.parse_args())
 

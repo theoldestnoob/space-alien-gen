@@ -78,9 +78,12 @@ def run_cmdline(args):
     if args.gest_special is not None:
         in_species.gestation_special = tables.ui_gest_special_map[args.gest_special]
     in_species.reproductive_strat = args.repro_strat
-    in_species.intelligence = tables.ui_intel_map[args.intelligence]
+    if args.intelligence is not None:
+        in_species.intelligence = tables.ui_intel_map[args.intelligence]
     if args.intelligence == "Sapient":
         in_species.sapient = True
+    if args.mating is not None:
+        in_species.mating = tables.ui_mating_map[args.mating]
 
     lead_z = len(str(args.num))
     if args.dir is not None:
