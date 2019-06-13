@@ -893,6 +893,12 @@ ui_gest_special_map = {
         "Cannibalistic Young": "Cannibalistic Young (consume each other)"
         }
 
+ui_reproductive_strategy = ["Strong K-Strategy",
+                            "Moderate K-Strategy",
+                            "Median Strategy",
+                            "Moderate r-Strategy",
+                            "Strong r-Strategy"]
+
 csv_fields = [
         "chemical_basis",
         "habitat_type",

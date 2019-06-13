@@ -76,6 +76,7 @@ def run_cmdline(args):
     in_species.gestation = args.gestation
     if args.gest_special is not None:
         in_species.gestation_special = tables.ui_gest_special_map[args.gest_special]
+    in_species.reproductive_strat = args.repro_strat
 
     lead_z = len(str(args.num))
     if args.dir is not None:

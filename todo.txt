@@ -27,7 +27,6 @@ Program Structure
         manipulators
         combination skeleton
         combination sexes
-        reproductive strategy
         senses
         intelligence
         mating behavior
