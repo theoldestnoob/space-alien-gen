@@ -1290,35 +1290,18 @@ class Species():
         self.reproductive_detail = detail
 
     # Alien Creation VIII: GURPS Space pg. 164
-    # TODO: SKIPPED REFACTORING THIS FUNCTION BECAUSE JEEZUS. WILL DO IT LATER
+    # TODO:
+    #   - Handle user input - reverse lookup sense rolls, etc
     #   - Bundle senses into their own datastructure / class
-    #   - Separate into functions for
-    #       vision, hearing, touch, taste/smell, special senses,
-    #       primary + secondary sense, communication channels
     def _gen_senses(self):
 
-        # Primary Sense
         self._gen_senses_primary()
-
-        # Vision
         self._gen_senses_vision()
-
-        # Hearing
         self._gen_senses_hearing()
-
-        # Touch
         self._gen_senses_touch()
-
-        # Taste/Smell
         self._gen_senses_tastesmell()
-
-        # Special Senses
         self._gen_senses_special()
-
-        # Primary Communication Channel
         self._gen_communication_a()
-
-        # Secondary Communication Channel
         self._gen_communication_b()
 
     # Alien Creation VIII: GURPS Space pg. 164
@@ -1330,9 +1313,9 @@ class Species():
         if self._is_autotroph:
             roll += 2
 
-        if roll < 8:
+        if roll <= 7:
             primary = "Hearing"
-        elif roll < 13:
+        elif roll <= 12:
             primary = "Vision"
         else:
             primary = "Touch and Taste"
@@ -1364,20 +1347,20 @@ class Species():
             if roll < 10:
                 roll = 3
 
-        if roll < 7:
+        if roll <= 6:
             vision = "Blindness"
-        elif roll < 8:
+        elif roll <= 7:
             vision = "Blindness (Can sense light and dark, -10%)"
-        elif roll < 10:
+        elif roll <= 9:
             vision = "Bad Sight and Colorblindness"
-        elif roll < 12:
+        elif roll <= 11:
             vision = "Bad Sight or Colorblindness"
-        elif roll < 15:
+        elif roll <= 14:
             vision = "Normal Vision"
         else:
             vision = "Telescopic Vision 4"
 
-        if roll > 9:
+        if roll >= 10:
             self.sense_comm["Vision"] = dice.rolldie(1, 6)
 
         self.sense_roll["Vision"] = roll
@@ -1388,9 +1371,9 @@ class Species():
         roll = dice.rolldie(3, 6)
         roll_v = self.sense_roll["Vision"]
 
-        if roll_v < 8:
+        if roll_v <= 7:
             roll += 2
-        elif roll_v < 12:
+        elif roll_v <= 11:
             roll += 1
         if self.habitat_type == "Water":
             roll += 1
@@ -1399,30 +1382,29 @@ class Species():
         if self.habitat_type == "Space-Dwelling":
             roll = 0
 
-        if roll < 7:
+        if roll <= 6:
             hearing = "Deafness"
-        elif roll < 8:
+        elif roll <= 8:
             hearing = "Hard of Hearing"
-        elif roll < 11:
+        elif roll <= 10:
             hearing = "Normal Hearing"
-        elif roll < 12:
-            if (self.size_class == "Large"
-                    or self.size_class == "Huge"):
+        elif roll <= 11:
+            if self.size_class in ["Large", "Huge"]:
                 hearing = "Normal Hearing with extended range"
                 hearing += " (Subsonic Hearing)"
             else:
                 hearing = "Normal Hearing with extended range (Ultrahearing)"
-        elif roll < 13:
+        elif roll <= 12:
             hearing = "Acute Hearing 4"
-        elif roll < 14:
+        elif roll <= 13:
             hearing = "Acute Hearing 4 and either"
             hearing += " Subsonic Hearing or Ultrahearing"
         else:
             hearing = "Acute Hearing 4 with Ultrasonic Hearing and Sonar"
 
-        if roll > 8:
+        if roll >= 9:
             self.sense_comm["Hearing"] = dice.rolldie(1, 6)
-            if roll > 11:
+            if roll >= 12:
                 self.sense_comm["Hearing"] += 1
 
         self.sense_roll["Hearing"] = roll
@@ -1441,28 +1423,28 @@ class Species():
             roll += 2
         if self._is_flying:
             roll -= 2
-        if roll_v < 8:
+        if roll_v <= 7:
             roll += 2
         if "Trapping Carnivore" in self.trophic_level:
             roll += 1
         if self.size_class == "Small":
             roll += 1
 
-        if roll < 3:
+        if roll <= 2:
             touch = "Numb"
-        elif roll < 5:
+        elif roll <= 4:
             touch = "-2 DX from poor sense of touch"
-        elif roll < 7:
+        elif roll <= 6:
             touch = "-1 DX from poor sense of touch"
-        elif roll < 9:
+        elif roll <= 8:
             touch = "Human-level touch"
-        elif roll < 11:
+        elif roll <= 10:
             touch = "Acute Touch 4"
         else:
             touch = "Acute Touch 4 and either"
             touch += " Senstive Touch or Vibration Sense"
 
-        if roll > 8:
+        if roll >= 9:
             self.sense_comm["Touch"] = dice.rolldie(1, 6)
 
         self.sense_roll["Touch"] = roll
@@ -1472,8 +1454,9 @@ class Species():
     def _gen_senses_tastesmell(self):
         roll = dice.rolldie(2, 6)
 
-        if ("Chasing Carnivore" in self.trophic_level
-                or "Gathering Herbivore" in self.trophic_level):
+        if "Chasing Carnivore" in self.trophic_level:
+            roll += 2
+        if "Gathering Herbivore" in self.trophic_level:
             roll += 2
         if("Filter-Feeder" in self.trophic_level
            or "Trapping Carnivore" in self.trophic_level
@@ -1484,13 +1467,13 @@ class Species():
         if "Immobile" in self.locomotion:
             roll -= 4
 
-        if roll < 4:
+        if roll <= 3:
             tastesmell = "No Sense of Smell/Taste"
-        elif roll < 6:
+        elif roll <= 5:
             tastesmell = "No Sense of Smell (can taste, -50%)"
-        elif roll < 9:
+        elif roll <= 8:
             tastesmell = "Normal taste/smell"
-        elif roll < 11:
+        elif roll <= 10:
             if self.habitat_type == "Water":
                 tastesmell = "Acute Taste 4"
             else:
@@ -1501,7 +1484,7 @@ class Species():
             else:
                 tastesmell = "Acute Taste/Smell 4 and Discriminatory Smell"
 
-        if roll > 8:
+        if roll >= 9:
             self.sense_comm["Taste/Smell"] = dice.rolldie(1, 6)
 
         self.sense_roll["Taste/Smell"] = roll
@@ -1514,18 +1497,15 @@ class Species():
         roll_h = self.sense_roll["Hearing"]
 
         #  360 Vision
-        if roll_v > 6:
+        if roll_v >= 7:
             roll = dice.rolldie(2, 6)
-            if (self.habitat == "Desert"
-                    or self.habitat == "Plains"):
+            if self.habitat in ["Desert", "Plains"]:
                 roll += 1
-            if ("Gathering Herbivore" in self.trophic_level
-                    or "Grazing/Browsing Herbivore" in self.trophic_level):
+            if self._is_herbivore:
                 roll += 1
-            if (self.symmetry == "Radial"
-                    or self.symmetry == "Spherical"):
+            if self.symmetry in ["Radial", "Spherical"]:
                 roll += 1
-            if roll > 10:
+            if roll >= 11:
                 special.append("360 Vision")
 
         #  Absolute Direction
@@ -1536,37 +1516,35 @@ class Species():
             roll += 1
         if "Digging" in self.locomotion:
             roll += 1
-        if roll > 10:
+        if roll >= 11:
             special.append("Absolute Direction")
 
         #  Discriminatory Hearing
-        if roll_h > 8:
+        if roll_h >= 9:
             roll = dice.rolldie(2, 6)
-            if roll_h > 13:
+            if roll_h >= 14:
                 roll += 2
-            if roll > 10:
+            if roll >= 11:
                 special.append("Discriminatory Hearing")
 
         #  Peripheral Vision
-        if roll_v > 6:
+        if roll_v >= 7:
             roll = dice.rolldie(2, 6)
-            if (self.habitat == "Plains"
-                    or self.habitat == "Desert"):
+            if self.habitat in ["Plains", "Desert"]:
                 roll += 1
-            if ("Gathering Herbivore" in self.trophic_level
-                    or "Grazing/Browsing Herbivore" in self.trophic_level):
+            if self._is_herbivore:
                 roll += 2
-            if roll > 9:
+            if roll >= 10:
                 special.append("Peripheral Vision")
 
         #  Night Vision 1d+3
-        if roll_v > 6:
+        if roll_v >= 7:
             roll = dice.rolldie(2, 6)
             if self.habitat_type == "Water":
                 roll += 2
             if self._is_carnivore:
                 roll += 2
-            if roll > 10:
+            if roll >= 11:
                 nvroll = dice.rolldie(1, 6) + 3
                 special.append("Night Vision {}".format(nvroll))
 
@@ -1574,7 +1552,7 @@ class Species():
         if (self.habitat_type != "Water"
                 and self.chemical_basis != "Ammonia-Based"):
             roll = dice.rolldie(2, 6)
-            if roll > 10:
+            if roll >= 11:
                 special.append("Ultravision")
                 self.sense_roll["Ultravision"] = roll
                 self.sense_comm["Ultravision"] = dice.rolldie(1, 6)
@@ -1586,7 +1564,7 @@ class Species():
                 roll += 1
             if self.habitat == "Arctic":
                 roll += 1
-            if roll > 10:
+            if roll >= 11:
                 special.append("Detect (Heat)")
                 self.sense_roll["Detect (Heat)"] = roll
                 self.sense_comm["Detect (Heat)"] = dice.rolldie(1, 6)
@@ -1596,7 +1574,7 @@ class Species():
             roll = dice.rolldie(2, 6)
             if self._is_carnivore:
                 roll += 1
-            if roll > 10:
+            if roll >= 11:
                 special.append("Detect (Electric Fields)")
                 self.sense_roll["Detect (Electric Fields)"] = roll
                 self.sense_comm["Detect (Electric Fields)"] = dice.rolldie(1, 6)
@@ -1612,16 +1590,16 @@ class Species():
                 roll -= 1
             elif self.planet.gravity >= 1.5:
                 roll += 1
-            if roll > 10:
+            if roll >= 11:
                 special.append("Perfect Balance")
 
         #  Scanning Sense (Radar)
         if (self.size_class != "Small"
-                or self.habitat_type != "Water"):
+                and self.habitat_type != "Water"):
             roll = dice.rolldie(2, 6)
             if self.habitat_type == "Space-Dwelling":
                 roll += 2
-            if roll > 10:
+            if roll >= 11:
                 special.append("Scanning Sense (Radar)")
                 self.sense_roll["Scanning Sense (Radar)"] = roll
                 self.sense_comm["Scanning Sense (Radar)"] = dice.rolldie(1, 6)
@@ -1634,7 +1612,7 @@ class Species():
         sense_comm = self.sense_comm
         sense_roll = self.sense_roll
 
-        if len(sense_comm) == 0:
+        if not sense_comm:
             comms_a = "None"
         else:
             maxvalue = max(sense_comm.values())
@@ -1658,7 +1636,7 @@ class Species():
         sense_comm = self.sense_comm
         sense_roll = self.sense_roll
 
-        if len(sense_comm) == 0:
+        if not sense_comm:
             comms_b = "None"
         else:
             maxvalue = max(sense_comm.values())
