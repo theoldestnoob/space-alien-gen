@@ -58,6 +58,8 @@ class Species():
         self.gestation_special = None
         self.reproductive_strat = None
         self.reproductive_detail = None
+        self.sense_roll = {}
+        self.sense_comm = {}
         self.sense_primary = None
         self.sense_vision = None
         self.sense_hearing = None
@@ -1294,26 +1296,35 @@ class Species():
     #       vision, hearing, touch, taste/smell, special senses,
     #       primary + secondary sense, communication channels
     def _gen_senses(self):
-        primary = ""
-        vision = ""
-        hearing = ""
-        touch = ""
-        tastesmell = ""
-        comms_a = ""
-        comms_b = ""
-        special = []
-
-        sense_roll = {"Vision": 0,
-                      "Hearing": 0,
-                      "Touch": 0,
-                      "Taste/Smell": 0}
-        sense_comm = {"Vision": 0,
-                      "Hearing": 0,
-                      "Touch": 0,
-                      "Taste/Smell": 0}
 
         # Primary Sense
+        self._gen_senses_primary()
+
+        # Vision
+        self._gen_senses_vision()
+
+        # Hearing
+        self._gen_senses_hearing()
+
+        # Touch
+        self._gen_senses_touch()
+
+        # Taste/Smell
+        self._gen_senses_tastesmell()
+
+        # Special Senses
+        self._gen_senses_special()
+
+        # Primary Communication Channel
+        self._gen_communication_a()
+
+        # Secondary Communication Channel
+        self._gen_communication_b()
+
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_primary(self):
         roll = dice.rolldie(3, 6)
+
         if self.habitat_type == "Water":
             roll -= 2
         if self._is_autotroph:
@@ -1326,128 +1337,160 @@ class Species():
         else:
             primary = "Touch and Taste"
 
-        # Vision
-        roll_v = dice.rolldie(3, 6)
-        if primary == "Vision":
-            roll_v = roll_v + 4
+        self.sense_primary = primary
+
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_vision(self):
+        roll = dice.rolldie(3, 6)
+
+        if self.sense_primary == "Vision":
+            roll += 4
         if self.locomotion[0] == "Digging":
-            roll_v = roll_v - 4
+            roll -= 4
         if "Climbing" in self.locomotion:
-            roll_v = roll_v + 2
+            roll += 2
         if self._is_flying:
-            roll_v = roll_v + 3
+            roll += 3
         if "Immobile" in self.locomotion:
-            roll_v = roll_v - 4
+            roll -= 4
         if self.habitat == "Deep-Ocean Vents":
-            roll_v = roll_v - 4
+            roll -= 4
         if "Filter-Feeder" in self.trophic_level:
-            roll_v = roll_v - 2
+            roll -= 2
         if (self._is_carnivore
                 or "Gathering Herbivore" in self.trophic_level):
-            roll_v = roll_v + 2
+            roll += 2
         if self.habitat_type == "Space-Dwelling":
-            if roll_v < 10:
-                roll_v = 3
+            if roll < 10:
+                roll = 3
 
-        if roll_v < 7:
+        if roll < 7:
             vision = "Blindness"
-        elif roll_v < 8:
+        elif roll < 8:
             vision = "Blindness (Can sense light and dark, -10%)"
-        elif roll_v < 10:
+        elif roll < 10:
             vision = "Bad Sight and Colorblindness"
-        elif roll_v < 12:
+        elif roll < 12:
             vision = "Bad Sight or Colorblindness"
-        elif roll_v < 15:
+        elif roll < 15:
             vision = "Normal Vision"
         else:
             vision = "Telescopic Vision 4"
 
-        # Hearing
-        roll_h = dice.rolldie(3, 6)
-        if roll_v < 8:
-            roll_h = roll_h + 2
-        elif roll_v < 12:
-            roll_h = roll_h + 1
-        if self.habitat_type == "Water":
-            roll_h = roll_h + 1
-        if "Immobile" in self.locomotion:
-            roll_h = roll_h - 4
-        if self.habitat_type == "Space-Dwelling":
-            roll_h = 0
+        if roll > 9:
+            self.sense_comm["Vision"] = dice.rolldie(1, 6)
 
-        if roll_h < 7:
+        self.sense_roll["Vision"] = roll
+        self.sense_vision = vision
+
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_hearing(self):
+        roll = dice.rolldie(3, 6)
+        roll_v = self.sense_roll["Vision"]
+
+        if roll_v < 8:
+            roll += 2
+        elif roll_v < 12:
+            roll += 1
+        if self.habitat_type == "Water":
+            roll += 1
+        if "Immobile" in self.locomotion:
+            roll += 4
+        if self.habitat_type == "Space-Dwelling":
+            roll = 0
+
+        if roll < 7:
             hearing = "Deafness"
-        elif roll_h < 8:
+        elif roll < 8:
             hearing = "Hard of Hearing"
-        elif roll_h < 11:
+        elif roll < 11:
             hearing = "Normal Hearing"
-        elif roll_h < 12:
+        elif roll < 12:
             if (self.size_class == "Large"
                     or self.size_class == "Huge"):
                 hearing = "Normal Hearing with extended range"
                 hearing += " (Subsonic Hearing)"
             else:
                 hearing = "Normal Hearing with extended range (Ultrahearing)"
-        elif roll_h < 13:
+        elif roll < 13:
             hearing = "Acute Hearing 4"
-        elif roll_h < 14:
+        elif roll < 14:
             hearing = "Acute Hearing 4 and either"
             hearing += " Subsonic Hearing or Ultrahearing"
         else:
             hearing = "Acute Hearing 4 with Ultrasonic Hearing and Sonar"
 
-        # Touch
-        roll_t = dice.rolldie(2, 6)
-        if "External" in self.skeleton:
-            roll_t = roll_t - 2
-        if self.habitat_type == "Water":
-            roll_t = roll_t + 2
-        if "Digging" in self.locomotion:
-            roll_t = roll_t + 2
-        if self._is_flying:
-            roll_t = roll_t - 2
-        if roll_v < 8:
-            roll_t = roll_t + 2
-        if "Trapping Carnivore" in self.trophic_level:
-            roll_t = roll_t + 1
-        if self.size_class == "Small":
-            roll_t = roll_t + 1
+        if roll > 8:
+            self.sense_comm["Hearing"] = dice.rolldie(1, 6)
+            if roll > 11:
+                self.sense_comm["Hearing"] += 1
 
-        if roll_t < 3:
+        self.sense_roll["Hearing"] = roll
+        self.sense_hearing = hearing
+
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_touch(self):
+        roll = dice.rolldie(2, 6)
+        roll_v = self.sense_roll["Vision"]
+
+        if "External" in self.skeleton:
+            roll -= 2
+        if self.habitat_type == "Water":
+            roll += 2
+        if "Digging" in self.locomotion:
+            roll += 2
+        if self._is_flying:
+            roll -= 2
+        if roll_v < 8:
+            roll += 2
+        if "Trapping Carnivore" in self.trophic_level:
+            roll += 1
+        if self.size_class == "Small":
+            roll += 1
+
+        if roll < 3:
             touch = "Numb"
-        elif roll_t < 5:
+        elif roll < 5:
             touch = "-2 DX from poor sense of touch"
-        elif roll_t < 7:
+        elif roll < 7:
             touch = "-1 DX from poor sense of touch"
-        elif roll_t < 9:
+        elif roll < 9:
             touch = "Human-level touch"
-        elif roll_t < 11:
+        elif roll < 11:
             touch = "Acute Touch 4"
         else:
             touch = "Acute Touch 4 and either"
             touch += " Senstive Touch or Vibration Sense"
 
-        # Taste/Smell
-        roll_s = dice.rolldie(2, 6)
+        if roll > 8:
+            self.sense_comm["Touch"] = dice.rolldie(1, 6)
+
+        self.sense_roll["Touch"] = roll
+        self.sense_touch = touch
+
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_tastesmell(self):
+        roll = dice.rolldie(2, 6)
+
         if ("Chasing Carnivore" in self.trophic_level
                 or "Gathering Herbivore" in self.trophic_level):
-            roll_s = roll_s + 2
+            roll += 2
         if("Filter-Feeder" in self.trophic_level
            or "Trapping Carnivore" in self.trophic_level
            or self._is_autotroph):
-            roll_s = roll_s - 2
+            roll -= 2
         if self.sexes != "Asexual Reproduction or Parthenogenesis":
-            roll_s = roll_s + 2
+            roll += 2
         if "Immobile" in self.locomotion:
-            roll_s = roll_s - 4
+            roll -= 4
 
-        if roll_s < 4:
+        if roll < 4:
             tastesmell = "No Sense of Smell/Taste"
-        elif roll_s < 6:
+        elif roll < 6:
             tastesmell = "No Sense of Smell (can taste, -50%)"
-        elif roll_s < 9:
+        elif roll < 9:
             tastesmell = "Normal taste/smell"
-        elif roll_s < 11:
+        elif roll < 11:
             if self.habitat_type == "Water":
                 tastesmell = "Acute Taste 4"
             else:
@@ -1458,7 +1501,18 @@ class Species():
             else:
                 tastesmell = "Acute Taste/Smell 4 and Discriminatory Smell"
 
-        # Special Senses
+        if roll > 8:
+            self.sense_comm["Taste/Smell"] = dice.rolldie(1, 6)
+
+        self.sense_roll["Taste/Smell"] = roll
+        self.sense_tastesmell = tastesmell
+
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_special(self):
+        special = []
+        roll_v = self.sense_roll["Vision"]
+        roll_h = self.sense_roll["Hearing"]
+
         #  360 Vision
         if roll_v > 6:
             roll = dice.rolldie(2, 6)
@@ -1522,8 +1576,8 @@ class Species():
             roll = dice.rolldie(2, 6)
             if roll > 10:
                 special.append("Ultravision")
-                sense_roll["Ultravision"] = roll
-                sense_comm["Ultravision"] = dice.rolldie(1, 6)
+                self.sense_roll["Ultravision"] = roll
+                self.sense_comm["Ultravision"] = dice.rolldie(1, 6)
 
         #  Detect (Heat)
         if self.habitat_type != "Water":
@@ -1534,8 +1588,8 @@ class Species():
                 roll += 1
             if roll > 10:
                 special.append("Detect (Heat)")
-                sense_roll["Detect (Heat)"] = roll
-                sense_comm["Detect (Heat)"] = dice.rolldie(1, 6)
+                self.sense_roll["Detect (Heat)"] = roll
+                self.sense_comm["Detect (Heat)"] = dice.rolldie(1, 6)
 
         #  Detect (Electric Fields)
         if self.habitat_type == "Water":
@@ -1544,8 +1598,8 @@ class Species():
                 roll += 1
             if roll > 10:
                 special.append("Detect (Electric Fields)")
-                sense_roll["Detect (Electric Fields)"] = roll
-                sense_comm["Detect (Electric Fields)"] = dice.rolldie(1, 6)
+                self.sense_roll["Detect (Electric Fields)"] = roll
+                self.sense_comm["Detect (Electric Fields)"] = dice.rolldie(1, 6)
 
         #  Perfect Balance
         if self.habitat_type == "Land":
@@ -1569,33 +1623,21 @@ class Species():
                 roll += 2
             if roll > 10:
                 special.append("Scanning Sense (Radar)")
-                sense_roll["Scanning Sense (Radar)"] = roll
-                sense_comm["Scanning Sense (Radar)"] = dice.rolldie(1, 6)
+                self.sense_roll["Scanning Sense (Radar)"] = roll
+                self.sense_comm["Scanning Sense (Radar)"] = dice.rolldie(1, 6)
 
-        # Communication
-        sense_roll["Vision"] = roll_v
-        sense_roll["Hearing"] = roll_h
-        sense_roll["Touch"] = roll_t
-        sense_roll["Taste/Smell"] = roll_s
+        self.sense_specials = special
 
-        if roll_v > 9:
-            sense_comm["Vision"] = dice.rolldie(1, 6)
-        if roll_h > 8:
-            if roll_h > 11:
-                sense_comm["Hearing"] = dice.rolldie(1, 6) + 1
-            else:
-                sense_comm["Hearing"] = dice.rolldie(1, 6)
-        if roll_t > 8:
-            sense_comm["Touch"] = dice.rolldie(1, 6)
-        if roll_s > 8:
-            sense_comm["Taste/Smell"] = dice.rolldie(1, 6)
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_communication_a(self):
+        comms_a = ""
+        sense_comm = self.sense_comm
+        sense_roll = self.sense_roll
 
-        # Primary Communication Channel
-        maxvalue = max(sense_comm.values())
-        if maxvalue == 0:
+        if len(sense_comm) == 0:
             comms_a = "None"
-            comms_b = "None"
         else:
+            maxvalue = max(sense_comm.values())
             sense_suba = {}
             sense_subb = {}
             for key, value in sense_comm.items():
@@ -1608,11 +1650,18 @@ class Species():
             comms_a = random.choice(list(sense_subb.keys()))
             del sense_comm[comms_a]
 
-        # Secondary Communication Channel
-        maxvalue = max(sense_comm.values())
-        if maxvalue == 0:
+        self.comms_a = comms_a
+
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_communication_b(self):
+        comms_b = ""
+        sense_comm = self.sense_comm
+        sense_roll = self.sense_roll
+
+        if len(sense_comm) == 0:
             comms_b = "None"
         else:
+            maxvalue = max(sense_comm.values())
             sense_suba = {}
             sense_subb = {}
             for key, value in sense_comm.items():
@@ -1625,13 +1674,6 @@ class Species():
             comms_b = random.choice(list(sense_subb.keys()))
             del sense_comm[comms_b]
 
-        self.sense_primary = primary
-        self.sense_vision = vision
-        self.sense_hearing = hearing
-        self.sense_touch = touch
-        self.sense_tastesmell = tastesmell
-        self.sense_specials = special
-        self.comms_a = comms_a
         self.comms_b = comms_b
 
     # TODO: separate descriptors + advantages/disadvantages
