@@ -126,6 +126,24 @@ def parse_cmdline():
                         help="Species Mating Behavior")
     parser.add_argument("--social", choices=c_social,
                         help="Species Social Organization")
+    parser.add_argument("--chauvinism", type=check_personality,
+                        help="Species Chauvinism (-5 to 5)")
+    parser.add_argument("--concentration", type=check_personality,
+                        help="Species Concentration (-5 to 5)")
+    parser.add_argument("--curiosity", type=check_personality,
+                        help="Species Curiosity (-5 to 5)")
+    parser.add_argument("--egoism", type=check_personality,
+                        help="Species Egoism (-5 to 5)")
+    parser.add_argument("--empathy", type=check_personality,
+                        help="Species Empathy (-5 to 5)")
+    parser.add_argument("--gregariousness", type=check_personality,
+                        help="Species Gregariousness (-5 to 5)")
+    parser.add_argument("--imagination", type=check_personality,
+                        help="Species Imagination (-5 to 5)")
+    parser.add_argument("--suspicion", type=check_personality,
+                        help="Species Suspicion (-5 to 5)")
+    parser.add_argument("--playfulness", type=check_personality,
+                        help="Species Playfulness (-5 to 5)")
 
     # print(parser.parse_args())
     return parser.parse_args()
@@ -135,4 +153,11 @@ def check_sides(in_value):
     value = int(in_value)
     if value < 2:
         raise argparse.ArgumentTypeError("{} is an invalid number of sides".format(value))
+    return value
+
+
+def check_personality(in_value):
+    value = int(in_value)
+    if not -6 < value < 6:
+        raise argparse.ArgumentTypeError("Personality trait value must be between -5 and 5!")
     return value

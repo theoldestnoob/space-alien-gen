@@ -1779,15 +1779,24 @@ class Species():
 
     # Alien Creation X: GURPS Space pg. 169
     def _gen_personality(self):
-        self._gen_p_chauvinism()
-        self._gen_p_concentration()
-        self._gen_p_curiosity()
-        self._gen_p_egoism()
-        self._gen_p_empathy()
-        self._gen_p_gregariousness()
-        self._gen_p_imagination()
-        self._gen_p_suspicion()
-        self._gen_p_playfulness()
+        if self.p_chauvinism is None:
+            self._gen_p_chauvinism()
+        if self.p_concentration is None:
+            self._gen_p_concentration()
+        if self.p_curiosity is None:
+            self._gen_p_curiosity()
+        if self.p_egoism is None:
+            self._gen_p_egoism()
+        if self.p_empathy is None:
+            self._gen_p_empathy()
+        if self.p_gregariousness is None:
+            self._gen_p_gregariousness()
+        if self.p_imagination is None:
+            self._gen_p_imagination()
+        if self.p_suspicion is None:
+            self._gen_p_suspicion()
+        if self.p_playfulness is None:
+            self._gen_p_playfulness()
         self._gen_p_traits_chauvinism()
         self._gen_p_traits_concentration()
         self._gen_p_traits_curiosity()

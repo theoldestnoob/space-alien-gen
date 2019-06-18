@@ -23,7 +23,6 @@ Program Structure
         limbs
         manipulators
         senses
-        personality
     - rewrite generators with multiple outputs to allow user input of all
         instead of just "combined" or "combination", etc
             combination trophic level

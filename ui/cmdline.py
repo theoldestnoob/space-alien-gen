@@ -90,6 +90,15 @@ def run_cmdline(args):
         in_species.mating = "Hive"
     if args.social is not None:
         in_species.social_organization = tables.ui_social_map[args.social]
+    in_species.p_chauvinism = args.chauvinism
+    in_species.p_concentration = args.concentration
+    in_species.p_curiosity = args.curiosity
+    in_species.p_egoism = args.egoism
+    in_species.p_empathy = args.empathy
+    in_species.p_gregariousness = args.gregariousness
+    in_species.p_imagination = args.imagination
+    in_species.p_suspicion = args.suspicion
+    in_species.p_playfulness = args.playfulness
 
     lead_z = len(str(args.num))
     if args.dir is not None:
