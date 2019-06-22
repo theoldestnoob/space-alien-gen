@@ -22,7 +22,6 @@ Program Structure
     - make user input possible for all generation methods
         limbs
         manipulators
-        senses
     - rewrite generators with multiple outputs to allow user input of all
         instead of just "combined" or "combination", etc
             combination trophic level
