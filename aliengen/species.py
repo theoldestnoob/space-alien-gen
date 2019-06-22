@@ -468,8 +468,8 @@ class Species():
                 or "Scavenger" in self.trophic_level):
             roll += 1
 
-        if self.habitat_type == "Gas Giant":
-            loco.append(tables.loco_primary["Gas Giant"][roll])
+        if self.habitat_type in ["Gas Giant", "Space-Dwelling"]:
+            loco.append(tables.loco_primary[self.habitat_type][roll])
         else:
             loco.append(tables.loco_primary[self.habitat][roll])
 
@@ -482,7 +482,9 @@ class Species():
         secondary = ""
         tertiary = ""
 
-        if primary in tables.loco_primary_extra[self.habitat]:
+        if self.habitat_type == "Space-Dwelling":
+            pass
+        elif primary in tables.loco_primary_extra[self.habitat]:
             roll = dice.rolldie_zero(2, 6)
             if self.habitat_type == "Land":
                 secondary = tables.loco_second_land[primary][roll]
