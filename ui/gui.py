@@ -40,6 +40,8 @@ class Application(tk.Frame):
         self.habitat = tk.StringVar()
         self.habitat.set("")
         self.habitat.trace_add("write", self.trace_habitat)
+        self.troph = tk.StringVar()
+        self.troph.set("")
 
     def create_widgets(self):
         self.create_input()
@@ -86,6 +88,12 @@ class Application(tk.Frame):
         tbl_habitat = [""] + tables.ui_habitat
         self.in_habitat = tk.OptionMenu(self.in_f, self.habitat, *tbl_habitat)
         self.in_habitat.grid(row=4, column=1)
+
+        lbl_troph = tk.Label(self.in_f, text="Trophic Level:")
+        lbl_troph.grid(row=5, column=0)
+        tbl_troph = [""] + tables.ui_trophic_level
+        self.in_troph = tk.OptionMenu(self.in_f, self.troph, *tbl_troph)
+        self.in_troph.grid(row=5, column=1)
 
     def create_output(self):
         self.out_f = tk.Frame(self, bd=3, relief=tk.SUNKEN)
@@ -268,6 +276,8 @@ class Application(tk.Frame):
             in_species.habitat_type = None
         if self.habitat.get():
             in_species.habitat = self.habitat.get()
+        if self.troph.get():
+            in_species.trophic_level = self.troph.get()
 
         return in_species
 
