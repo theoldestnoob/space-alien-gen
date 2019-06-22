@@ -6,27 +6,38 @@ Created on Sat Jun  1 20:37:09 2019
 """
 
 import argparse
-import itertools
 import aliengen.tables as tables
 
 
 def parse_cmdline():
 
-    c_chembasis = set(tables.chemical_basis)
-    c_habitat = set(tables.hab_land + tables.hab_water)
-    c_trophic = set(tables.troph_sapient)
-    c_loco_p = set(itertools.chain.from_iterable(tables.loco_primary.values()))
-    c_size_class = set(tables.size_class)
-    c_symmetry = set(tables.symmetry)
-    c_skeleton = set(tables.skeleton)
-    c_skin = set(tables.skin_exoskeleton + tables.skin_feathers +
-                 tables.skin_fur + tables.skin_scales + tables.skin_skin)
-    c_breathing = set(tables.breathing)
-    c_temp = set(tables.temp)
-    c_growth = set(tables.growth)
-    c_sexes = set(tables.sexes)
-    c_gestation = set(tables.gestation)
-    c_gest_special = set(tables.gestation_special)
+    c_chembasis = tables.ui_chemical_basis
+    c_hab_type = tables.ui_hab_type
+    c_habitat = tables.ui_habitat
+    c_trophic = tables.ui_trophic_level
+    c_loco_p = tables.ui_locomotion
+    c_size_class = tables.ui_size_class
+    c_symmetry = tables.ui_symmetry
+    c_tail = tables.ui_tail_features
+    c_skeleton = tables.ui_skeleton
+    c_skintype = tables.ui_skin_type
+    c_skin = tables.ui_skin
+    c_breathing = tables.ui_breathing
+    c_temp = tables.ui_temp
+    c_growth = tables.ui_growth
+    c_sexes = tables.ui_sexes
+    c_gestation = tables.ui_gestation
+    c_gest_special = tables.ui_gestation_special
+    c_repro_strat = tables.ui_reproductive_strategy
+    c_sense_primary = tables.ui_primary_sense
+    c_sense_vision = tables.ui_sense_vision
+    c_sense_hearing = tables.ui_sense_hearing
+    c_sense_touch = tables.ui_sense_touch
+    c_sense_tastesmell = tables.ui_sense_tastesmell
+    c_sense_special = tables.ui_sense_special
+    c_intelligence = tables.ui_intelligence
+    c_mating = tables.ui_mating
+    c_social = tables.ui_social
 
     parser = argparse.ArgumentParser(prog="space-alien-gen",
                                      description="Randomly Generate an Alien. \
@@ -46,6 +57,11 @@ def parse_cmdline():
                         help="Output to FILE")
     parser.add_argument("--csv", action="store_true",
                         help="Output in Semicolon Separated Variable format")
+    parser.add_argument("--dir", help="Create a directory DIR in the current \
+                        working directory and output a planet.txt file \
+                        and a numbered .txt file for each alien generated. \
+                        If --dir option is present, --csv and --write options \
+                        are ignored.")
     parser.add_argument("--earthlike", action="store_true",
                         help="Generate Earthlike planet for species")
     parser.add_argument("--gasgiant", action="store_true",
@@ -68,7 +84,7 @@ def parse_cmdline():
                               dependent on biology.")
     parser.add_argument("--chem-basis", choices=c_chembasis,
                         help="Species Chemical Basis")
-    parser.add_argument("--hab-type", choices=tables.hab_type,
+    parser.add_argument("--hab-type", choices=c_hab_type,
                         help="Species Habitat Type")
     parser.add_argument("--habitat", choices=c_habitat,
                         help="Species Habitat")
@@ -84,8 +100,16 @@ def parse_cmdline():
                         help="Species Mass")
     parser.add_argument("--symmetry", choices=c_symmetry,
                         help="Species Symmetry")
+    parser.add_argument("--sides", type=check_sides,
+                        help="Species # of sides. Minimum 2. \
+                              Automatically 2 if symmetry is bilateral \
+                              and 3 if symmetry is trilateral.")
+    parser.add_argument("--tail", choices=c_tail,
+                        help="Species Tail Feature")
     parser.add_argument("--skeleton", choices=c_skeleton,
                         help="Species Skeleton Type")
+    parser.add_argument("--skin-type", choices=c_skintype,
+                        help="Species Skin Type (general)")
     parser.add_argument("--skin", choices=c_skin,
                         help="Species Skin Type (specific)")
     parser.add_argument("--breathing", choices=c_breathing,
@@ -100,7 +124,59 @@ def parse_cmdline():
                         help="Species Gestation")
     parser.add_argument("--gest-special", choices=c_gest_special,
                         help="Species Special Gestation")
+    parser.add_argument("--repro-strat", choices=c_repro_strat,
+                        help="Species Reproductive Strategy")
+    parser.add_argument("--sense-primary", choices=c_sense_primary,
+                        help="Species Primary Sense")
+    parser.add_argument("--sense-vision", choices=c_sense_vision,
+                        help="Species Vision Sense Acuity")
+    parser.add_argument("--sense-hearing", choices=c_sense_hearing,
+                        help="Species Hearing Sense Acuity")
+    parser.add_argument("--sense-touch", choices=c_sense_touch,
+                        help="Species Touch Sense Acuity")
+    parser.add_argument("--sense-tastesmell", choices=c_sense_tastesmell,
+                        help="Species Taste/Smell Sense Acuity")
+    parser.add_argument("--sense-special", choices=c_sense_special,
+                        action="append",
+                        help="Species Special Senses. May choose multiple.")
+    parser.add_argument("--intelligence", choices=c_intelligence,
+                        help="Species Intelligence")
+    parser.add_argument("--mating", choices=c_mating,
+                        help="Species Mating Behavior")
+    parser.add_argument("--social", choices=c_social,
+                        help="Species Social Organization")
+    parser.add_argument("--chauvinism", type=check_personality,
+                        help="Species Chauvinism (-5 to 5)")
+    parser.add_argument("--concentration", type=check_personality,
+                        help="Species Concentration (-5 to 5)")
+    parser.add_argument("--curiosity", type=check_personality,
+                        help="Species Curiosity (-5 to 5)")
+    parser.add_argument("--egoism", type=check_personality,
+                        help="Species Egoism (-5 to 5)")
+    parser.add_argument("--empathy", type=check_personality,
+                        help="Species Empathy (-5 to 5)")
+    parser.add_argument("--gregariousness", type=check_personality,
+                        help="Species Gregariousness (-5 to 5)")
+    parser.add_argument("--imagination", type=check_personality,
+                        help="Species Imagination (-5 to 5)")
+    parser.add_argument("--suspicion", type=check_personality,
+                        help="Species Suspicion (-5 to 5)")
+    parser.add_argument("--playfulness", type=check_personality,
+                        help="Species Playfulness (-5 to 5)")
 
     # print(parser.parse_args())
-
     return parser.parse_args()
+
+
+def check_sides(in_value):
+    value = int(in_value)
+    if value < 2:
+        raise argparse.ArgumentTypeError("{} is an invalid number of sides".format(value))
+    return value
+
+
+def check_personality(in_value):
+    value = int(in_value)
+    if not -6 < value < 6:
+        raise argparse.ArgumentTypeError("Personality trait value must be between -5 and 5!")
+    return value

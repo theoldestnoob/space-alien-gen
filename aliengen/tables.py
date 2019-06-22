@@ -557,6 +557,13 @@ size_volume_small = (0.05, 0.07, 0.1, 0.15, 0.2, 0.3)
 size_volume_human = (0.5, 0.7, 1, 1.5, 2, 3)
 size_volume_large = (5, 7, 10, 15, 20, 99999)
 
+# tables of (gravity, volume multiplier) pairs to use in chain where
+# if gravity < value, multiplier = value
+size_volume_gravity = ((0.15, 4.6), (0.25, 2.9), (0.35, 2.2), (0.45, 1.8),
+                       (0.55, 1.6), (0.65, 1.4), (0.75, 1.3), (0.85, 1.2),
+                       (0.95, 1.1), (1.125, 1), (1.375, 0.9), (1.75, 0.75),
+                       (2.25, 0.6), (3, 0.5), (4.25, 0.4))
+
 size_mass_small = (0.003, 0.01, 0.025, 0.08, 0.2, 1)
 size_mass_human = (4, 9, 25, 80, 200, 600)
 size_mass_large = (3000, 8000, 24000, 80000, 200000, 99999)
@@ -587,8 +594,8 @@ tail_features = ("",
                  "Branching",
                  "Combination")
 
-skeleton = ("",
-            "",
+skeleton = ("None",
+            "None",
             "Hydrostatic",
             "Hydrostatic",
             "External",
@@ -676,22 +683,6 @@ skin_exoskeleton = ("Light Exoskeleton (DR 0)",
                     "Armor Shell (DR 5)",
                     "Armor Shell (DR 5)")
 
-breathing = ("Lungs",
-             "Gills",
-             "Lungs Storage",
-             "Gills Other")
-
-temp = ("Cold-blooded-",
-        "Cold-blooded",
-        "Partial",
-        "Warm-blooded",
-        "Warm-blooded+")
-
-growth = ("Metamorphosis",
-          "Molting",
-          "Continuous Growth",
-          "Unusual")
-
 sexes = ("Asexual Reproduction or Parthenogenesis",
          "Asexual Reproduction or Parthenogenesis",
          "Asexual Reproduction or Parthenogenesis",
@@ -704,17 +695,330 @@ sexes = ("Asexual Reproduction or Parthenogenesis",
          "Three or more",
          "Roll Twice")
 
+numbers = ("Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven",
+           "Eight", "Nine", "Ten", "Eleven", "Twelve")
+
 gestation = ("Spawning/Pollinating",
              "Egg-Laying",
              "Live-Bearing",
              "Live-Bearing with Pouch")
 
-gestation_special = ("Brood Parasite",
-                     "Parasitic Young",
-                     "Cannibalistic Young Fatal",
-                     "Cannibalistic Young")
+ui_chemical_basis = ["Hydrogen-Based",
+                     "Ammonia-Based",
+                     "Hydrocarbon-Based",
+                     "Water-Based",
+                     "Chlorine-Based",
+                     "Silicon/Sulfuric Acid",
+                     "Silicon/Liquid Sulfur",
+                     "Silicon/Liquid Rock",
+                     "Plasma",
+                     "Exotica"]
 
-fieldnames = (
+ui_hab_type = ["Space-Dwelling",
+               "Gas Giant",
+               "Planetary Interior",
+               "Water",
+               "Land"]
+
+ui_habitat = ["Plains",
+              "Desert",
+              "Island/Beach",
+              "Woodlands",
+              "Swampland",
+              "Mountain",
+              "Arctic",
+              "Jungle",
+              "Banks",
+              "Open Ocean",
+              "Fresh-Water Lakes",
+              "River/Stream",
+              "Tropical Lagoon",
+              "Deep-Ocean Vents",
+              "Salt-Water Sea",
+              "Reef"]
+
+ui_trophic_level = ["Combined",
+                    "Autotroph",
+                    "Decomposer",
+                    "Scavenger",
+                    "Omnivore",
+                    "Gathering Herbivore",
+                    "Grazing/Browsing Herbivore",
+                    "Pouncing Carnivore",
+                    "Chasing Carnivore",
+                    "Trapping Carnivore",
+                    "Hijacking Carnivore",
+                    "Filter-Feeder",
+                    "Parasite/Symbiont",
+                    "Photosynthetic Autotroph",
+                    "Chemosynthetic Autotroph",
+                    "Exotic Autotroph"]
+
+ui_locomotion = ["Immobile",
+                 "Floating",
+                 "Swimming",
+                 "Sailing",
+                 "Digging",
+                 "Slithering",
+                 "Walking",
+                 "Climbing",
+                 "Winged Flight",
+                 "Bouyant Flight",
+                 "Special",
+                 "Solar Sail",
+                 "Rocket"]
+
+ui_size_class = ["Small",
+                 "Human-Scale",
+                 "Large",
+                 "Huge"]
+
+ui_symmetry = ["Bilateral",
+               "Trilateral",
+               "Radial",
+               "Spherical",
+               "Asymmetric"]
+
+ui_tail_features = ["None",
+                    "Striker",
+                    "Long",
+                    "Constricting",
+                    "Barbed Striker",
+                    "Gripping",
+                    "Branching",
+                    "Combination"]
+
+ui_skeleton = ["None",
+               "Hydrostatic",
+               "External",
+               "Internal",
+               "Combination"]
+
+ui_skin_type = ["Skin",
+                "Scales",
+                "Fur",
+                "Feathers",
+                "Exoskeleton"]
+
+ui_skin = ["Soft Skin",
+           "Normal Skin",
+           "Hide",
+           "Thick Hide",
+           "Blubber",
+           "Scales",
+           "Heavy Scales",
+           "Fur",
+           "Thick Fur",
+           "Thick Fur over Hide",
+           "Spines",
+           "Feathers",
+           "Thick Feathers",
+           "Feathers over Hide",
+           "Light Exoskeleton",
+           "Tough Exoskeleton",
+           "Heavy Exoskeleton",
+           "Armor Shell"]
+
+ui_skin_map = {"Soft Skin": "Soft Skin",
+               "Normal Skin": "Normal Skin",
+               "Hide": "Hide (DR 1)",
+               "Thick Hide": "Thick Hide (DR 4)",
+               "Blubber": "Blubber",
+               "Scales": "Scales (DR 1)",
+               "Heavy Scales": "Heavy Scales (DR 3)",
+               "Fur": "Fur",
+               "Thick Fur": "Thick Fur (+1 Temperature Tolerance)",
+               "Thick Fur over Hide": "Thick Fur over Hide (DR 1, +1 Temperature Tolerance)",
+               "Spines": "Spines",
+               "Feathers": "Feathers (+1 Temperature Tolerance)",
+               "Thick Feathers": "Thick Feathers (+2 Temperature Tolerance)",
+               "Feathers over Hide": "Feathers over Hide (DR 1, +1 Temperature Tolerance)",
+               "Light Exoskeleton": "Light Exoskeleton (DR 0)",
+               "Tough Exoskeleton": "Tough Exoskeleton (DR 1)",
+               "Heavy Exoskeleton": "Heavy Exoskeleton (DR 2)",
+               "Armor Shell": "Armor Shell (DR 5)"}
+
+ui_breathing = ["Lungs",
+                "Gills",
+                "Lungs Storage",
+                "Gills Other"]
+
+ui_lungs_map = {
+        "Lungs": "Lungs",
+        "Gills": "Doesn't Breathe (Gills)",
+        "Lungs Storage": "Lungs (air-breathing), Doesn't Breathe (Oxygen Storage)",
+        "Gills Other": "Doesn't Breathe (Gills), Lungs (or convertable organ)"
+        }
+
+ui_temp = ["Cold-blooded-",
+           "Cold-blooded",
+           "Partial",
+           "Warm-blooded",
+           "Warm-blooded+"]
+
+ui_temp_map = {
+        "Cold-blooded-": "Cold-blooded (with disadvantage)",
+        "Cold-blooded": "Cold-blooded (no disadvantage)",
+        "Partial": "Partial regulation (temperature varies within limits)",
+        "Warm-blooded": "Warm-blooded",
+        "Warm-blooded+": "Warm-blooded (with Metabolism Control 2)"
+        }
+
+ui_growth = ["Metamorphosis",
+             "Molting",
+             "Continuous Growth",
+             "Unusual"]
+
+ui_sexes = ["Asexual Reproduction or Parthenogenesis",
+            "Hermaphrodite",
+            "Two Sexes",
+            "Switching between male and female",
+            "Three or more",
+            "Roll Twice"]
+
+ui_gestation = ["Spawning/Pollinating",
+                "Egg-Laying",
+                "Live-Bearing",
+                "Live-Bearing with Pouch"]
+
+ui_gestation_special = ["Brood Parasite",
+                        "Parasitic Young",
+                        "Cannibalistic Young Fatal",
+                        "Cannibalistic Young"]
+
+ui_gest_special_map = {
+        "Brood Parasite": "Brood Parasite (raised by another species)",
+        "Parasitic Young": "Parasitic Young (implanted in a host)",
+        "Cannibalistic Young Fatal": "Cannibalistic Young (fatal to parent)",
+        "Cannibalistic Young": "Cannibalistic Young (consume each other)"
+        }
+
+ui_reproductive_strategy = ["Strong K-Strategy",
+                            "Moderate K-Strategy",
+                            "Median Strategy",
+                            "Moderate r-Strategy",
+                            "Strong r-Strategy"]
+
+ui_primary_sense = ["Hearing",
+                    "Vision",
+                    "Touch and Taste"]
+
+ui_sense_vision = ["Blind",
+                   "Near Blind",
+                   "Very Bad Sight",
+                   "Bad Sight",
+                   "Normal",
+                   "Telescopic"]
+
+ui_sense_vision_map = {"Blind": 6,
+                       "Near Blind": 7,
+                       "Very Bad Sight": 9,
+                       "Bad Sight": 11,
+                       "Normal": 14,
+                       "Telescopic": 23}
+
+ui_sense_hearing = ["Deafness",
+                    "Hard of Hearing",
+                    "Normal",
+                    "Extended Range",
+                    "Acute",
+                    "Acute+",
+                    "Acute++"]
+
+ui_sense_hearing_map = {"Deafness": 6,
+                        "Hard of Hearing": 8,
+                        "Normal": 10,
+                        "Extended Range": 11,
+                        "Acute": 12,
+                        "Acute+": 13,
+                        "Acute++": 21}
+
+ui_sense_touch = ["Numb",
+                  "Very Poor",
+                  "Poor",
+                  "Human-level",
+                  "Acute",
+                  "Acute+"]
+
+ui_sense_touch_map = {"Numb": 2,
+                      "Very Poor": 4,
+                      "Poor": 6,
+                      "Human-level": 8,
+                      "Acute": 10,
+                      "Acute+": 18}
+
+ui_sense_tastesmell = ["None",
+                       "No Smell",
+                       "Normal",
+                       "Acute",
+                       "Acute+"]
+
+ui_sense_tastesmell_map = {"None": 3,
+                           "No Smell": 5,
+                           "Normal": 8,
+                           "Acute": 10,
+                           "Acute+": 16}
+
+ui_sense_special = ["360 Vision",
+                    "Absolute Direction",
+                    "Discriminatory Hearing",
+                    "Peripheral Vision",
+                    "Night Vision",
+                    "Ultravision",
+                    "Detect (Heat)",
+                    "Detect (Electric Fields)",
+                    "Perfect Balance",
+                    "Scanning Sense (Radar)"]
+
+ui_communication = []
+
+ui_intelligence = ["Mindless",
+                   "Preprogrammed",
+                   "Low",
+                   "High",
+                   "Presapient",
+                   "Sapient"]
+
+ui_intel_map = {
+        "Mindless": "Mindless",
+        "Preprogrammed": "Preprogrammed (Cannot Learn)",
+        "Low": "Low Intelligence (Bestial)",
+        "High": "High Intelligence (Bestial)",
+        "Presapient": "Presapient",
+        "Sapient": "Sapient",
+        }
+
+ui_mating = ["No Bond",
+             "Temp Pair",
+             "Pair",
+             "Harem",
+             "Hive"]
+
+ui_mating_map = {
+        "No Bond": "Mating only, no pair bond",
+        "Temp Pair": "Temporary pair bond",
+        "Pair": "Permanent pair bond",
+        "Harem": "Harem",
+        "Hive": "Hive"
+        }
+
+ui_social = ["Solitary",
+             "Pair",
+             "Troop",
+             "Pack",
+             "Herd",
+             "Hive"]
+
+ui_social_map = {
+        "Solitary": "Solitary",
+        "Pair": "Pair-bonded",
+        "Troop": "Troop of 4 - 10 members",
+        "Pack": "Pack of 6 - 20 members",
+        "Herd": "Herd of 10+ members",
+        "Hive": "Hive"
+        }
+
+csv_fields = [
         "chemical_basis",
         "habitat_type",
         "habitat",
@@ -775,9 +1079,9 @@ fieldnames = (
         "p_suspicion_trait",
         "p_playfulness",
         "p_playfulness_trait"
-        )
+        ]
 
-nocsv = (
+csv_unused = [
         "planet",
         "p_more_variation",
         "possible_sapient",
@@ -787,4 +1091,4 @@ nocsv = (
         "_is_flying",
         "_is_autotroph",
         "_is_herbivore"
-        )
+        ]

@@ -48,6 +48,7 @@ class Species():
         self.manip_highdx = None
         self.manip_trunk = None
         self.skeleton = None
+        self.skin_type = None
         self.skin = None
         self.breathing = None
         self.temperature_regulation = None
@@ -56,6 +57,9 @@ class Species():
         self.gestation = None
         self.gestation_special = None
         self.reproductive_strat = None
+        self.reproductive_detail = None
+        self.sense_roll = {}
+        self.sense_comm = {}
         self.sense_primary = None
         self.sense_vision = None
         self.sense_hearing = None
@@ -106,6 +110,9 @@ class Species():
             self._gen_habitat()
         if self.trophic_level is None:
             self._gen_trophic_level()
+        if "Combination" in self.trophic_level:
+            self._gen_trophic_level_combo()
+        self._gen_trophic_filter()
         self._gen_trophic_flags()
         if self.locomotion is None:
             self._gen_locomotion_primary()
@@ -122,12 +129,20 @@ class Species():
         self._gen_stat_move()
         if self.symmetry is None:
             self._gen_symmetry()
-        self._gen_sides()
+        if self.sides is None:
+            self._gen_sides()
         self._gen_limbs()
-        self._gen_tail()
+        if self.tail is None:
+            self._gen_tail()
+        if "Combination" in self.tail:
+            self._gen_tail_combo()
         self._gen_manipulators()
         if self.skeleton is None:
             self._gen_skeleton()
+        if "Combination" in self.skeleton:
+            self._gen_skeleton_combo()
+        if self.skin_type is None:
+            self._gen_skin_type()
         if self.skin is None:
             self._gen_skin()
         if self.breathing is None:
@@ -138,16 +153,27 @@ class Species():
             self._gen_growth()
         if self.sexes is None:
             self._gen_sexes()
+        if "Three or more" in self.sexes:
+            self._gen_sex_three_or_more()
+        if "Roll Twice" in self.sexes:
+            self._gen_sex_roll_twice()
         if self.gestation is None:
             self._gen_gestation()
         if self.gestation_special is None:
             self._gen_gestation_special()
         if self.reproductive_strat is None:
             self._gen_reproductive_strat()
+        if self.reproductive_detail is None:
+            self._gen_reproductive_detail()
         self._gen_senses()
-        self._gen_intelligence()
-        self._gen_mating()
-        self._gen_social()
+        if self.intelligence is None:
+            self._gen_intelligence()
+        if self.stat_iq is None:
+            self._gen_stat_iq()
+        if self.mating is None:
+            self._gen_mating()
+        if self.social_organization is None:
+            self._gen_social()
         self._gen_personality()
 
     def output_text_basic(self):
@@ -155,7 +181,6 @@ class Species():
         Output all species attributes in a structured but crude manner.
         '''
         outlist = [
-            "Species Output:",
             " Chemical Basis: {}".format(self.chemical_basis),
             " Habitat: {} - {}".format(self.habitat_type, self.habitat),
             " Trophic Levels: {}".format(self.trophic_level),
@@ -189,6 +214,7 @@ class Species():
             "  Gestation: {}".format(self.gestation),
             "   Special: {}".format(self.gestation_special),
             "  Reproductive Strategy: {}".format(self.reproductive_strat),
+            "  Reproductive Detail: {}".format(self.reproductive_detail),
             " Senses:",
             "  Primary: {}".format(self.sense_primary),
             "  Vision: {}".format(self.sense_vision),
@@ -348,11 +374,35 @@ class Species():
         else:
             trophtable = tables.troph_sapient
 
-        troph.append(tables.troph_ordinary[dice.rolldie_zero(3, 6)])
+        troph.append(trophtable[dice.rolldie_zero(3, 6)])
+
+        self.trophic_level = troph
+
+    def _gen_trophic_level_combo(self):
+
+        if isinstance(self.trophic_level, str):
+            troph = [self.trophic_level]
+        else:
+            troph = self.trophic_level
+
+        if self.possible_sapient is False:
+            trophtable = tables.troph_ordinary
+        else:
+            trophtable = tables.troph_sapient
+
         while "Combined" in troph:
             troph.clear()
             troph.append(trophtable[dice.rolldie_zero(3, 6)])
             troph.append(trophtable[dice.rolldie_zero(3, 6)])
+
+        self.trophic_level = troph
+
+    def _gen_trophic_filter(self):
+
+        if isinstance(self.trophic_level, str):
+            troph = [self.trophic_level]
+        else:
+            troph = self.trophic_level
 
         if len(troph) > 1:
             troph = list(set(troph))
@@ -524,38 +574,14 @@ class Species():
         elif self.size_class == "Huge":
             volume = dice.rolldie(2, 6) * 10
 
-        if self.planet.gravity < 0.15:
-            mult = 4.6
-        elif self.planet.gravity < 0.25:
-            mult = 2.9
-        elif self.planet.gravity < 0.35:
-            mult = 2.2
-        elif self.planet.gravity < 0.45:
-            mult = 1.8
-        elif self.planet.gravity < 0.55:
-            mult = 1.6
-        elif self.planet.gravity < 0.65:
-            mult = 1.4
-        elif self.planet.gravity < 0.75:
-            mult = 1.3
-        elif self.planet.gravity < 0.85:
-            mult = 1.2
-        elif self.planet.gravity < 0.95:
-            mult = 1.1
-        elif self.planet.gravity < 1.125:
-            mult = 1
-        elif self.planet.gravity < 1.375:
-            mult = 0.9
-        elif self.planet.gravity < 1.75:
-            mult = 0.75
-        elif self.planet.gravity < 2.25:
-            mult = 0.6
-        elif self.planet.gravity < 3:
-            mult = 0.5
-        elif self.planet.gravity < 4.25:
-            mult = 0.4
-        else:
+        mult = 0
+        for gravity, multiplier in tables.size_volume_gravity:
+            if self.planet.gravity < gravity:
+                mult = multiplier
+                break
+        if mult == 0:
             mult = 0.3
+
         if not ((self.habitat_type == "Water"
                  and "Winged Flight" not in self.locomotion)
                 or "Bouyant Flight" in self.locomotion):
@@ -613,13 +639,23 @@ class Species():
     def _gen_symmetry(self):
 
         symmetry = ""
+        sides = self.sides
 
-        roll = dice.rolldie_zero(2, 6)
-        if ("Immobile" in self.locomotion
-                or "Bouyant Flight" in self.locomotion
-                or self.habitat_type == "Space-Dwelling"):
-            roll += 1
-        symmetry = tables.symmetry[roll]
+        if sides is not None:
+            if sides == 2:
+                symmetry = "Bilateral"
+            elif sides == 3:
+                symmetry = "Trilateral"
+            else:
+                roll = dice.rolldie_zero(1, 6) + 7
+                symmetry = tables.symmetry[roll]
+        else:
+            roll = dice.rolldie_zero(2, 6)
+            if ("Immobile" in self.locomotion
+                    or "Bouyant Flight" in self.locomotion
+                    or self.habitat_type == "Space-Dwelling"):
+                roll += 1
+            symmetry = tables.symmetry[roll]
 
         self.symmetry = symmetry
 
@@ -690,13 +726,23 @@ class Species():
                 and roll >= 5):
             roll = dice.rolldie_zero(2, 6)
             tail.append(tables.tail_features[roll])
-            while "Combination" in tail:
-                tail.clear()
-                roll1 = dice.rolldie_zero(1, 6) + 5
-                roll2 = dice.rolldie_zero(1, 6) + 5
-                tail.append(tables.tail_features[roll1])
-                tail.append(tables.tail_features[roll2])
-                tail = list(dict.fromkeys(tail))
+
+        self.tail = tail
+
+    def _gen_tail_combo(self):
+
+        if isinstance(self.tail, str):
+            tail = [self.tail]
+        else:
+            tail = self.tail
+
+        while "Combination" in tail:
+            tail.clear()
+            roll1 = dice.rolldie_zero(1, 6) + 5
+            roll2 = dice.rolldie_zero(1, 6) + 5
+            tail.append(tables.tail_features[roll1])
+            tail.append(tables.tail_features[roll2])
+            tail = list(dict.fromkeys(tail))
 
         self.tail = tail
 
@@ -822,6 +868,16 @@ class Species():
         roll = max(0, min(roll, 14))
 
         skeleton.append(tables.skeleton[roll])
+
+        self.skeleton = skeleton
+
+    def _gen_skeleton_combo(self):
+
+        if isinstance(self.skeleton, str):
+            skeleton = [self.skeleton]
+        else:
+            skeleton = self.skeleton
+
         while ("Combination" in skeleton
                or skeleton.count(skeleton[0]) > 1):
             skeleton.clear()
@@ -834,8 +890,8 @@ class Species():
 
     # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation VI: GURPS Space pg. 157
-    def _gen_skin(self):
-        skincover = ""
+    def _gen_skin_type(self):
+
         covertype = ""
 
         if "External" in self.skeleton:
@@ -843,6 +899,12 @@ class Species():
         else:
             roll = dice.rolldie_zero(1, 6)
             covertype = tables.skin_covertype[roll]
+
+        self.skin_type = covertype
+
+    def _gen_skin(self):
+        covertype = self.skin_type
+        skincover = ""
 
         if covertype == "Skin":
             skincover = self._gen_skin_skin()
@@ -1061,8 +1123,19 @@ class Species():
         roll = self._sex_roll()
         sexes = tables.sexes[roll]
 
+        self.sexes = sexes
+
+    def _gen_sex_three_or_more(self):
+        sexes = self.sexes
+
         if sexes == "Three or more":
             sexes = self._sex_three_or_more()
+
+        self.sexes = sexes
+
+    def _gen_sex_roll_twice(self):
+        sexes = self.sexes
+
         while "Roll Twice" in sexes:
             roll = self._sex_roll()
             sex1 = tables.sexes[roll]
@@ -1099,7 +1172,7 @@ class Species():
         elif roll <= 5:
             sexes = "Four"
         else:
-            sexes = str(dice.rolldie(2, 6))
+            sexes = tables.numbers[dice.rolldie(2, 6)]
         sexes += " Sexes"
         return sexes
 
@@ -1160,212 +1233,250 @@ class Species():
             roll += 2
 
         if roll <= 4:
-            if self.gestation == "Spawning/Pollinating":
-                strat = "Strong K-Strategy: 20 - 120 offspring, "
-                strat += "extensive care after birth"
-            else:
-                strat = "Strong K-Strategy: 1 offspring, "
-                strat += "extensive care after birth"
+            strat = "Strong K-Strategy"
         elif roll <= 6:
-            litter_l = 1
-            litter_h = 2
-            if self.gestation == "Spawning/Pollinating":
-                mult = 10 * dice.rolldie(2, 6)
-                litter_l = litter_l * mult
-                litter_h = litter_h * mult
-            strat = "Moderate K-Strategy: {} - {} ".format(litter_l, litter_h)
-            strat += "offspring per litter, extensive care after birth"
+            strat = "Moderate K-Strategy"
         elif roll == 7:
-            litter_l = 1
-            litter_h = 6
-            if self.gestation == "Spawning/Pollinating":
-                mult = 10 * dice.rolldie(2, 6)
-                litter_l = litter_l * mult
-                litter_h = litter_h * mult
-            strat = "Median Strategy: {} - {} ".format(litter_l, litter_h)
-            strat += "offspring per litter, moderate care after birth"
+            strat = "Median Strategy"
         elif roll <= 9:
-            litter_l = 2
-            litter_h = 7
-            if self.gestation == "Spawning/Pollinating":
-                mult = 10 * dice.rolldie(2, 6)
-                litter_l = litter_l * mult
-                litter_h = litter_h * mult
-            strat = "Moderate r-Strategy: {} - {} ".format(litter_l, litter_h)
-            strat += "offspring per litter, some care after birth"
+            strat = "Moderate r-Strategy"
         else:
-            litter_l = 2
-            litter_h = 12
-            if self.gestation == "Spawning/Pollinating":
-                mult = 10 * dice.rolldie(2, 6)
-                litter_l = litter_l * mult
-                litter_h = litter_h * mult
-            strat = "Strong r-Strategy: {} - {} ".format(litter_l, litter_h)
-            strat += "offspring per litter, no care, +1 Short Lifespan"
+            strat = "Strong r-Strategy"
 
         self.reproductive_strat = strat
 
+    def _gen_reproductive_detail(self):
+        detail = ""
+        extra = ""
+
+        if "Strong K-Strategy" in self.reproductive_strat:
+            litter_l = 1
+            litter_h = 1
+            care = "extensive"
+        elif "Moderate K-Strategy" in self.reproductive_strat:
+            litter_l = 1
+            litter_h = 2
+            care = "extensive"
+        elif "Median Strategy" in self.reproductive_strat:
+            litter_l = 1
+            litter_h = 6
+            care = "moderate"
+        elif "Moderate r-Strategy" in self.reproductive_strat:
+            litter_l = 2
+            litter_h = 7
+            care = "some"
+        elif "Strong r-Strategy" in self.reproductive_strat:
+            litter_l = 2
+            litter_h = 12
+            care = "no"
+            extra = ", +1 Short Lifespan"
+
+        if self.gestation == "Spawning/Pollinating":
+            mult = 10 * dice.rolldie(2, 6)
+            litter_l = litter_l * mult
+            litter_h = litter_h * mult
+
+        if litter_h == 1:
+            off_num = "1"
+        elif litter_h == litter_l:
+            off_num = "20 - 120"
+        else:
+            off_num = "{} - {}".format(litter_l, litter_h)
+
+        off_str = "{} offspring per litter".format(off_num)
+        care_str = ", {} care after birth".format(care)
+        detail = "".join([off_str, care_str, extra])
+
+        self.reproductive_detail = detail
+
     # Alien Creation VIII: GURPS Space pg. 164
-    # TODO: SKIPPED REFACTORING THIS FUNCTION BECAUSE JEEZUS. WILL DO IT LATER
+    # TODO:
+    #   - Handle user input - reverse lookup sense rolls, etc
     #   - Bundle senses into their own datastructure / class
-    #   - Separate into functions for
-    #       vision, hearing, touch, taste/smell, special senses,
-    #       primary + secondary sense, communication channels
     def _gen_senses(self):
-        primary = ""
-        vision = ""
-        hearing = ""
-        touch = ""
-        tastesmell = ""
-        comms_a = ""
-        comms_b = ""
-        special = []
 
-        sense_roll = {"Vision": 0,
-                      "Hearing": 0,
-                      "Touch": 0,
-                      "Taste/Smell": 0}
-        sense_comm = {"Vision": 0,
-                      "Hearing": 0,
-                      "Touch": 0,
-                      "Taste/Smell": 0}
+        if self.sense_primary is None:
+            self._gen_senses_primary()
+        self._gen_senses_vision()
+        self._gen_senses_hearing()
+        self._gen_senses_touch()
+        self._gen_senses_tastesmell()
+        if self.sense_specials is None:
+            self._gen_senses_special()
+        self._gen_communication_rolls()
+        self._gen_communication_a()
+        self._gen_communication_b()
 
-        # Primary Sense
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_primary(self):
         roll = dice.rolldie(3, 6)
+
         if self.habitat_type == "Water":
             roll -= 2
         if self._is_autotroph:
             roll += 2
 
-        if roll < 8:
+        if roll <= 7:
             primary = "Hearing"
-        elif roll < 13:
+        elif roll <= 12:
             primary = "Vision"
         else:
             primary = "Touch and Taste"
 
-        # Vision
-        roll_v = dice.rolldie(3, 6)
-        if primary == "Vision":
-            roll_v = roll_v + 4
-        if self.locomotion[0] == "Digging":
-            roll_v = roll_v - 4
-        if "Climbing" in self.locomotion:
-            roll_v = roll_v + 2
-        if self._is_flying:
-            roll_v = roll_v + 3
-        if "Immobile" in self.locomotion:
-            roll_v = roll_v - 4
-        if self.habitat == "Deep-Ocean Vents":
-            roll_v = roll_v - 4
-        if "Filter-Feeder" in self.trophic_level:
-            roll_v = roll_v - 2
-        if (self._is_carnivore
-                or "Gathering Herbivore" in self.trophic_level):
-            roll_v = roll_v + 2
-        if self.habitat_type == "Space-Dwelling":
-            if roll_v < 10:
-                roll_v = 3
+        self.sense_primary = primary
 
-        if roll_v < 7:
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_vision(self):
+        if "Vision" in self.sense_roll:
+            roll = self.sense_roll["Vision"]
+        else:
+            roll = dice.rolldie(3, 6)
+
+            if self.sense_primary == "Vision":
+                roll += 4
+            if self.locomotion[0] == "Digging":
+                roll -= 4
+            if "Climbing" in self.locomotion:
+                roll += 2
+            if self._is_flying:
+                roll += 3
+            if "Immobile" in self.locomotion:
+                roll -= 4
+            if self.habitat == "Deep-Ocean Vents":
+                roll -= 4
+            if "Filter-Feeder" in self.trophic_level:
+                roll -= 2
+            if (self._is_carnivore
+                    or "Gathering Herbivore" in self.trophic_level):
+                roll += 2
+            if self.habitat_type == "Space-Dwelling":
+                if roll < 10:
+                    roll = 3
+
+        if roll <= 6:
             vision = "Blindness"
-        elif roll_v < 8:
+        elif roll <= 7:
             vision = "Blindness (Can sense light and dark, -10%)"
-        elif roll_v < 10:
+        elif roll <= 9:
             vision = "Bad Sight and Colorblindness"
-        elif roll_v < 12:
+        elif roll <= 11:
             vision = "Bad Sight or Colorblindness"
-        elif roll_v < 15:
+        elif roll <= 14:
             vision = "Normal Vision"
         else:
             vision = "Telescopic Vision 4"
 
-        # Hearing
-        roll_h = dice.rolldie(3, 6)
-        if roll_v < 8:
-            roll_h = roll_h + 2
-        elif roll_v < 12:
-            roll_h = roll_h + 1
-        if self.habitat_type == "Water":
-            roll_h = roll_h + 1
-        if "Immobile" in self.locomotion:
-            roll_h = roll_h - 4
-        if self.habitat_type == "Space-Dwelling":
-            roll_h = 0
+        self.sense_roll["Vision"] = roll
+        self.sense_vision = vision
 
-        if roll_h < 7:
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_hearing(self):
+        if "Hearing" in self.sense_roll:
+            roll = self.sense_roll["Hearing"]
+        else:
+            roll = dice.rolldie(3, 6)
+            roll_v = self.sense_roll["Vision"]
+            if roll_v <= 7:
+                roll += 2
+            elif roll_v <= 11:
+                roll += 1
+            if self.habitat_type == "Water":
+                roll += 1
+            if "Immobile" in self.locomotion:
+                roll += 4
+            if self.habitat_type == "Space-Dwelling":
+                roll = 0
+
+        if roll <= 6:
             hearing = "Deafness"
-        elif roll_h < 8:
+        elif roll <= 8:
             hearing = "Hard of Hearing"
-        elif roll_h < 11:
+        elif roll <= 10:
             hearing = "Normal Hearing"
-        elif roll_h < 12:
-            if (self.size_class == "Large"
-                    or self.size_class == "Huge"):
+        elif roll <= 11:
+            if self.size_class in ["Large", "Huge"]:
                 hearing = "Normal Hearing with extended range"
                 hearing += " (Subsonic Hearing)"
             else:
                 hearing = "Normal Hearing with extended range (Ultrahearing)"
-        elif roll_h < 13:
+        elif roll <= 12:
             hearing = "Acute Hearing 4"
-        elif roll_h < 14:
+        elif roll <= 13:
             hearing = "Acute Hearing 4 and either"
             hearing += " Subsonic Hearing or Ultrahearing"
         else:
             hearing = "Acute Hearing 4 with Ultrasonic Hearing and Sonar"
 
-        # Touch
-        roll_t = dice.rolldie(2, 6)
-        if "External" in self.skeleton:
-            roll_t = roll_t - 2
-        if self.habitat_type == "Water":
-            roll_t = roll_t + 2
-        if "Digging" in self.locomotion:
-            roll_t = roll_t + 2
-        if self._is_flying:
-            roll_t = roll_t - 2
-        if roll_v < 8:
-            roll_t = roll_t + 2
-        if "Trapping Carnivore" in self.trophic_level:
-            roll_t = roll_t + 1
-        if self.size_class == "Small":
-            roll_t = roll_t + 1
+        self.sense_roll["Hearing"] = roll
+        self.sense_hearing = hearing
 
-        if roll_t < 3:
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_touch(self):
+        if "Touch" in self.sense_roll:
+            roll = self.sense_roll["Touch"]
+        else:
+            roll = dice.rolldie(2, 6)
+            roll_v = self.sense_roll["Vision"]
+
+            if "External" in self.skeleton:
+                roll -= 2
+            if self.habitat_type == "Water":
+                roll += 2
+            if "Digging" in self.locomotion:
+                roll += 2
+            if self._is_flying:
+                roll -= 2
+            if roll_v <= 7:
+                roll += 2
+            if "Trapping Carnivore" in self.trophic_level:
+                roll += 1
+            if self.size_class == "Small":
+                roll += 1
+
+        if roll <= 2:
             touch = "Numb"
-        elif roll_t < 5:
+        elif roll <= 4:
             touch = "-2 DX from poor sense of touch"
-        elif roll_t < 7:
+        elif roll <= 6:
             touch = "-1 DX from poor sense of touch"
-        elif roll_t < 9:
+        elif roll <= 8:
             touch = "Human-level touch"
-        elif roll_t < 11:
+        elif roll <= 10:
             touch = "Acute Touch 4"
         else:
             touch = "Acute Touch 4 and either"
             touch += " Senstive Touch or Vibration Sense"
 
-        # Taste/Smell
-        roll_s = dice.rolldie(2, 6)
-        if ("Chasing Carnivore" in self.trophic_level
-                or "Gathering Herbivore" in self.trophic_level):
-            roll_s = roll_s + 2
-        if("Filter-Feeder" in self.trophic_level
-           or "Trapping Carnivore" in self.trophic_level
-           or self._is_autotroph):
-            roll_s = roll_s - 2
-        if self.sexes != "Asexual Reproduction or Parthenogenesis":
-            roll_s = roll_s + 2
-        if "Immobile" in self.locomotion:
-            roll_s = roll_s - 4
+        self.sense_roll["Touch"] = roll
+        self.sense_touch = touch
 
-        if roll_s < 4:
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_tastesmell(self):
+        if "Taste/Smell" in self.sense_roll:
+            roll = self.sense_roll["Taste/Smell"]
+        else:
+            roll = dice.rolldie(2, 6)
+
+            if "Chasing Carnivore" in self.trophic_level:
+                roll += 2
+            if "Gathering Herbivore" in self.trophic_level:
+                roll += 2
+            if("Filter-Feeder" in self.trophic_level
+               or "Trapping Carnivore" in self.trophic_level
+               or self._is_autotroph):
+                roll -= 2
+            if self.sexes != "Asexual Reproduction or Parthenogenesis":
+                roll += 2
+            if "Immobile" in self.locomotion:
+                roll -= 4
+
+        if roll <= 3:
             tastesmell = "No Sense of Smell/Taste"
-        elif roll_s < 6:
+        elif roll <= 5:
             tastesmell = "No Sense of Smell (can taste, -50%)"
-        elif roll_s < 9:
+        elif roll <= 8:
             tastesmell = "Normal taste/smell"
-        elif roll_s < 11:
+        elif roll <= 10:
             if self.habitat_type == "Water":
                 tastesmell = "Acute Taste 4"
             else:
@@ -1376,20 +1487,25 @@ class Species():
             else:
                 tastesmell = "Acute Taste/Smell 4 and Discriminatory Smell"
 
-        # Special Senses
+        self.sense_roll["Taste/Smell"] = roll
+        self.sense_tastesmell = tastesmell
+
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_senses_special(self):
+        special = []
+        roll_v = self.sense_roll["Vision"]
+        roll_h = self.sense_roll["Hearing"]
+
         #  360 Vision
-        if roll_v > 6:
+        if roll_v >= 7:
             roll = dice.rolldie(2, 6)
-            if (self.habitat == "Desert"
-                    or self.habitat == "Plains"):
+            if self.habitat in ["Desert", "Plains"]:
                 roll += 1
-            if ("Gathering Herbivore" in self.trophic_level
-                    or "Grazing/Browsing Herbivore" in self.trophic_level):
+            if self._is_herbivore:
                 roll += 1
-            if (self.symmetry == "Radial"
-                    or self.symmetry == "Spherical"):
+            if self.symmetry in ["Radial", "Spherical"]:
                 roll += 1
-            if roll > 10:
+            if roll >= 11:
                 special.append("360 Vision")
 
         #  Absolute Direction
@@ -1400,37 +1516,35 @@ class Species():
             roll += 1
         if "Digging" in self.locomotion:
             roll += 1
-        if roll > 10:
+        if roll >= 11:
             special.append("Absolute Direction")
 
         #  Discriminatory Hearing
-        if roll_h > 8:
+        if roll_h >= 9:
             roll = dice.rolldie(2, 6)
-            if roll_h > 13:
+            if roll_h >= 14:
                 roll += 2
-            if roll > 10:
+            if roll >= 11:
                 special.append("Discriminatory Hearing")
 
         #  Peripheral Vision
-        if roll_v > 6:
+        if roll_v >= 7:
             roll = dice.rolldie(2, 6)
-            if (self.habitat == "Plains"
-                    or self.habitat == "Desert"):
+            if self.habitat in ["Plains", "Desert"]:
                 roll += 1
-            if ("Gathering Herbivore" in self.trophic_level
-                    or "Grazing/Browsing Herbivore" in self.trophic_level):
+            if self._is_herbivore:
                 roll += 2
-            if roll > 9:
+            if roll >= 10:
                 special.append("Peripheral Vision")
 
         #  Night Vision 1d+3
-        if roll_v > 6:
+        if roll_v >= 7:
             roll = dice.rolldie(2, 6)
             if self.habitat_type == "Water":
                 roll += 2
             if self._is_carnivore:
                 roll += 2
-            if roll > 10:
+            if roll >= 11:
                 nvroll = dice.rolldie(1, 6) + 3
                 special.append("Night Vision {}".format(nvroll))
 
@@ -1438,10 +1552,9 @@ class Species():
         if (self.habitat_type != "Water"
                 and self.chemical_basis != "Ammonia-Based"):
             roll = dice.rolldie(2, 6)
-            if roll > 10:
+            if roll >= 11:
                 special.append("Ultravision")
-                sense_roll["Ultravision"] = roll
-                sense_comm["Ultravision"] = dice.rolldie(1, 6)
+                self.sense_roll["Ultravision"] = roll
 
         #  Detect (Heat)
         if self.habitat_type != "Water":
@@ -1450,20 +1563,18 @@ class Species():
                 roll += 1
             if self.habitat == "Arctic":
                 roll += 1
-            if roll > 10:
+            if roll >= 11:
                 special.append("Detect (Heat)")
-                sense_roll["Detect (Heat)"] = roll
-                sense_comm["Detect (Heat)"] = dice.rolldie(1, 6)
+                self.sense_roll["Detect (Heat)"] = roll
 
         #  Detect (Electric Fields)
         if self.habitat_type == "Water":
             roll = dice.rolldie(2, 6)
             if self._is_carnivore:
                 roll += 1
-            if roll > 10:
+            if roll >= 11:
                 special.append("Detect (Electric Fields)")
-                sense_roll["Detect (Electric Fields)"] = roll
-                sense_comm["Detect (Electric Fields)"] = dice.rolldie(1, 6)
+                self.sense_roll["Detect (Electric Fields)"] = roll
 
         #  Perfect Balance
         if self.habitat_type == "Land":
@@ -1476,44 +1587,52 @@ class Species():
                 roll -= 1
             elif self.planet.gravity >= 1.5:
                 roll += 1
-            if roll > 10:
+            if roll >= 11:
                 special.append("Perfect Balance")
 
         #  Scanning Sense (Radar)
         if (self.size_class != "Small"
-                or self.habitat_type != "Water"):
+                and self.habitat_type != "Water"):
             roll = dice.rolldie(2, 6)
             if self.habitat_type == "Space-Dwelling":
                 roll += 2
-            if roll > 10:
+            if roll >= 11:
                 special.append("Scanning Sense (Radar)")
-                sense_roll["Scanning Sense (Radar)"] = roll
-                sense_comm["Scanning Sense (Radar)"] = dice.rolldie(1, 6)
+                self.sense_roll["Scanning Sense (Radar)"] = roll
 
-        # Communication
-        sense_roll["Vision"] = roll_v
-        sense_roll["Hearing"] = roll_h
-        sense_roll["Touch"] = roll_t
-        sense_roll["Taste/Smell"] = roll_s
+        self.sense_specials = special
 
-        if roll_v > 9:
-            sense_comm["Vision"] = dice.rolldie(1, 6)
-        if roll_h > 8:
-            if roll_h > 11:
-                sense_comm["Hearing"] = dice.rolldie(1, 6) + 1
-            else:
-                sense_comm["Hearing"] = dice.rolldie(1, 6)
-        if roll_t > 8:
-            sense_comm["Touch"] = dice.rolldie(1, 6)
-        if roll_s > 8:
-            sense_comm["Taste/Smell"] = dice.rolldie(1, 6)
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_communication_rolls(self):
+        if self.sense_roll["Vision"] >= 10:
+            self.sense_comm["Vision"] = dice.rolldie(1, 6)
+        if self.sense_roll["Hearing"] >= 9:
+            self.sense_comm["Hearing"] = dice.rolldie(1, 6)
+            if self.sense_roll["Hearing"] >= 12:
+                self.sense_comm["Hearing"] += 1
+        if self.sense_roll["Touch"] >= 9:
+            self.sense_comm["Touch"] = dice.rolldie(1, 6)
+        if self.sense_roll["Taste/Smell"] >= 9:
+            self.sense_comm["Taste/Smell"] = dice.rolldie(1, 6)
+        if "Ultravision" in self.sense_specials:
+            self.sense_comm["Ultravision"] = dice.rolldie(1, 6)
+        if "Detect (Heat)" in self.sense_specials:
+            self.sense_comm["Detect (Heat)"] = dice.rolldie(1, 6)
+        if "Detect (Electric Fields)" in self.sense_specials:
+            self.sense_comm["Detect (Electric Fields)"] = dice.rolldie(1, 6)
+        if "Scanning Sense (Radar)" in self.sense_specials:
+            self.sense_comm["Scanning Sense (Radar)"] = dice.rolldie(1, 6)
 
-        # Primary Communication Channel
-        maxvalue = max(sense_comm.values())
-        if maxvalue == 0:
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_communication_a(self):
+        comms_a = ""
+        sense_comm = self.sense_comm
+        sense_roll = self.sense_roll
+
+        if not sense_comm:
             comms_a = "None"
-            comms_b = "None"
         else:
+            maxvalue = max(sense_comm.values())
             sense_suba = {}
             sense_subb = {}
             for key, value in sense_comm.items():
@@ -1526,11 +1645,18 @@ class Species():
             comms_a = random.choice(list(sense_subb.keys()))
             del sense_comm[comms_a]
 
-        # Secondary Communication Channel
-        maxvalue = max(sense_comm.values())
-        if maxvalue == 0:
+        self.comms_a = comms_a
+
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_communication_b(self):
+        comms_b = ""
+        sense_comm = self.sense_comm
+        sense_roll = self.sense_roll
+
+        if not sense_comm:
             comms_b = "None"
         else:
+            maxvalue = max(sense_comm.values())
             sense_suba = {}
             sense_subb = {}
             for key, value in sense_comm.items():
@@ -1543,21 +1669,12 @@ class Species():
             comms_b = random.choice(list(sense_subb.keys()))
             del sense_comm[comms_b]
 
-        self.sense_primary = primary
-        self.sense_vision = vision
-        self.sense_hearing = hearing
-        self.sense_touch = touch
-        self.sense_tastesmell = tastesmell
-        self.sense_specials = special
-        self.comms_a = comms_a
         self.comms_b = comms_b
 
     # TODO: separate descriptors + advantages/disadvantages
     # Alien Creation IX: GURPS Space pg. 168
     def _gen_intelligence(self):
-
         intell = ""
-        stat_iq = 0
 
         #  Non-Sapient
         roll = dice.rolldie(2, 6)
@@ -1578,30 +1695,38 @@ class Species():
         #   generator at an earlier stage
         if roll <= 3:
             intell = "Mindless"
-            stat_iq = 0
         elif roll <= 5:
             intell = "Preprogrammed (Cannot Learn)"
-            stat_iq = 1
         elif roll <= 8:
             intell = "Low Intelligence (Bestial)"
-            stat_iq = dice.rolldie(1, 3)
         elif roll <= 10:
             intell = "High Intelligence (Bestial)"
-            stat_iq = dice.rolldie(1, 3) + 2
         else:
             intell = "Presapient"
-            stat_iq = 5
 
-        #  Possibly Sapient
         if self.possible_sapient is True:
             if roll >= 13:
                 intell = "Sapient"
 
-        #  Definitely Sapient
         if self.sapient is True:
             intell = "Sapient"
 
-        if intell == "Sapient":
+        self.intelligence = intell
+
+    def _gen_stat_iq(self):
+        stat_iq = 0
+
+        if "Mindless" in self.intelligence:
+            stat_iq = 0
+        elif "Preprogrammed" in self.intelligence:
+            stat_iq = 1
+        elif "Low" in self.intelligence:
+            stat_iq = dice.rolldie(1, 3)
+        elif "High" in self.intelligence:
+            stat_iq = dice.rolldie(1, 3) + 2
+        elif "Presapient" in self.intelligence:
+            stat_iq = 5
+        elif "Sapient" in self.intelligence:
             stat_iq = dice.rolldie(1, 6) + 5
             if ("Filter-Feeder" in self.trophic_level
                     or "Grazing/Browsing Herbivore" in self.trophic_level
@@ -1619,7 +1744,6 @@ class Species():
             if stat_iq < 6:
                 stat_iq = 6
 
-        self.intelligence = intell
         self.stat_iq = stat_iq
 
     # Alien Creation IX: GURPS Space pg. 168
@@ -1637,6 +1761,13 @@ class Species():
             roll += 1
         elif "Strong r-Strategy" in self.reproductive_strat:
             roll -= 1
+
+        # exception for user input, otherwise it's impossible to have
+        #   already determined the social organization before mating behavior
+        if (self.social_organization is not None
+                and self.social_organization != "Hive"
+                and roll > 10):
+            roll = 10
 
         if roll <= 5:
             mating = "Mating only, no pair bond"
@@ -1685,15 +1816,24 @@ class Species():
 
     # Alien Creation X: GURPS Space pg. 169
     def _gen_personality(self):
-        self._gen_p_chauvinism()
-        self._gen_p_concentration()
-        self._gen_p_curiosity()
-        self._gen_p_egoism()
-        self._gen_p_empathy()
-        self._gen_p_gregariousness()
-        self._gen_p_imagination()
-        self._gen_p_suspicion()
-        self._gen_p_playfulness()
+        if self.p_chauvinism is None:
+            self._gen_p_chauvinism()
+        if self.p_concentration is None:
+            self._gen_p_concentration()
+        if self.p_curiosity is None:
+            self._gen_p_curiosity()
+        if self.p_egoism is None:
+            self._gen_p_egoism()
+        if self.p_empathy is None:
+            self._gen_p_empathy()
+        if self.p_gregariousness is None:
+            self._gen_p_gregariousness()
+        if self.p_imagination is None:
+            self._gen_p_imagination()
+        if self.p_suspicion is None:
+            self._gen_p_suspicion()
+        if self.p_playfulness is None:
+            self._gen_p_playfulness()
         self._gen_p_traits_chauvinism()
         self._gen_p_traits_concentration()
         self._gen_p_traits_curiosity()

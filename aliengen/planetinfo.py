@@ -64,8 +64,7 @@ class PlanetInfo(object):
         """
         Very basic text output of all planet attributes.
         """
-        outlist = ["Planet Info:",
-                   " Type: {}".format(self.type),
+        outlist = [" Type: {}".format(self.type),
                    " Climate: {}".format(self.climate),
                    " Temperature: {}K ({}F)".format(self.temp,
                                                     self.get_temp_f()),
