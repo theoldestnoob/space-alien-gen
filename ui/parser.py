@@ -34,6 +34,7 @@ def parse_cmdline():
     c_sense_hearing = tables.ui_sense_hearing
     c_sense_touch = tables.ui_sense_touch
     c_sense_tastesmell = tables.ui_sense_tastesmell
+    c_sense_special = tables.ui_sense_special
     c_intelligence = tables.ui_intelligence
     c_mating = tables.ui_mating
     c_social = tables.ui_social
@@ -135,6 +136,9 @@ def parse_cmdline():
                         help="Species Touch Sense Acuity")
     parser.add_argument("--sense-tastesmell", choices=c_sense_tastesmell,
                         help="Species Taste/Smell Sense Acuity")
+    parser.add_argument("--sense-special", choices=c_sense_special,
+                        action="append",
+                        help="Species Special Senses. May choose multiple.")
     parser.add_argument("--intelligence", choices=c_intelligence,
                         help="Species Intelligence")
     parser.add_argument("--mating", choices=c_mating,

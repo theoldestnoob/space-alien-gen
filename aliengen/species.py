@@ -1301,7 +1301,9 @@ class Species():
         self._gen_senses_hearing()
         self._gen_senses_touch()
         self._gen_senses_tastesmell()
-        self._gen_senses_special()
+        if self.sense_specials is None:
+            self._gen_senses_special()
+        self._gen_communication_rolls()
         self._gen_communication_a()
         self._gen_communication_b()
 
@@ -1364,9 +1366,6 @@ class Species():
         else:
             vision = "Telescopic Vision 4"
 
-        if roll >= 10:
-            self.sense_comm["Vision"] = dice.rolldie(1, 6)
-
         self.sense_roll["Vision"] = roll
         self.sense_vision = vision
 
@@ -1408,11 +1407,6 @@ class Species():
         else:
             hearing = "Acute Hearing 4 with Ultrasonic Hearing and Sonar"
 
-        if roll >= 9:
-            self.sense_comm["Hearing"] = dice.rolldie(1, 6)
-            if roll >= 12:
-                self.sense_comm["Hearing"] += 1
-
         self.sense_roll["Hearing"] = roll
         self.sense_hearing = hearing
 
@@ -1453,9 +1447,6 @@ class Species():
             touch = "Acute Touch 4 and either"
             touch += " Senstive Touch or Vibration Sense"
 
-        if roll >= 9:
-            self.sense_comm["Touch"] = dice.rolldie(1, 6)
-
         self.sense_roll["Touch"] = roll
         self.sense_touch = touch
 
@@ -1495,9 +1486,6 @@ class Species():
                 tastesmell = "Acute Taste 4 and Discriminatory Taste"
             else:
                 tastesmell = "Acute Taste/Smell 4 and Discriminatory Smell"
-
-        if roll >= 9:
-            self.sense_comm["Taste/Smell"] = dice.rolldie(1, 6)
 
         self.sense_roll["Taste/Smell"] = roll
         self.sense_tastesmell = tastesmell
@@ -1567,7 +1555,6 @@ class Species():
             if roll >= 11:
                 special.append("Ultravision")
                 self.sense_roll["Ultravision"] = roll
-                self.sense_comm["Ultravision"] = dice.rolldie(1, 6)
 
         #  Detect (Heat)
         if self.habitat_type != "Water":
@@ -1579,7 +1566,6 @@ class Species():
             if roll >= 11:
                 special.append("Detect (Heat)")
                 self.sense_roll["Detect (Heat)"] = roll
-                self.sense_comm["Detect (Heat)"] = dice.rolldie(1, 6)
 
         #  Detect (Electric Fields)
         if self.habitat_type == "Water":
@@ -1589,7 +1575,6 @@ class Species():
             if roll >= 11:
                 special.append("Detect (Electric Fields)")
                 self.sense_roll["Detect (Electric Fields)"] = roll
-                self.sense_comm["Detect (Electric Fields)"] = dice.rolldie(1, 6)
 
         #  Perfect Balance
         if self.habitat_type == "Land":
@@ -1614,9 +1599,29 @@ class Species():
             if roll >= 11:
                 special.append("Scanning Sense (Radar)")
                 self.sense_roll["Scanning Sense (Radar)"] = roll
-                self.sense_comm["Scanning Sense (Radar)"] = dice.rolldie(1, 6)
 
         self.sense_specials = special
+
+    # Alien Creation VIII: GURPS Space pg. 164
+    def _gen_communication_rolls(self):
+        if self.sense_roll["Vision"] >= 10:
+            self.sense_comm["Vision"] = dice.rolldie(1, 6)
+        if self.sense_roll["Hearing"] >= 9:
+            self.sense_comm["Hearing"] = dice.rolldie(1, 6)
+            if self.sense_roll["Hearing"] >= 12:
+                self.sense_comm["Hearing"] += 1
+        if self.sense_roll["Touch"] >= 9:
+            self.sense_comm["Touch"] = dice.rolldie(1, 6)
+        if self.sense_roll["Taste/Smell"] >= 9:
+            self.sense_comm["Taste/Smell"] = dice.rolldie(1, 6)
+        if "Ultravision" in self.sense_specials:
+            self.sense_comm["Ultravision"] = dice.rolldie(1, 6)
+        if "Detect (Heat)" in self.sense_specials:
+            self.sense_comm["Detect (Heat)"] = dice.rolldie(1, 6)
+        if "Detect (Electric Fields)" in self.sense_specials:
+            self.sense_comm["Detect (Electric Fields)"] = dice.rolldie(1, 6)
+        if "Scanning Sense (Radar)" in self.sense_specials:
+            self.sense_comm["Scanning Sense (Radar)"] = dice.rolldie(1, 6)
 
     # Alien Creation VIII: GURPS Space pg. 164
     def _gen_communication_a(self):

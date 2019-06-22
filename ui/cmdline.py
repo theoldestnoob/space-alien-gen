@@ -13,6 +13,7 @@ import os
 import aliengen.planetinfo as planetinfo
 import aliengen.species as species
 import aliengen.tables as tables
+import aliengen.dice as dice
 
 
 def run_cmdline(args):
@@ -87,6 +88,12 @@ def run_cmdline(args):
         in_species.sense_roll["Touch"] = tables.ui_sense_touch_map[args.sense_touch]
     if args.sense_tastesmell is not None:
         in_species.sense_roll["Taste/Smell"] = tables.ui_sense_tastesmell_map[args.sense_tastesmell]
+    in_species.sense_specials = args.sense_special
+    if args.sense_special is not None:
+        for sense in args.sense_special:
+            if sense in ["Ultravision", "Detect (Heat)",
+                         "Detect (Electric Fields)", "Scanning Sense (Radar)"]:
+                in_species.sense_roll[sense] = dice.rolldie(2, 6)
     if args.intelligence is not None:
         in_species.intelligence = tables.ui_intel_map[args.intelligence]
     if args.intelligence == "Sapient":
@@ -109,7 +116,7 @@ def run_cmdline(args):
     in_species.p_suspicion = args.suspicion
     in_species.p_playfulness = args.playfulness
 
-    lead_z = len(str(args.num))
+    lead_z = len(str(args.num - 1))
     if args.dir is not None:
         print("Directory: {} but not CSV!".format(args.dir))
         cwd = os.getcwd()
