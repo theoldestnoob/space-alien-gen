@@ -737,6 +737,24 @@ ui_habitat = ["Plains",
               "Salt-Water Sea",
               "Reef"]
 
+ui_hab_land = ["Plains",
+               "Desert",
+               "Island/Beach",
+               "Woodlands",
+               "Swampland",
+               "Mountain",
+               "Arctic",
+               "Jungle"]
+
+ui_hab_water = ["Banks",
+                "Open Ocean",
+                "Fresh-Water Lakes",
+                "River/Stream",
+                "Tropical Lagoon",
+                "Deep-Ocean Vents",
+                "Salt-Water Sea",
+                "Reef"]
+
 ui_trophic_level = ["Combined",
                     "Autotroph",
                     "Decomposer",
