@@ -41,10 +41,10 @@ class Application(tk.Frame):
         self.in_f = tk.Frame(self, bd=3)
         self.in_f.grid(row=0, column=0)
 
-        self.create_planet_input()
+        self.create_input_planet()
 
         sap_f = tk.LabelFrame(self.in_f, text="Sapience")
-        sap_f.grid(row=1, column=0)
+        sap_f.grid(row=1, column=0, sticky=tk.NSEW)
         tk.Radiobutton(sap_f, text="Possible", variable=self.sapience,
                        value="Possible").grid(row=0, column=0)
         tk.Radiobutton(sap_f, text="Sapient", variable=self.sapience,
@@ -53,7 +53,7 @@ class Application(tk.Frame):
                        value="Nonsapient").grid(row=2, column=0)
 
         per_f = tk.LabelFrame(self.in_f, text="Personality")
-        per_f.grid(row=1, column=1)
+        per_f.grid(row=1, column=1, sticky=tk.NSEW)
         tk.Radiobutton(per_f, text="Biology-Based", variable=self.p_variation,
                        value=False).grid(row=0, column=0)
         tk.Radiobutton(per_f, text="More Varied", variable=self.p_variation,
@@ -63,8 +63,13 @@ class Application(tk.Frame):
         self.out_f = tk.Frame(self, bd=3, relief=tk.SUNKEN)
         self.out_f.grid(row=0, column=1)
 
-        self.out_text = tk.Text(self.out_f)
+        self.out_scroll = tk.Scrollbar(self.out_f)
+        self.out_scroll.grid(row=0, column=1, sticky=tk.NS)
+
+        self.out_text = tk.Text(self.out_f, yscrollcommand=self.out_scroll.set)
         self.out_text.grid(row=0, column=0)
+
+        self.out_scroll.config(command=self.out_text.yview)
 
     def create_controls(self):
         self.controls = tk.Frame(self, bd=3)
@@ -79,7 +84,7 @@ class Application(tk.Frame):
                                     command=self.species_gen)
         self.gen_button.grid(row=0, column=2)
 
-    def create_planet_input(self):
+    def create_input_planet(self):
         self.planet_f = tk.LabelFrame(self.in_f, text="Planet", padx=5, pady=5)
         self.planet_f.grid(row=0, column=0, columnspan=2)
 
