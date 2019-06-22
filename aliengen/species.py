@@ -468,7 +468,10 @@ class Species():
                 or "Scavenger" in self.trophic_level):
             roll += 1
 
-        loco.append(tables.loco_primary[self.habitat][roll])
+        if self.habitat_type == "Gas Giant":
+            loco.append(tables.loco_primary["Gas Giant"][roll])
+        else:
+            loco.append(tables.loco_primary[self.habitat][roll])
 
         self.locomotion = loco
 
