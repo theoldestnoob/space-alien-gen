@@ -72,7 +72,7 @@ class Species():
         self.stat_iq = None
         self.mating = None
         self.social_organization = None
-        self.p_more_variation = None
+        self.p_variation = None
         self.p_chauvinism = None
         self.p_concentration = None
         self.p_curiosity = None
@@ -100,8 +100,8 @@ class Species():
             self.sapient = False
         if self.possible_sapient is None:
             self.possible_sapient = True
-        if self.p_more_variation is None:
-            self.p_more_variation = True
+        if self.p_variation is None:
+            self.p_variation = True
         if self.chemical_basis is None:
             self._gen_chemical_basis_planet()
         if self.habitat_type is None:
@@ -1848,7 +1848,7 @@ class Species():
 
         p_cha = 0
 
-        if self.p_more_variation is True:
+        if self.p_variation is True:
             p_cha = dice.roll_2d6_subtract()
 
         if (self._is_autotroph
@@ -1874,7 +1874,7 @@ class Species():
 
         p_con = 0
 
-        if self.p_more_variation is True:
+        if self.p_variation is True:
             p_con = dice.roll_2d6_subtract()
 
         if ("Pouncing Carnivore" in self.trophic_level
@@ -1891,7 +1891,7 @@ class Species():
 
         p_cur = 0
 
-        if self.p_more_variation is True:
+        if self.p_variation is True:
             p_cur = dice.roll_2d6_subtract()
 
         if "Omnivore" in self.trophic_level:
@@ -1912,7 +1912,7 @@ class Species():
 
         p_ego = 0
 
-        if self.p_more_variation is True:
+        if self.p_variation is True:
             p_ego = dice.roll_2d6_subtract()
 
         if self.social_organization == "Solitary":
@@ -1930,7 +1930,7 @@ class Species():
 
         p_emp = 0
 
-        if self.p_more_variation is True:
+        if self.p_variation is True:
             p_emp = dice.roll_2d6_subtract()
 
         if "Chasing Carnivore" in self.trophic_level:
@@ -1955,7 +1955,7 @@ class Species():
 
         p_gre = 0
 
-        if self.p_more_variation is True:
+        if self.p_variation is True:
             p_gre = dice.roll_2d6_subtract()
 
         if ("Pouncing Carnivore" in self.trophic_level
@@ -1984,7 +1984,7 @@ class Species():
 
         p_ima = 0
 
-        if self.p_more_variation is True:
+        if self.p_variation is True:
             p_ima = dice.roll_2d6_subtract()
 
         if ("Pouncing Carnivore" in self.trophic_level
@@ -2006,7 +2006,7 @@ class Species():
 
         p_sus = 0
 
-        if self.p_more_variation is True:
+        if self.p_variation is True:
             p_sus = dice.roll_2d6_subtract()
 
         if self._is_carnivore:
@@ -2030,7 +2030,7 @@ class Species():
 
         p_pla = 0
 
-        if self.p_more_variation is True:
+        if self.p_variation is True:
             p_pla = dice.roll_2d6_subtract()
 
         if "K-Strategy" in self.reproductive_strat:

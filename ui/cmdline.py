@@ -136,32 +136,37 @@ def run_cmdline(args):
                 file.write(alien.output_text_basic())
     else:
         if not args.csv and args.write is None:
-            print("========================================")
+            print("=" * 40)
             print("Planet Info:")
             print(in_world.planet_output())
-            print("========================================")
+            print("=" * 40)
             for k in range(0, args.num):
                 alien = copy.deepcopy(in_species)
                 alien.generate()
                 print("Species {}:".format(str(k).zfill(lead_z)))
                 print(alien.output_text_basic())
-                print("========================================")
+                print("=" * 40)
         elif not args.csv and args.write is not None:
             with open(args.write, "w") as file:
-                file.write("========================================\n")
+                file.write("=" * 40)
+                file.write("\n")
                 file.write("Planet Info:\n")
                 file.write(in_world.planet_output())
-                file.write("\n========================================\n")
+                file.write("\n")
+                file.write("=" * 40)
+                file.write("\n")
                 for k in range(0, args.num):
                     alien = copy.deepcopy(in_species)
                     alien.generate()
                     file.write("Species #{}:\n".format(str(k).zfill(lead_z)))
                     file.write(alien.output_text_basic())
-                    file.write("\n========================================\n")
+                    file.write("\n")
+                    file.write("=" * 40)
+                    file.write("\n")
         elif args.csv and args.write is None:
-            print("========================================")
+            print("=" * 40)
             print(in_world.planet_output())
-            print("========================================")
+            print("=" * 40)
             writer = csv.DictWriter(sys.stdout, fieldnames=tables.csv_fields,
                                     delimiter=";")
             writer.writeheader()

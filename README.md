@@ -1,7 +1,7 @@
 # GURPS 4<sup>th</sup> Edition Space Alien Generator
 
 This code can be found on GitHub: http://github.com/theoldestnoob/space-alien-gen/
-Note: the current most updated branch is cli-features, not master.
+Note: the current most updated branch is gui, not master.
 
 ## What is this?
 
@@ -22,7 +22,8 @@ Example: `python space-alien-gen.py --num 5 --earthlike --chem-basis Water-Based
 There are several options to customize the alien which is generated. A list of what command line options are available can be seen if the script is run with the -h or --help option: `python space-alien-gen.py --help`
 
 ### GUI Version
-I will be adding a GUI in the future.
+GUI programming is currently in progress. Clone the "gui" branch to download and try.
+Run as `python space-alien-gen.py --gui` for GUI interface.
 
 ### Web Version
 I will be adding a webserver interface in the future.
