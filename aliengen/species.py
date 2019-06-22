@@ -1295,7 +1295,8 @@ class Species():
     #   - Bundle senses into their own datastructure / class
     def _gen_senses(self):
 
-        self._gen_senses_primary()
+        if self.sense_primary is None:
+            self._gen_senses_primary()
         self._gen_senses_vision()
         self._gen_senses_hearing()
         self._gen_senses_touch()
@@ -1324,28 +1325,31 @@ class Species():
 
     # Alien Creation VIII: GURPS Space pg. 164
     def _gen_senses_vision(self):
-        roll = dice.rolldie(3, 6)
+        if "Vision" in self.sense_roll:
+            roll = self.sense_roll["Vision"]
+        else:
+            roll = dice.rolldie(3, 6)
 
-        if self.sense_primary == "Vision":
-            roll += 4
-        if self.locomotion[0] == "Digging":
-            roll -= 4
-        if "Climbing" in self.locomotion:
-            roll += 2
-        if self._is_flying:
-            roll += 3
-        if "Immobile" in self.locomotion:
-            roll -= 4
-        if self.habitat == "Deep-Ocean Vents":
-            roll -= 4
-        if "Filter-Feeder" in self.trophic_level:
-            roll -= 2
-        if (self._is_carnivore
-                or "Gathering Herbivore" in self.trophic_level):
-            roll += 2
-        if self.habitat_type == "Space-Dwelling":
-            if roll < 10:
-                roll = 3
+            if self.sense_primary == "Vision":
+                roll += 4
+            if self.locomotion[0] == "Digging":
+                roll -= 4
+            if "Climbing" in self.locomotion:
+                roll += 2
+            if self._is_flying:
+                roll += 3
+            if "Immobile" in self.locomotion:
+                roll -= 4
+            if self.habitat == "Deep-Ocean Vents":
+                roll -= 4
+            if "Filter-Feeder" in self.trophic_level:
+                roll -= 2
+            if (self._is_carnivore
+                    or "Gathering Herbivore" in self.trophic_level):
+                roll += 2
+            if self.habitat_type == "Space-Dwelling":
+                if roll < 10:
+                    roll = 3
 
         if roll <= 6:
             vision = "Blindness"
@@ -1368,19 +1372,21 @@ class Species():
 
     # Alien Creation VIII: GURPS Space pg. 164
     def _gen_senses_hearing(self):
-        roll = dice.rolldie(3, 6)
-        roll_v = self.sense_roll["Vision"]
-
-        if roll_v <= 7:
-            roll += 2
-        elif roll_v <= 11:
-            roll += 1
-        if self.habitat_type == "Water":
-            roll += 1
-        if "Immobile" in self.locomotion:
-            roll += 4
-        if self.habitat_type == "Space-Dwelling":
-            roll = 0
+        if "Hearing" in self.sense_roll:
+            roll = self.sense_roll["Hearing"]
+        else:
+            roll = dice.rolldie(3, 6)
+            roll_v = self.sense_roll["Vision"]
+            if roll_v <= 7:
+                roll += 2
+            elif roll_v <= 11:
+                roll += 1
+            if self.habitat_type == "Water":
+                roll += 1
+            if "Immobile" in self.locomotion:
+                roll += 4
+            if self.habitat_type == "Space-Dwelling":
+                roll = 0
 
         if roll <= 6:
             hearing = "Deafness"
@@ -1412,23 +1418,26 @@ class Species():
 
     # Alien Creation VIII: GURPS Space pg. 164
     def _gen_senses_touch(self):
-        roll = dice.rolldie(2, 6)
-        roll_v = self.sense_roll["Vision"]
+        if "Touch" in self.sense_roll:
+            roll = self.sense_roll["Touch"]
+        else:
+            roll = dice.rolldie(2, 6)
+            roll_v = self.sense_roll["Vision"]
 
-        if "External" in self.skeleton:
-            roll -= 2
-        if self.habitat_type == "Water":
-            roll += 2
-        if "Digging" in self.locomotion:
-            roll += 2
-        if self._is_flying:
-            roll -= 2
-        if roll_v <= 7:
-            roll += 2
-        if "Trapping Carnivore" in self.trophic_level:
-            roll += 1
-        if self.size_class == "Small":
-            roll += 1
+            if "External" in self.skeleton:
+                roll -= 2
+            if self.habitat_type == "Water":
+                roll += 2
+            if "Digging" in self.locomotion:
+                roll += 2
+            if self._is_flying:
+                roll -= 2
+            if roll_v <= 7:
+                roll += 2
+            if "Trapping Carnivore" in self.trophic_level:
+                roll += 1
+            if self.size_class == "Small":
+                roll += 1
 
         if roll <= 2:
             touch = "Numb"
@@ -1452,20 +1461,23 @@ class Species():
 
     # Alien Creation VIII: GURPS Space pg. 164
     def _gen_senses_tastesmell(self):
-        roll = dice.rolldie(2, 6)
+        if "Taste/Smell" in self.sense_roll:
+            roll = self.sense_roll["Taste/Smell"]
+        else:
+            roll = dice.rolldie(2, 6)
 
-        if "Chasing Carnivore" in self.trophic_level:
-            roll += 2
-        if "Gathering Herbivore" in self.trophic_level:
-            roll += 2
-        if("Filter-Feeder" in self.trophic_level
-           or "Trapping Carnivore" in self.trophic_level
-           or self._is_autotroph):
-            roll -= 2
-        if self.sexes != "Asexual Reproduction or Parthenogenesis":
-            roll += 2
-        if "Immobile" in self.locomotion:
-            roll -= 4
+            if "Chasing Carnivore" in self.trophic_level:
+                roll += 2
+            if "Gathering Herbivore" in self.trophic_level:
+                roll += 2
+            if("Filter-Feeder" in self.trophic_level
+               or "Trapping Carnivore" in self.trophic_level
+               or self._is_autotroph):
+                roll -= 2
+            if self.sexes != "Asexual Reproduction or Parthenogenesis":
+                roll += 2
+            if "Immobile" in self.locomotion:
+                roll -= 4
 
         if roll <= 3:
             tastesmell = "No Sense of Smell/Taste"

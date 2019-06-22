@@ -78,6 +78,15 @@ def run_cmdline(args):
     if args.gest_special is not None:
         in_species.gestation_special = tables.ui_gest_special_map[args.gest_special]
     in_species.reproductive_strat = args.repro_strat
+    in_species.sense_primary = args.sense_primary
+    if args.sense_vision is not None:
+        in_species.sense_roll["Vision"] = tables.ui_sense_vision_map[args.sense_vision]
+    if args.sense_hearing is not None:
+        in_species.sense_roll["Hearing"] = tables.ui_sense_hearing_map[args.sense_hearing]
+    if args.sense_touch is not None:
+        in_species.sense_roll["Touch"] = tables.ui_sense_touch_map[args.sense_touch]
+    if args.sense_tastesmell is not None:
+        in_species.sense_roll["Taste/Smell"] = tables.ui_sense_tastesmell_map[args.sense_tastesmell]
     if args.intelligence is not None:
         in_species.intelligence = tables.ui_intel_map[args.intelligence]
     if args.intelligence == "Sapient":

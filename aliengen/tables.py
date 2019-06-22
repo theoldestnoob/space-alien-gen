@@ -899,6 +899,79 @@ ui_reproductive_strategy = ["Strong K-Strategy",
                             "Moderate r-Strategy",
                             "Strong r-Strategy"]
 
+ui_primary_sense = ["Hearing",
+                    "Vision",
+                    "Touch and Taste"]
+
+ui_sense_vision = ["Blind",
+                   "Near Blind",
+                   "Very Bad Sight",
+                   "Bad Sight",
+                   "Normal",
+                   "Telescopic"]
+
+ui_sense_vision_map = {"Blind": 6,
+                       "Near Blind": 7,
+                       "Very Bad Sight": 9,
+                       "Bad Sight": 11,
+                       "Normal": 14,
+                       "Telescopic": 23}
+
+ui_sense_hearing = ["Deafness",
+                    "Hard of Hearing",
+                    "Normal",
+                    "Extended Range",
+                    "Acute",
+                    "Acute+",
+                    "Acute++"]
+
+ui_sense_hearing_map = {"Deafness": 6,
+                        "Hard of Hearing": 8,
+                        "Normal": 10,
+                        "Extended Range": 11,
+                        "Acute": 12,
+                        "Acute+": 13,
+                        "Acute++": 21}
+
+ui_sense_touch = ["Numb",
+                  "Very Poor",
+                  "Poor",
+                  "Human-level",
+                  "Acute",
+                  "Acute+"]
+
+ui_sense_touch_map = {"Numb": 2,
+                      "Very Poor": 4,
+                      "Poor": 6,
+                      "Human-level": 8,
+                      "Acute": 10,
+                      "Acute+": 18}
+
+ui_sense_tastesmell = ["None",
+                       "No Smell",
+                       "Normal",
+                       "Acute",
+                       "Acute+"]
+
+ui_sense_tastesmell_map = {"None": 3,
+                           "No Smell": 5,
+                           "Normal": 8,
+                           "Acute": 10,
+                           "Acute+": 16}
+
+ui_sense_special = ["360 Vision",
+                    "Absolute Direction",
+                    "Discriminatory Hearing",
+                    "Peripheral Vision",
+                    "Night Vision",
+                    "Ultravision",
+                    "Detect (Heat)",
+                    "Detect (Electric Fields)",
+                    "Perfect Balance",
+                    "Scanning Sense (Radar)"]
+
+ui_communication = []
+
 ui_intelligence = ["Mindless",
                    "Preprogrammed",
                    "Low",
