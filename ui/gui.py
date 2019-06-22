@@ -25,7 +25,7 @@ class Application(tk.Frame):
         self.p_hydro = tk.IntVar(value=70)
         self.p_grav = tk.DoubleVar(value=1.0)
         self.sapience = tk.StringVar(value="Possible")
-        self.p_variation = tk.BooleanVar(value=False)
+        self.p_variation = tk.StringVar(value="Bio")
         self.chem_bas = tk.StringVar(value="")
         self.hab_type = tk.StringVar(value="")
         self.hab_type.trace_add("write", self.trace_hab_type)
@@ -78,20 +78,13 @@ class Application(tk.Frame):
         self.create_input_planet()
 
         sap_f = tk.LabelFrame(self.in_f, text="Sapience")
-        sap_f.grid(row=1, column=0, sticky=tk.NSEW)
+        sap_f.grid(row=1, column=0, columnspan=2, sticky=tk.NSEW)
         tk.Radiobutton(sap_f, text="Possible", variable=self.sapience,
                        value="Possible").grid(row=0, column=0)
         tk.Radiobutton(sap_f, text="Sapient", variable=self.sapience,
-                       value="Sapient").grid(row=1, column=0)
+                       value="Sapient").grid(row=0, column=1)
         tk.Radiobutton(sap_f, text="Nonsapient", variable=self.sapience,
-                       value="Nonsapient").grid(row=2, column=0)
-
-        per_f = tk.LabelFrame(self.in_f, text="Personality")
-        per_f.grid(row=1, column=1, sticky=tk.NSEW)
-        tk.Radiobutton(per_f, text="Biology-Based", variable=self.p_variation,
-                       value=False).grid(row=0, column=0)
-        tk.Radiobutton(per_f, text="More Varied", variable=self.p_variation,
-                       value=True).grid(row=1, column=0)
+                       value="Nonsapient").grid(row=0, column=2)
 
         lbl_chem = tk.Label(self.in_f, text="Chemical Basis:")
         lbl_chem.grid(row=2, column=0)
@@ -123,6 +116,83 @@ class Application(tk.Frame):
         tbl_loco_a = [""] + tables.ui_locomotion
         self.in_loco_a = tk.OptionMenu(self.in_f, self.loco_a, *tbl_loco_a)
         self.in_loco_a.grid(row=6, column=1)
+
+        lbl_size_c = tk.Label(self.in_f, text="Size Class:")
+        lbl_size_c.grid(row=7, column=0)
+
+        lbl_size_vol = tk.Label(self.in_f, text="Volume:")
+        lbl_size_vol.grid(row=8, column=0)
+
+        lbl_size_mass = tk.Label(self.in_f, text="Mass:")
+        lbl_size_mass.grid(row=9, column=0)
+
+        lbl_symm = tk.Label(self.in_f, text="Symmetry:")
+        lbl_symm.grid(row=10, column=0)
+
+        lbl_sides = tk.Label(self.in_f, text="Sides:")
+        lbl_sides.grid(row=11, column=0)
+
+        lbl_tail = tk.Label(self.in_f, text="Tail Feature:")
+        lbl_tail.grid(row=12, column=0)
+
+        lbl_skel = tk.Label(self.in_f, text="Skeleton:")
+        lbl_skel.grid(row=13, column=0)
+
+        lbl_skin_t = tk.Label(self.in_f, text="Skin Type:")
+        lbl_skin_t.grid(row=14, column=0)
+
+        lbl_skin = tk.Label(self.in_f, text="Skin:")
+        lbl_skin.grid(row=15, column=0)
+
+        lbl_breath = tk.Label(self.in_f, text="Breathing:")
+        lbl_breath.grid(row=16, column=0)
+
+        lbl_temp = tk.Label(self.in_f, text="Temperature Regulation:")
+        lbl_temp.grid(row=17, column=0)
+
+        lbl_grow = tk.Label(self.in_f, text="Growth Pattern:")
+        lbl_grow.grid(row=18, column=0)
+
+        lbl_sex = tk.Label(self.in_f, text="Sexes:")
+        lbl_sex.grid(row=19, column=0)
+
+        lbl_gest = tk.Label(self.in_f, text="Gestation:")
+        lbl_gest.grid(row=20, column=0)
+
+        lbl_gest_s = tk.Label(self.in_f, text="Special Gestation:")
+        lbl_gest_s.grid(row=21, column=0)
+
+        lbl_repro = tk.Label(self.in_f, text="Reproductive Strategy:")
+        lbl_repro.grid(row=22, column=0)
+
+        lbl_sen_p = tk.Label(self.in_f, text="Primary Sense:")
+        lbl_sen_p.grid(row=23, column=0)
+
+        lbl_sen_v = tk.Label(self.in_f, text="Vision:")
+        lbl_sen_v.grid(row=24, column=0)
+
+        lbl_sen_h = tk.Label(self.in_f, text="Hearing:")
+        lbl_sen_h.grid(row=25, column=0)
+
+        lbl_sen_to = tk.Label(self.in_f, text="Touch:")
+        lbl_sen_to.grid(row=26, column=0)
+
+        lbl_sen_ta = tk.Label(self.in_f, text="Taste/Smell:")
+        lbl_sen_ta.grid(row=27, column=0)
+
+        lbl_sen_s = tk.Label(self.in_f, text="Special Senses:")
+        lbl_sen_s.grid(row=28, column=0)
+
+        lbl_int = tk.Label(self.in_f, text="Intelligence:")
+        lbl_int.grid(row=29, column=0)
+
+        lbl_mat = tk.Label(self.in_f, text="Mating Behavior:")
+        lbl_mat.grid(row=30, column=0)
+
+        lbl_soc = tk.Label(self.in_f, text="Socal Organization:")
+        lbl_soc.grid(row=31, column=0)
+
+        self.create_input_personality()
 
     def create_output(self):
         self.out_f = tk.Frame(self, bd=3, relief=tk.SUNKEN)
@@ -177,6 +247,36 @@ class Application(tk.Frame):
         self.in_p_random = tk.Button(self.planet_f, text="Randomize",
                                      command=self.p_randomize)
         self.in_p_random.grid(row=4, column=1)
+
+    def create_input_personality(self):
+        pers_f = tk.LabelFrame(self.in_f, text="Personality",
+                               padx=5, pady=5)
+        pers_f.grid(row=32, column=0, columnspan=2, sticky=tk.NSEW)
+
+        tk.Radiobutton(pers_f, text="Biology-Based", variable=self.p_variation,
+                       value="Bio").grid(row=0, column=0)
+        tk.Radiobutton(pers_f, text="More Varied", variable=self.p_variation,
+                       value="Vary").grid(row=0, column=1)
+        tk.Radiobutton(pers_f, text="Custom", variable=self.p_variation,
+                       value="Custom").grid(row=0, column=2)
+
+        lbl_cha = tk.Label(pers_f, text="Chauvinism:")
+        lbl_cha.grid(row=1, column=0)
+
+        lbl_con = tk.Label(pers_f, text="Concentration:")
+        lbl_con.grid(row=2, column=0)
+
+        lbl_ego = tk.Label(pers_f, text="Egoism:")
+        lbl_ego.grid(row=3, column=0)
+
+        lbl_gre = tk.Label(pers_f, text="Gregariousness:")
+        lbl_gre.grid(row=1, column=2)
+
+        lbl_ima = tk.Label(pers_f, text="Imagination:")
+        lbl_ima.grid(row=2, column=2)
+
+        lbl_pla = tk.Label(pers_f, text="Playfulness:")
+        lbl_pla.grid(row=3, column=2)
 
     def trace_p_type(self, *args):
         # print("trace_p_type Callback: ", args)
@@ -294,7 +394,14 @@ class Application(tk.Frame):
         elif sapience == "Nonsapient":
             in_species.sapient = False
             in_species.possible_sapient = False
-        in_species.p_variation = self.p_variation.get()
+        p_vary = self.p_variation.get()
+        if p_vary == "Bio":
+            in_species.p_variation = False
+        elif p_vary == "Vary":
+            in_species.p_variation = True
+        elif p_vary == "Custom":
+            # load in custom personality values here
+            in_species.p_variation = True
         if self.chem_bas.get():
             in_species.chemical_basis = self.chem_bas.get()
         else:
