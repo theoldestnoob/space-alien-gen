@@ -17,13 +17,14 @@ class Application(tk.Frame):
         self.pack()
         self.create_variables()
         self.create_widgets()
+        self.winfo_toplevel().title("space-alien-gen")
 
     def create_variables(self):
         self.p_type = tk.StringVar(value="Custom")
         self.p_type.trace_add("write", self.trace_p_type)
-        self.p_temp = tk.IntVar(value=295)
-        self.p_hydro = tk.IntVar(value=70)
-        self.p_grav = tk.DoubleVar(value=1.0)
+        self.p_temp = tk.StringVar(value="295")
+        self.p_hydro = tk.StringVar(value="70")
+        self.p_grav = tk.StringVar(value="1.0")
         self.sapience = tk.StringVar(value="Possible")
         self.p_variation = tk.StringVar(value="Bio")
         self.chem_bas = tk.StringVar(value="")
@@ -375,34 +376,32 @@ class Application(tk.Frame):
                 self.in_habtype.config(state=tk.NORMAL)
 
     def species_gen(self):
-        in_planet = self.gen_planet()
-        in_species = self.load_species(in_planet)
-        text_planet = in_planet.planet_output()
+        if self.check_input():
+            in_planet = self.gen_planet()
+            in_species = self.load_species(in_planet)
+            text_planet = in_planet.planet_output()
 
-        lead_z = len(str(self.in_num.get() - 1))
-
-        self.out_txt.config(state=tk.NORMAL)
-        self.out_txt.delete(1.0, tk.END)
-        self.out_txt.insert(tk.END, "=" * 40)
-        self.out_txt.insert(tk.END, "\nPlanet Info:\n")
-        self.out_txt.insert(tk.END, "=" * 40)
-        self.out_txt.insert(tk.END, "\n")
-        self.out_txt.insert(tk.END, text_planet)
-        self.out_txt.insert(tk.END, "\n")
-        self.out_txt.insert(tk.END, "=" * 40)
-        self.out_txt.insert(tk.END, "\n")
-        for k in range(self.in_num.get()):
-            out_species = copy.deepcopy(in_species)
-            out_species.generate()
-            self.out_txt.insert(tk.END,
-                                "Species {}:\n".format(str(k).zfill(lead_z)))
-            text_species = out_species.output_text_basic()
-            self.out_txt.insert(tk.END, text_species)
+            self.out_txt.config(state=tk.NORMAL)
+            self.out_txt.delete(1.0, tk.END)
+            self.out_txt.insert(tk.END, "=" * 40)
+            self.out_txt.insert(tk.END, "\nPlanet Info:\n")
+            self.out_txt.insert(tk.END, "=" * 40)
+            self.out_txt.insert(tk.END, "\n")
+            self.out_txt.insert(tk.END, text_planet)
             self.out_txt.insert(tk.END, "\n")
             self.out_txt.insert(tk.END, "=" * 40)
             self.out_txt.insert(tk.END, "\n")
-
-        self.out_txt.config(state=tk.DISABLED)
+            for k in range(self.in_num.get()):
+                out_species = copy.deepcopy(in_species)
+                out_species.generate()
+                self.out_txt.insert(tk.END,
+                                    "Species {}:\n".format(str(k)))
+                text_species = out_species.output_text_basic()
+                self.out_txt.insert(tk.END, text_species)
+                self.out_txt.insert(tk.END, "\n")
+                self.out_txt.insert(tk.END, "=" * 40)
+                self.out_txt.insert(tk.END, "\n")
+            self.out_txt.config(state=tk.DISABLED)
 
     def gen_planet(self):
         in_planet = planet.PlanetInfo()
@@ -450,6 +449,25 @@ class Application(tk.Frame):
             in_species.locomotion = [self.loco_a.get()]
 
         return in_species
+
+    def check_input(self):
+        errstr = ""
+        if not self.p_temp.get().isdigit():
+            errstr = "Error! Planet Temperature must be Integer!\n"
+            errstr += "You entered: {}".format(self.p_temp.get())
+        elif not self.p_hydro.get().isdigit():
+            errstr = "Error! Planet Hydrographic Coverage must be Integer!\n"
+            errstr += "You entered: {}".format(self.p_hydro.get())
+        elif not self.p_grav.get().replace(".", "", 1).isdigit():
+            errstr = "Error! Planet Gravity must be Number!\n"
+            errstr += "You entered: {}".format(self.p_grav.get())
+        if errstr:
+            self.out_txt.config(state=tk.NORMAL)
+            self.out_txt.delete(1.0, tk.END)
+            self.out_txt.insert(tk.END, errstr)
+            self.out_txt.config(state=tk.DISABLED)
+            return False
+        return True
 
 
 def run_gui():
