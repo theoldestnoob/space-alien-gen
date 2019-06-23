@@ -83,16 +83,11 @@ class Application(tk.Frame):
         # set up frame for input
         self.f_in = tk.LabelFrame(self.canvas_in, text="Input", bd=3)
 
-        self.create_input_planet()
+        planet_f = self.create_in_planet_f(self.f_in)
+        planet_f.grid(row=0, column=0, columnspan=2)
 
-        sap_f = tk.LabelFrame(self.f_in, text="Sapience")
+        sap_f = self.create_in_sapience_f(self.f_in)
         sap_f.grid(row=1, column=0, columnspan=2, sticky=tk.NSEW)
-        tk.Radiobutton(sap_f, text="Possible", variable=self.sapience,
-                       value="Possible").grid(row=0, column=0)
-        tk.Radiobutton(sap_f, text="Sapient", variable=self.sapience,
-                       value="Sapient").grid(row=0, column=1)
-        tk.Radiobutton(sap_f, text="Nonsapient", variable=self.sapience,
-                       value="Nonsapient").grid(row=0, column=2)
 
         lbl_chem = tk.Label(self.f_in, text="Chemical Basis:")
         lbl_chem.grid(row=2, column=0)
@@ -100,18 +95,8 @@ class Application(tk.Frame):
         self.in_chem_bas = tk.OptionMenu(self.f_in, self.chem_bas, *tbl_chem)
         self.in_chem_bas.grid(row=2, column=1)
 
-        lbl_habtype = tk.Label(self.f_in, text="Habitat Type:")
-        lbl_habtype.grid(row=3, column=0)
-        tbl_habtype = [""] + tables.ui_hab_type
-        tbl_habtype.remove("Gas Giant")
-        self.in_habtype = tk.OptionMenu(self.f_in, self.hab_type, *tbl_habtype)
-        self.in_habtype.grid(row=3, column=1)
-
-        lbl_habitat = tk.Label(self.f_in, text="Habitat:")
-        lbl_habitat.grid(row=4, column=0)
-        tbl_habitat = [""] + tables.ui_habitat
-        self.in_habitat = tk.OptionMenu(self.f_in, self.habitat, *tbl_habitat)
-        self.in_habitat.grid(row=4, column=1)
+        hab_f = self.create_in_habitat_f(self.f_in)
+        hab_f.grid(row=3, column=0, columnspan=2, sticky=tk.NSEW)
 
         lbl_troph = tk.Label(self.f_in, text="Trophic Level:")
         lbl_troph.grid(row=5, column=0)
@@ -200,7 +185,8 @@ class Application(tk.Frame):
         lbl_soc = tk.Label(self.f_in, text="Socal Organization:")
         lbl_soc.grid(row=31, column=0)
 
-        self.create_input_personality()
+        pers_f = self.create_in_personality_f(self.f_in)
+        pers_f.grid(row=32, column=0, columnspan=2, sticky=tk.NSEW)
 
         # create input window and resize canvas to allow for scrolling
         self.canvas_in.create_window(0, 0, anchor=tk.NW, window=self.f_in)
@@ -252,39 +238,70 @@ class Application(tk.Frame):
         self.canvas_out.config(scrollregion=(x, y, w, h))
         self.canvas_out.config(width=w, height=h)
 
-    def create_input_planet(self):
-        self.planet_f = tk.LabelFrame(self.f_in, text="Planet", padx=5, pady=5)
-        self.planet_f.grid(row=0, column=0, columnspan=2)
+    def create_in_planet_f(self, parent):
+        planet_f = tk.LabelFrame(parent, text="Planet", padx=5, pady=5)
 
-        tk.Label(self.planet_f, text="Planet Type:").grid(row=0, column=0)
-        self.in_p_type = tk.OptionMenu(self.planet_f, self.p_type,
+        tk.Label(planet_f, text="Planet Type:").grid(row=0, column=0)
+        self.in_p_type = tk.OptionMenu(planet_f, self.p_type,
                                        "Custom", "Earthlike", "Gas Giant")
         self.in_p_type.grid(row=0, column=1)
 
-        lbl_p_temp = tk.Label(self.planet_f, text="Temperature (Kelvin):")
+        lbl_p_temp = tk.Label(planet_f, text="Temperature (Kelvin):")
         lbl_p_temp.grid(row=1, column=0)
-        self.in_p_temp = tk.Entry(self.planet_f, textvariable=self.p_temp)
+        self.in_p_temp = tk.Entry(planet_f, textvariable=self.p_temp)
         self.in_p_temp.grid(row=1, column=1)
 
-        lbl_p_hydro = tk.Label(self.planet_f,
-                               text="Hydrographic Coverage (%): ")
+        lbl_p_hydro = tk.Label(planet_f, text="Hydrographic Coverage (%): ")
         lbl_p_hydro.grid(row=2, column=0)
-        self.in_p_hydro = tk.Entry(self.planet_f, textvariable=self.p_hydro)
+        self.in_p_hydro = tk.Entry(planet_f, textvariable=self.p_hydro)
         self.in_p_hydro.grid(row=2, column=1)
 
-        lbl_p_grav = tk.Label(self.planet_f, text="Gravity (G): ")
+        lbl_p_grav = tk.Label(planet_f, text="Gravity (G): ")
         lbl_p_grav.grid(row=3, column=0)
-        self.in_p_grav = tk.Entry(self.planet_f, textvariable=self.p_grav)
+        self.in_p_grav = tk.Entry(planet_f, textvariable=self.p_grav)
         self.in_p_grav.grid(row=3, column=1)
 
-        self.in_p_random = tk.Button(self.planet_f, text="Randomize",
+        self.in_p_random = tk.Button(planet_f, text="Randomize",
                                      command=self.p_randomize)
         self.in_p_random.grid(row=4, column=1)
 
-    def create_input_personality(self):
-        pers_f = tk.LabelFrame(self.f_in, text="Personality",
+        return planet_f
+
+    def create_in_sapience_f(self, parent):
+        sap_f = tk.LabelFrame(parent, text="Sapience")
+
+        tk.Radiobutton(sap_f, text="Possible", variable=self.sapience,
+                       value="Possible").grid(row=0, column=0)
+        tk.Radiobutton(sap_f, text="Sapient", variable=self.sapience,
+                       value="Sapient").grid(row=0, column=1)
+        tk.Radiobutton(sap_f, text="Nonsapient", variable=self.sapience,
+                       value="Nonsapient").grid(row=0, column=2)
+
+        return sap_f
+
+    def create_in_habitat_f(self, parent):
+        hab_f = tk.LabelFrame(parent, text="Habitat")
+        hab_f.grid_columnconfigure(0, weight=1)
+        hab_f.grid_columnconfigure(1, weight=1)
+
+        lbl_habtype = tk.Label(hab_f, text="Type:")
+        lbl_habtype.grid(row=0, column=0)
+        tbl_habtype = [""] + tables.ui_hab_type
+        tbl_habtype.remove("Gas Giant")
+        self.in_habtype = tk.OptionMenu(hab_f, self.hab_type, *tbl_habtype)
+        self.in_habtype.grid(row=1, column=0)
+
+        lbl_habitat = tk.Label(hab_f, text="Habitat:")
+        lbl_habitat.grid(row=0, column=1)
+        tbl_habitat = [""] + tables.ui_habitat
+        self.in_habitat = tk.OptionMenu(hab_f, self.habitat, *tbl_habitat)
+        self.in_habitat.grid(row=1, column=1)
+
+        return hab_f
+
+    def create_in_personality_f(self, parent):
+        pers_f = tk.LabelFrame(parent, text="Personality",
                                padx=5, pady=5)
-        pers_f.grid(row=32, column=0, columnspan=2, sticky=tk.NSEW)
 
         tk.Radiobutton(pers_f, text="Biology-Based", variable=self.p_variation,
                        value="Bio").grid(row=0, column=0)
@@ -310,6 +327,8 @@ class Application(tk.Frame):
 
         lbl_pla = tk.Label(pers_f, text="Playfulness:")
         lbl_pla.grid(row=3, column=2)
+
+        return pers_f
 
     def trace_p_type(self, *args):
         # print("trace_p_type Callback: ", args)
