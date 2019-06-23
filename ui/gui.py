@@ -35,9 +35,9 @@ class Application(tk.Frame):
         self.troph = tk.StringVar(value="")
         self.loco_a = tk.StringVar(value="")
         self.size_class = tk.StringVar(value="")
-        # TODO: fix this so volume and mass can be empty
-        self.size_vol = tk.DoubleVar(value=0.0)
-        self.size_mass = tk.DoubleVar(value=0.0)
+        self.size_vol = tk.StringVar(value="")
+        self.size_vol.trace_add("write", self.trace_size_vol)
+        self.size_mass = tk.StringVar(value="")
         self.symm = tk.StringVar(value="")
         self.sides = tk.StringVar(value="")
         self.tail = tk.StringVar(value="")
@@ -81,112 +81,38 @@ class Application(tk.Frame):
         vbar_in.pack(side=tk.LEFT, fill=tk.Y)
 
         # set up frame for input
-        self.f_in = tk.LabelFrame(self.canvas_in, text="Input", bd=3)
+        self.f_in = tk.LabelFrame(self.canvas_in, text="Input", bd=3,
+                                  padx=3, pady=3)
 
         planet_f = self.create_in_planet_f(self.f_in)
         planet_f.grid(row=0, column=0, columnspan=2)
 
-        sap_f = self.create_in_sapience_f(self.f_in)
-        sap_f.grid(row=1, column=0, columnspan=2, sticky=tk.NSEW)
+        bas_f = self.create_in_basic_f(self.f_in)
+        bas_f.grid(row=1, column=0, columnspan=2, sticky=tk.NSEW)
 
-        lbl_chem = tk.Label(self.f_in, text="Chemical Basis:")
-        lbl_chem.grid(row=2, column=0)
-        tbl_chem = [""] + tables.ui_chemical_basis
-        self.in_chem_bas = tk.OptionMenu(self.f_in, self.chem_bas, *tbl_chem)
-        self.in_chem_bas.grid(row=2, column=1)
+        size_f = self.create_in_size_f(self.f_in)
+        size_f.grid(row=2, column=0, columnspan=2, sticky=tk.NSEW)
 
-        hab_f = self.create_in_habitat_f(self.f_in)
-        hab_f.grid(row=3, column=0, columnspan=2, sticky=tk.NSEW)
+        body_f = self.create_in_bodyplan_f(self.f_in)
+        body_f.grid(row=3, column=0, columnspan=2, sticky=tk.NSEW)
 
-        lbl_troph = tk.Label(self.f_in, text="Trophic Level:")
-        lbl_troph.grid(row=5, column=0)
-        tbl_troph = [""] + tables.ui_trophic_level
-        self.in_troph = tk.OptionMenu(self.f_in, self.troph, *tbl_troph)
-        self.in_troph.grid(row=5, column=1)
+        meta_f = self.create_in_metabolism_f(self.f_in)
+        meta_f.grid(row=4, column=0, columnspan=2, sticky=tk.NSEW)
 
-        lbl_loco_a = tk.Label(self.f_in, text="Primary Locomotion:")
-        lbl_loco_a.grid(row=6, column=0)
-        tbl_loco_a = [""] + tables.ui_locomotion
-        self.in_loco_a = tk.OptionMenu(self.f_in, self.loco_a, *tbl_loco_a)
-        self.in_loco_a.grid(row=6, column=1)
+        repro_f = self.create_in_reproduction_f(self.f_in)
+        repro_f.grid(row=5, column=0, columnspan=2, sticky=tk.NSEW)
 
-        lbl_size_c = tk.Label(self.f_in, text="Size Class:")
-        lbl_size_c.grid(row=7, column=0)
+        sense_f = self.create_in_senses_f(self.f_in)
+        sense_f.grid(row=6, column=0, columnspan=2, sticky=tk.NSEW)
 
-        lbl_size_vol = tk.Label(self.f_in, text="Volume:")
-        lbl_size_vol.grid(row=8, column=0)
+        int_f = self.create_in_intel_f(self.f_in)
+        int_f.grid(row=7, column=0, columnspan=2, sticky=tk.NSEW)
 
-        lbl_size_mass = tk.Label(self.f_in, text="Mass:")
-        lbl_size_mass.grid(row=9, column=0)
-
-        lbl_symm = tk.Label(self.f_in, text="Symmetry:")
-        lbl_symm.grid(row=10, column=0)
-
-        lbl_sides = tk.Label(self.f_in, text="Sides:")
-        lbl_sides.grid(row=11, column=0)
-
-        lbl_tail = tk.Label(self.f_in, text="Tail Feature:")
-        lbl_tail.grid(row=12, column=0)
-
-        lbl_skel = tk.Label(self.f_in, text="Skeleton:")
-        lbl_skel.grid(row=13, column=0)
-
-        lbl_skin_t = tk.Label(self.f_in, text="Skin Type:")
-        lbl_skin_t.grid(row=14, column=0)
-
-        lbl_skin = tk.Label(self.f_in, text="Skin:")
-        lbl_skin.grid(row=15, column=0)
-
-        lbl_breath = tk.Label(self.f_in, text="Breathing:")
-        lbl_breath.grid(row=16, column=0)
-
-        lbl_temp = tk.Label(self.f_in, text="Temperature Regulation:")
-        lbl_temp.grid(row=17, column=0)
-
-        lbl_grow = tk.Label(self.f_in, text="Growth Pattern:")
-        lbl_grow.grid(row=18, column=0)
-
-        lbl_sex = tk.Label(self.f_in, text="Sexes:")
-        lbl_sex.grid(row=19, column=0)
-
-        lbl_gest = tk.Label(self.f_in, text="Gestation:")
-        lbl_gest.grid(row=20, column=0)
-
-        lbl_gest_s = tk.Label(self.f_in, text="Special Gestation:")
-        lbl_gest_s.grid(row=21, column=0)
-
-        lbl_repro = tk.Label(self.f_in, text="Reproductive Strategy:")
-        lbl_repro.grid(row=22, column=0)
-
-        lbl_sen_p = tk.Label(self.f_in, text="Primary Sense:")
-        lbl_sen_p.grid(row=23, column=0)
-
-        lbl_sen_v = tk.Label(self.f_in, text="Vision:")
-        lbl_sen_v.grid(row=24, column=0)
-
-        lbl_sen_h = tk.Label(self.f_in, text="Hearing:")
-        lbl_sen_h.grid(row=25, column=0)
-
-        lbl_sen_to = tk.Label(self.f_in, text="Touch:")
-        lbl_sen_to.grid(row=26, column=0)
-
-        lbl_sen_ta = tk.Label(self.f_in, text="Taste/Smell:")
-        lbl_sen_ta.grid(row=27, column=0)
-
-        lbl_sen_s = tk.Label(self.f_in, text="Special Senses:")
-        lbl_sen_s.grid(row=28, column=0)
-
-        lbl_int = tk.Label(self.f_in, text="Intelligence:")
-        lbl_int.grid(row=29, column=0)
-
-        lbl_mat = tk.Label(self.f_in, text="Mating Behavior:")
-        lbl_mat.grid(row=30, column=0)
-
-        lbl_soc = tk.Label(self.f_in, text="Socal Organization:")
-        lbl_soc.grid(row=31, column=0)
+        soc_f = self.create_in_social_f(self.f_in)
+        soc_f.grid(row=8, column=0, columnspan=2, sticky=tk.NSEW)
 
         pers_f = self.create_in_personality_f(self.f_in)
-        pers_f.grid(row=32, column=0, columnspan=2, sticky=tk.NSEW)
+        pers_f.grid(row=9, column=0, columnspan=2, sticky=tk.NSEW)
 
         # create input window and resize canvas to allow for scrolling
         self.canvas_in.create_window(0, 0, anchor=tk.NW, window=self.f_in)
@@ -267,19 +193,47 @@ class Application(tk.Frame):
 
         return planet_f
 
-    def create_in_sapience_f(self, parent):
-        sap_f = tk.LabelFrame(parent, text="Sapience")
+    def create_in_basic_f(self, parent):
+        bas_f = tk.LabelFrame(parent, text="Basic", padx=5, pady=5)
+        bas_f.grid_columnconfigure(1, weight=1)
 
-        tk.Radiobutton(sap_f, text="Possible", variable=self.sapience,
-                       value="Possible").grid(row=0, column=0)
-        tk.Radiobutton(sap_f, text="Sapient", variable=self.sapience,
-                       value="Sapient").grid(row=0, column=1)
-        tk.Radiobutton(sap_f, text="Nonsapient", variable=self.sapience,
-                       value="Nonsapient").grid(row=0, column=2)
+        lbl_chem = tk.Label(bas_f, text="Chemical Basis:")
+        lbl_chem.grid(row=0, column=0, sticky=tk.W)
+        tbl_chem = [""] + tables.ui_chemical_basis
+        self.in_chem_bas = tk.OptionMenu(bas_f, self.chem_bas, *tbl_chem)
+        self.in_chem_bas.grid(row=0, column=1)
 
-        return sap_f
+        hab_f = self.create_in_habitat_f(bas_f)
+        hab_f.grid(row=1, column=0, columnspan=2, sticky=tk.NSEW)
+
+        lbl_troph = tk.Label(bas_f, text="Trophic Level:")
+        lbl_troph.grid(row=2, column=0, sticky=tk.W)
+        tbl_troph = [""] + tables.ui_trophic_level
+        self.in_troph = tk.OptionMenu(bas_f, self.troph, *tbl_troph)
+        self.in_troph.grid(row=2, column=1)
+
+        return bas_f
 
     def create_in_habitat_f(self, parent):
+        hab_f = tk.Frame(parent)
+        # hab_f.grid_columnconfigure(0, weight=1)
+        hab_f.grid_columnconfigure(1, weight=1)
+        hab_f.grid_columnconfigure(2, weight=1)
+
+        lbl_habtype = tk.Label(hab_f, text="Habitat:")
+        lbl_habtype.grid(row=0, column=0, sticky=tk.W)
+        tbl_habtype = [""] + tables.ui_hab_type
+        tbl_habtype.remove("Gas Giant")
+        self.in_habtype = tk.OptionMenu(hab_f, self.hab_type, *tbl_habtype)
+        self.in_habtype.grid(row=0, column=1)
+
+        tbl_habitat = [""] + tables.ui_habitat
+        self.in_habitat = tk.OptionMenu(hab_f, self.habitat, *tbl_habitat)
+        self.in_habitat.grid(row=0, column=2)
+
+        return hab_f
+
+    def create_in_habitat_f_old(self, parent):
         hab_f = tk.LabelFrame(parent, text="Habitat")
         hab_f.grid_columnconfigure(0, weight=1)
         hab_f.grid_columnconfigure(1, weight=1)
@@ -298,6 +252,164 @@ class Application(tk.Frame):
         self.in_habitat.grid(row=1, column=1)
 
         return hab_f
+
+    def create_in_size_f(self, parent):
+        size_f = tk.LabelFrame(parent, text="Size", padx=5, pady=5)
+        size_f.columnconfigure(0, weight=1)
+        size_f.columnconfigure(1, weight=1)
+
+        lbl_size_c = tk.Label(size_f, text="Class:")
+        lbl_size_c.grid(row=0, column=0)
+
+        tbl_sizec = [""] + tables.ui_size_class
+        self.in_size_c = tk.OptionMenu(size_f, self.size_class, *tbl_sizec)
+        self.in_size_c.grid(row=0, column=1)
+        '''
+        tk.Radiobutton(size_f, text="Any", variable=self.size_class,
+                       value="").grid(row=0, column=1)
+        tk.Radiobutton(size_f, text="Small", variable=self.size_class,
+                       value="Small").grid(row=0, column=2)
+        tk.Radiobutton(size_f, text="Human-Scale", variable=self.size_class,
+                       value="Human-Scale").grid(row=0, column=3)
+        tk.Radiobutton(size_f, text="Large", variable=self.size_class,
+                       value="Large").grid(row=1, column=2)
+        tk.Radiobutton(size_f, text="Huge", variable=self.size_class,
+                       value="Huge").grid(row=1, column=3, sticky=tk.W)
+        '''
+        lbl_size_vol = tk.Label(size_f, text="Volume (yards):")
+        lbl_size_vol.grid(row=2, column=0)
+        self.in_size_v = tk.Entry(size_f, textvariable=self.size_vol)
+        self.in_size_v.grid(row=2, column=1)
+        lbl_size_mass = tk.Label(size_f, text="Mass (pounds):")
+        lbl_size_mass.grid(row=3, column=0)
+        self.in_size_m = tk.Entry(size_f, textvariable=self.size_mass)
+        self.in_size_m.grid(row=3, column=1)
+
+        return size_f
+
+    def create_in_bodyplan_f(self, parent):
+        body_f = tk.LabelFrame(parent, text="Body Plan", padx=5, pady=5)
+
+        lbl_loco_a = tk.Label(body_f, text="Primary Locomotion:")
+        lbl_loco_a.grid(row=0, column=0)
+        tbl_loco_a = [""] + tables.ui_locomotion
+        self.in_loco_a = tk.OptionMenu(body_f, self.loco_a, *tbl_loco_a)
+        self.in_loco_a.grid(row=0, column=1)
+
+        lbl_symm = tk.Label(body_f, text="Symmetry:")
+        lbl_symm.grid(row=1, column=0)
+
+        lbl_sides = tk.Label(body_f, text="Sides:")
+        lbl_sides.grid(row=2, column=0)
+
+        lbl_tail = tk.Label(body_f, text="Tail Feature:")
+        lbl_tail.grid(row=3, column=0)
+
+        lbl_skel = tk.Label(body_f, text="Skeleton:")
+        lbl_skel.grid(row=4, column=0)
+
+        lbl_skin_t = tk.Label(body_f, text="Skin Type:")
+        lbl_skin_t.grid(row=5, column=0)
+
+        lbl_skin = tk.Label(body_f, text="Skin:")
+        lbl_skin.grid(row=6, column=0)
+
+        return body_f
+
+    def create_in_metabolism_f(self, parent):
+        meta_f = tk.LabelFrame(parent, text="Metabolism", padx=5, pady=5)
+
+        lbl_breath = tk.Label(meta_f, text="Breathing:")
+        lbl_breath.grid(row=0, column=0)
+
+        lbl_temp = tk.Label(meta_f, text="Temperature Regulation:")
+        lbl_temp.grid(row=1, column=0)
+
+        lbl_grow = tk.Label(meta_f, text="Growth Pattern:")
+        lbl_grow.grid(row=2, column=0)
+
+        return meta_f
+
+    def create_in_reproduction_f(self, parent):
+        repro_f = tk.LabelFrame(parent, text="Reproduction", padx=5, pady=5)
+
+        lbl_sex = tk.Label(repro_f, text="Sexes:")
+        lbl_sex.grid(row=0, column=0)
+
+        lbl_gest = tk.Label(repro_f, text="Gestation:")
+        lbl_gest.grid(row=1, column=0)
+
+        lbl_gest_s = tk.Label(repro_f, text="Special Gestation:")
+        lbl_gest_s.grid(row=2, column=0)
+
+        lbl_repro = tk.Label(repro_f, text="Reproductive Strategy:")
+        lbl_repro.grid(row=3, column=0)
+
+        return repro_f
+
+    def create_in_senses_f(self, parent):
+        sense_f = tk.LabelFrame(parent, text="Senses", padx=5, pady=5)
+
+        lbl_sen_p = tk.Label(sense_f, text="Primary Sense:")
+        lbl_sen_p.grid(row=0, column=0)
+
+        lbl_sen_v = tk.Label(sense_f, text="Vision:")
+        lbl_sen_v.grid(row=1, column=0)
+
+        lbl_sen_h = tk.Label(sense_f, text="Hearing:")
+        lbl_sen_h.grid(row=2, column=0)
+
+        lbl_sen_to = tk.Label(sense_f, text="Touch:")
+        lbl_sen_to.grid(row=3, column=0)
+
+        lbl_sen_ta = tk.Label(sense_f, text="Taste/Smell:")
+        lbl_sen_ta.grid(row=4, column=0)
+
+        lbl_sen_s = tk.Label(sense_f, text="Special Senses:")
+        lbl_sen_s.grid(row=5, column=0)
+
+        return sense_f
+
+    def create_in_intel_f(self, parent):
+        int_f = tk.LabelFrame(parent, text="Intelligence", padx=5, pady=5)
+
+        lbl_sap = tk.Label(int_f, text="Sapience:")
+        lbl_sap.grid(row=0, column=0)
+
+        tk.Radiobutton(int_f, text="Possible", variable=self.sapience,
+                       value="Possible").grid(row=0, column=1)
+        tk.Radiobutton(int_f, text="Sapient", variable=self.sapience,
+                       value="Sapient").grid(row=0, column=2)
+        tk.Radiobutton(int_f, text="Nonsapient", variable=self.sapience,
+                       value="Nonsapient").grid(row=0, column=3)
+
+        lbl_int = tk.Label(int_f, text="Intelligence:")
+        lbl_int.grid(row=1, column=0, columnspan=2)
+
+        return int_f
+
+    def create_in_sapience_f(self, parent):
+        sap_f = tk.LabelFrame(parent, text="Sapience")
+
+        tk.Radiobutton(sap_f, text="Possible", variable=self.sapience,
+                       value="Possible").grid(row=0, column=0)
+        tk.Radiobutton(sap_f, text="Sapient", variable=self.sapience,
+                       value="Sapient").grid(row=0, column=1)
+        tk.Radiobutton(sap_f, text="Nonsapient", variable=self.sapience,
+                       value="Nonsapient").grid(row=0, column=2)
+
+        return sap_f
+
+    def create_in_social_f(self, parent):
+        soc_f = tk.LabelFrame(parent, text="Social", padx=5, pady=5)
+
+        lbl_mat = tk.Label(soc_f, text="Mating Behavior:")
+        lbl_mat.grid(row=0, column=0)
+
+        lbl_soc = tk.Label(soc_f, text="Socal Organization:")
+        lbl_soc.grid(row=1, column=0)
+
+        return soc_f
 
     def create_in_personality_f(self, parent):
         pers_f = tk.LabelFrame(parent, text="Personality",
@@ -330,6 +442,11 @@ class Application(tk.Frame):
 
         return pers_f
 
+    def p_randomize(self):
+        self.p_temp.set(random.randint(260, 350))
+        self.p_hydro.set(random.randint(0, 100))
+        self.p_grav.set(round(random.uniform(0, 6), 3))
+
     def trace_p_type(self, *args):
         # print("trace_p_type Callback: ", args)
         value = self.p_type.get()
@@ -361,11 +478,6 @@ class Application(tk.Frame):
             self.in_chem_bas.config(state=tk.NORMAL)
             self.chem_bas.set("")
 
-    def p_randomize(self):
-        self.p_temp.set(random.randint(260, 350))
-        self.p_hydro.set(random.randint(0, 100))
-        self.p_grav.set(round(random.uniform(0, 6), 3))
-
     def trace_hab_type(self, *args):
         value = self.hab_type.get()
         menu = self.in_habitat["menu"]
@@ -393,6 +505,24 @@ class Application(tk.Frame):
                 self.in_habtype.config(state=tk.DISABLED)
             else:
                 self.in_habtype.config(state=tk.NORMAL)
+
+    def trace_size_vol(self, *args):
+        if not self.size_vol.get():
+            self.in_size_c.config(state=tk.NORMAL)
+        else:
+            value = float(self.size_vol.get())
+            if 0.0 < value <= 0.4:
+                self.size_class.set("Small")
+                self.in_size_c.config(state=tk.DISABLED)
+            elif value <= 4:
+                self.size_class.set("Human-Scale")
+                self.in_size_c.config(state=tk.DISABLED)
+            elif value <= 20:
+                self.size_class.set("Large")
+                self.in_size_c.config(state=tk.DISABLED)
+            else:
+                self.size_class.set("Huge")
+                self.in_size_c.config(state=tk.DISABLED)
 
     def species_gen(self):
         if self.check_input():
@@ -466,6 +596,12 @@ class Application(tk.Frame):
             in_species.trophic_level = self.troph.get()
         if self.loco_a.get():
             in_species.locomotion = [self.loco_a.get()]
+        if self.size_class.get():
+            in_species.size_class = self.size_class.get()
+        if self.size_vol.get():
+            in_species.size_volume = float(self.size_vol.get())
+        if self.size_mass.get():
+            in_species.size_mass = float(self.size_mass.get())
 
         return in_species
 
@@ -480,6 +616,14 @@ class Application(tk.Frame):
         elif not self.p_grav.get().replace(".", "", 1).isdigit():
             errstr = "Error! Planet Gravity must be Number!\n"
             errstr += "You entered: {}".format(self.p_grav.get())
+        elif (self.size_vol.get()
+                and not self.size_vol.get().replace(".", "", 1).isdigit()):
+            errstr = "Error! Volume must be Number!\n"
+            errstr += "You entered: {}".format(self.size_vol.get())
+        elif (self.size_mass.get()
+                and not self.size_mass.get().replace(".", "", 1).isdigit()):
+            errstr = "Error! Mass must be Number!\n"
+            errstr += "You entered: {}".format(self.size_mass.get())
         if errstr:
             self.out_txt.config(state=tk.NORMAL)
             self.out_txt.delete(1.0, tk.END)
