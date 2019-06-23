@@ -17,6 +17,7 @@ class Application(tk.Frame):
         self.pack()
         self.create_variables()
         self.create_widgets()
+        self.master.geometry("1028x540")
         self.winfo_toplevel().title("space-alien-gen")
 
     def create_variables(self):
@@ -68,10 +69,10 @@ class Application(tk.Frame):
         self.pla = tk.IntVar(value=0)
 
     def create_widgets(self):
-        self.create_input()
-        self.create_output()
+        self.create_input_frame()
+        self.create_output_frame()
 
-    def create_input(self):
+    def create_input_frame(self):
         # set up canvas for scrolling region
         self.canvas_in = tk.Canvas(self)
         vbar_in = tk.Scrollbar(self)
@@ -121,7 +122,7 @@ class Application(tk.Frame):
         self.canvas_in.config(scrollregion=(x, y, w, h))
         self.canvas_in.config(width=w, height=h)
 
-    def create_output(self):
+    def create_output_frame(self):
         # set up canvas for scrolling region
         self.canvas_out = tk.Canvas(self)
         vbar_out = tk.Scrollbar(self)
@@ -141,6 +142,7 @@ class Application(tk.Frame):
         self.out_scroll.grid(row=0, column=1, sticky=tk.NS)
 
         self.out_txt = tk.Text(self.f_txt, yscrollcommand=self.out_scroll.set)
+        self.out_txt.config(height=24)
         self.out_txt.grid(row=0, column=0)
 
         self.out_scroll.config(command=self.out_txt.yview)
@@ -258,7 +260,7 @@ class Application(tk.Frame):
         size_f.columnconfigure(0, weight=1)
         size_f.columnconfigure(1, weight=1)
 
-        lbl_size_c = tk.Label(size_f, text="Class:")
+        lbl_size_c = tk.Label(size_f, text="Size Class:")
         lbl_size_c.grid(row=0, column=0)
 
         tbl_sizec = [""] + tables.ui_size_class
